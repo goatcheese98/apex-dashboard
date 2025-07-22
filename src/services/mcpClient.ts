@@ -5,6 +5,7 @@
 
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
+import { z } from 'zod';
 
 export interface McpServerConfig {
   name: string;
@@ -40,6 +41,16 @@ export interface TeamStats {
     points: number;
   };
 }
+
+// Zod schemas for MCP response validation
+const GenericMcpResponseSchema = z.object({
+  content: z.array(z.object({
+    text: z.string()
+  })).optional(),
+  contents: z.array(z.object({
+    text: z.string()
+  })).optional(),
+}).passthrough();
 
 class McpClientService {
   private clients: Map<string, Client> = new Map();
@@ -129,7 +140,8 @@ class McpClientService {
             name: 'get_tournaments',
             arguments: { limit, status }
           }
-        }
+        },
+        GenericMcpResponseSchema
       );
 
       if (response.content && response.content[0]) {
@@ -158,7 +170,8 @@ class McpClientService {
             name: 'get_tournament_details',
             arguments: { tournamentId }
           }
-        }
+        },
+        GenericMcpResponseSchema
       );
 
       if (response.content && response.content[0]) {
@@ -186,7 +199,8 @@ class McpClientService {
             name: 'get_tournament_matches',
             arguments: { tournamentId, matchId }
           }
-        }
+        },
+        GenericMcpResponseSchema
       );
 
       if (response.content && response.content[0]) {
@@ -215,7 +229,8 @@ class McpClientService {
             name: 'get_team_stats',
             arguments: { tournamentId, teamId }
           }
-        }
+        },
+        GenericMcpResponseSchema
       );
 
       if (response.content && response.content[0]) {
@@ -242,7 +257,8 @@ class McpClientService {
           params: {
             uri: `file://${filePath}`
           }
-        }
+        },
+        GenericMcpResponseSchema
       );
 
       if (response.contents && response.contents[0]) {
@@ -255,6 +271,7 @@ class McpClientService {
       return null;
     }
   }
+
 
   /**
    * Disconnect from all MCP servers
@@ -299,5 +316,4 @@ class McpClientService {
 // Export singleton instance
 export const mcpClient = new McpClientService();
 
-// Export types
-export type { Client, McpServerConfig, TournamentData, MatchData, TeamStats };
+// Export types (interfaces are already exported above, so no need to re-export)

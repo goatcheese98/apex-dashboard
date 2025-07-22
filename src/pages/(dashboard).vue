@@ -1,9 +1,13 @@
 <script setup lang="ts">
 import DashboardLayout from '@/components/layout/DashboardLayout.vue'
+import { computed } from 'vue'
 
 defineOptions({
   name: 'DashboardPage'
 })
+
+// Check if we're in development mode to show dev pages
+const isDevelopment = computed(() => import.meta.env.DEV)
 </script>
 
 <template>
@@ -101,8 +105,38 @@ defineOptions({
             </div>
           </div>
 
-            <!-- Quick Actions -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            <!-- Production Quick Actions -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+              <button class="btn btn-primary btn-lg h-auto flex-col p-4 group">
+                <div class="text-2xl mb-2 group-hover:scale-110 transition-transform">📊</div>
+                <div class="font-medium">Analytics</div>
+                <div class="text-xs opacity-60 mt-1">View Statistics</div>
+              </button>
+              
+              <button class="btn btn-accent btn-lg h-auto flex-col p-4 group">
+                <div class="text-2xl mb-2 group-hover:scale-110 transition-transform">⚡</div>
+                <div class="font-medium">Live Feed</div>
+                <div class="text-xs opacity-60 mt-1">Real-time Data</div>
+              </button>
+              
+              <button class="btn btn-warning btn-lg h-auto flex-col p-4 group">
+                <div class="text-2xl mb-2 group-hover:scale-110 transition-transform">🎯</div>
+                <div class="font-medium">Match History</div>
+                <div class="text-xs opacity-60 mt-1">Past Results</div>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Dev Pages Section (Development Only) -->
+        <div v-if="isDevelopment" class="card bg-base-200/30 backdrop-blur-sm border border-accent/30">
+          <div class="card-body">
+            <h2 class="card-title text-xl font-bold text-center justify-center mb-6 text-accent">
+              🔧 Dev Pages
+              <div class="badge badge-accent badge-sm">Development Only</div>
+            </h2>
+            
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               <router-link 
                 to="/tailwind-test"
                 class="btn btn-info btn-lg h-auto flex-col p-4 group"
@@ -114,27 +148,21 @@ defineOptions({
 
               <router-link 
                 to="/daisyui-test"
-                class="btn btn-secondary btn-lg h-auto flex-col p-4 group"
+                class="btn btn-secondary btn-lg h-auto flex-col p-4 group btn-apex-glow"
               >
-                <div class="text-2xl mb-2 group-hover:scale-110 transition-transform">🎯</div>
-                <div class="font-medium">DaisyUI Test</div>
-                <div class="text-xs opacity-60 mt-1">UI Components</div>
-              </router-link>
-
-              <router-link 
-                to="/enhanced-components"
-                class="btn btn-accent btn-lg h-auto flex-col p-4 group btn-apex-glow"
-              >
-                <div class="text-2xl mb-2 group-hover:scale-110 transition-transform">✨</div>
-                <div class="font-medium">Enhanced UI</div>
-                <div class="text-xs opacity-60 mt-1">Custom Effects</div>
+                <div class="text-2xl mb-2 group-hover:scale-110 transition-transform">🎯✨</div>
+                <div class="font-medium">DaisyUI Components</div>
+                <div class="text-xs opacity-60 mt-1">UI + Enhanced Effects</div>
               </router-link>
               
-              <button class="btn btn-primary btn-lg h-auto flex-col p-4 group">
-                <div class="text-2xl mb-2 group-hover:scale-110 transition-transform">📊</div>
-                <div class="font-medium">Analytics</div>
-                <div class="text-xs opacity-60 mt-1">View Statistics</div>
-              </button>
+              <router-link 
+                to="/dock-iterations"
+                class="btn btn-success btn-lg h-auto flex-col p-4 group"
+              >
+                <div class="text-2xl mb-2 group-hover:scale-110 transition-transform">🚢</div>
+                <div class="font-medium">Dock Iterations</div>
+                <div class="text-xs opacity-60 mt-1">UI Component Tests</div>
+              </router-link>
             </div>
           </div>
         </div>

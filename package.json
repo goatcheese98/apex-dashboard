@@ -50,6 +50,7 @@
     "@modelcontextprotocol/server-filesystem": "^2025.7.1",
     "@modelcontextprotocol/server-memory": "^2025.4.25",
     "@modelcontextprotocol/server-sequential-thinking": "^2025.7.1",
+    "@vue/test-utils": "^2.4.6",
     "autoprefixer": "^10.4.21",
     "daisyui": "^5.0.46",
     "postcss": "^8.5.6",

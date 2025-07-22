@@ -21,7 +21,7 @@ const playIcon = computed(() =>
 )
 
 // Auto-play functionality
-let playbackInterval: number | null = null
+let playbackInterval: ReturnType<typeof setInterval> | null = null
 
 const startAutoPlay = () => {
   if (playbackInterval) return
