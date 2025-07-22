@@ -1,45 +1,33 @@
 /** @type {import('tailwindcss').Config} */
-export default {
+const config = {
   content: ['./index.html', './src/**/*.{vue,js,ts,jsx,tsx}'],
-  theme: {
-    extend: {
-      colors: {
-        // Apex Legends inspired colors
-        'apex-orange': 'var(--color-apex-orange)',
-        'apex-blue': 'var(--color-apex-blue)',
-        'apex-red': 'var(--color-apex-red)',
-        'apex-purple': 'var(--color-apex-purple)',
-        'apex-dark': 'var(--color-apex-dark)',
-        'apex-light': 'var(--color-apex-light)',
-      },
-      animation: {
-        'dock-expand': 'dock-expand 0.3s ease-out',
-        'dock-contract': 'dock-contract 0.3s ease-in',
-        'card-lift': 'card-lift 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
-        'card-unveil': 'card-unveil 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
-      },
-      keyframes: {
-        'dock-expand': {
-          '0%': { transform: 'scale(0.95)', opacity: '0.8' },
-          '100%': { transform: 'scale(1)', opacity: '1' },
-        },
-        'dock-contract': {
-          '0%': { transform: 'scale(1)', opacity: '1' },
-          '100%': { transform: 'scale(0.95)', opacity: '0.8' },
-        },
-        'card-lift': {
-          '0%': { transform: 'translateY(0) translateZ(0)', opacity: '1' },
-          '100%': { transform: 'translateY(-20px) translateZ(50px)', opacity: '0.9' },
-        },
-        'card-unveil': {
-          '0%': { transform: 'translateY(20px) scale(0.95)', opacity: '0' },
-          '100%': { transform: 'translateY(0) scale(1)', opacity: '1' },
-        },
-      },
-      backdropBlur: {
-        'xs': '2px',
-      },
-    },
+  plugins: [require('daisyui')],
+  daisyui: {
+    themes: [
+      "light",
+      "dark", 
+      {
+        "apex": {
+          "primary": "#ff6600",       // apex-orange
+          "secondary": "#00d4ff",     // apex-blue  
+          "accent": "#9933ff",        // apex-purple
+          "neutral": "#0f0f0f",       // apex-dark
+          "base-100": "#0f0f0f",      // Dark background
+          "base-200": "#1a1a1a",      // Slightly lighter dark
+          "base-300": "#2d2d2d",      // Card backgrounds
+          "base-content": "#f5f5f5",  // apex-light text
+          "info": "#00d4ff",          // apex-blue for info
+          "success": "#00ff88",       // Green for success states
+          "warning": "#ffaa00",       // Orange for warnings
+          "error": "#ff3333",         // apex-red for errors
+        }
+      }
+    ],
+    darkTheme: "apex",
+    base: true,
+    styled: true,
+    utils: true,
   },
-  plugins: [],
 }
+
+module.exports = config;

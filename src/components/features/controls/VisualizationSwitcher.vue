@@ -13,7 +13,7 @@ const dockStore = useDockStore()
     <button
       v-for="viz in dockStore.availableVisualizations"
       :key="viz.id"
-      @click="dockStore.switchVisualization(viz.id)"
+      @click="dockStore.switchVisualization(viz.id as any)"
       class="flex items-center space-x-2 px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200"
       :class="{
         'bg-apex-orange text-white shadow-lg shadow-apex-orange/20': dockStore.currentVisualization === viz.id,

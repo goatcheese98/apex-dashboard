@@ -68,7 +68,7 @@ const teamDisplayOptions = [
       <div class="flex items-center space-x-3">
         <button
           v-for="option in teamDisplayOptions"
-          :key="option.value"
+          :key="option.value ?? 'all'"
           @click="dockStore.setTeamDisplayLimit(option.value)"
           class="px-3 py-1 rounded-lg text-xs font-medium transition-colors"
           :class="{

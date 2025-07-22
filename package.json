@@ -13,7 +13,11 @@
     "coverage": "vitest run --coverage",
     "lint": "eslint . --ext .vue,.js,.jsx,.cjs,.mjs,.ts,.tsx,.cts,.mts --fix --ignore-path .gitignore",
     "format": "prettier --write src/",
-    "typecheck": "vue-tsc --noEmit"
+    "typecheck": "vue-tsc --noEmit",
+    "mcp:start": "node .mcp/servers/apex-api-server.js",
+    "mcp:test": "node -e \"import('./src/services/mcpClient.ts').then(m => m.mcpClient.getTournaments().then(console.log))\"",
+    "mcp:inspect": "npx @modelcontextprotocol/inspector",
+    "mcp:servers": "echo 'Available MCP servers: filesystem, apex-api'"
   },
   "keywords": [],
   "author": "",
@@ -26,20 +30,29 @@
     "@vue/eslint-config-prettier": "^10.2.0",
     "@vue/eslint-config-typescript": "^14.6.0",
     "@vue/tsconfig": "^0.7.0",
-    "autoprefixer": "^10.4.21",
     "eslint": "^9.31.0",
     "eslint-plugin-vue": "^10.3.0",
     "gsap": "^3.13.0",
     "jsdom": "^26.1.0",
     "pinia": "^3.0.3",
     "pinia-colada": "^0.0.1",
+    "playwright": "^1.54.1",
     "prettier": "^3.6.2",
-    "tailwindcss": "^3.4.17",
     "typescript": "^5.8.3",
     "vite": "^7.0.5",
     "vitest": "^3.2.4",
     "vue": "^3.5.17",
     "vue-router": "^4.5.1",
     "vue-tsc": "^3.0.3"
+  },
+  "devDependencies": {
+    "@modelcontextprotocol/sdk": "^1.16.0",
+    "@modelcontextprotocol/server-filesystem": "^2025.7.1",
+    "@modelcontextprotocol/server-memory": "^2025.4.25",
+    "@modelcontextprotocol/server-sequential-thinking": "^2025.7.1",
+    "autoprefixer": "^10.4.21",
+    "daisyui": "^5.0.46",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^3.4.17"
   }
 }

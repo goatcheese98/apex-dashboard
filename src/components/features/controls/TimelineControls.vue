@@ -14,7 +14,7 @@ const sliderRef = ref<HTMLElement>()
 const isDragging = ref(false)
 
 const totalGames = computed(() => tournamentStore.currentTournament?.totalGames || 10)
-const currentGame = computed(() => Math.floor((dockStore.timelinePosition / 100) * totalGames) + 1)
+const currentGame = computed(() => Math.floor((dockStore.timelinePosition / 100) * totalGames.value) + 1)
 
 const playIcon = computed(() => 
   dockStore.playbackState === 'playing' ? '⏸️' : '▶️'

@@ -12,3 +12,8 @@ app.use(createPinia())
 app.use(router)
 
 app.mount('#app')
+
+// Initialize theme system globally
+import { useThemeStore } from './stores/theme'
+const themeStore = useThemeStore()
+themeStore.initializeTheme()
