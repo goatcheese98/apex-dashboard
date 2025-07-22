@@ -69,7 +69,6 @@ const currentThemeIcon = computed(() => {
   switch (themeStore.currentTheme) {
     case 'light': return 'sun'
     case 'dark': return 'moon'
-    case 'apex': return 'gaming'
     default: return 'palette'
   }
 })
@@ -126,12 +125,12 @@ const getPreviewStyle = (theme: ThemeDefinition) => {
   background-color: var(--preview-accent);
 }
 
-/* Add smooth transitions for theme switching */
-:global(*) {
-  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease !important;
+/* Smooth transitions for theme switching */
+.theme-selector {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-:global(.theme-selector *) {
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+.theme-preview-card {
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 </style>

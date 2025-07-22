@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref, computed, watch } from 'vue'
 
-export type ThemeName = 'light' | 'dark' | 'apex'
+export type ThemeName = 'light' | 'dark'
 
 export interface ThemeColors {
   primary: string
@@ -30,7 +30,6 @@ export interface ThemeDefinition {
   name: ThemeName
   displayName: string
   colors: ThemeColors
-  customProperties?: Record<string, string>
 }
 
 const themes: Record<ThemeName, ThemeDefinition> = {
@@ -58,14 +57,6 @@ const themes: Record<ThemeName, ThemeDefinition> = {
       'warning-content': '#ffffff',
       error: '#ef4444',
       'error-content': '#ffffff',
-    },
-    customProperties: {
-      '--color-apex-orange': '#f59e0b',
-      '--color-apex-blue': '#06b6d4',
-      '--color-apex-red': '#ef4444',
-      '--color-apex-purple': '#8b5cf6',
-      '--color-apex-dark': '#1f2937',
-      '--color-apex-light': '#ffffff',
     }
   },
   dark: {
@@ -92,63 +83,13 @@ const themes: Record<ThemeName, ThemeDefinition> = {
       'warning-content': '#000000',
       error: '#F87171',
       'error-content': '#000000',
-    },
-    customProperties: {
-      '--color-apex-orange': '#FBBF24',
-      '--color-apex-blue': '#22D3EE',
-      '--color-apex-red': '#F87171',
-      '--color-apex-purple': '#C084FC',
-      '--color-apex-dark': '#111827',
-      '--color-apex-light': '#F9FAFB',
-    }
-  },
-  apex: {
-    name: 'apex',
-    displayName: '🎯 Apex Legends',
-    colors: {
-      primary: '#FF6D00',        // Vibrant gaming orange
-      'primary-content': '#000000',
-      secondary: '#00E5FF',      // Electric cyan blue
-      'secondary-content': '#000000',
-      accent: '#E040FB',         // Neon purple/magenta
-      'accent-content': '#000000',
-      neutral: '#0A0E13',        // Very dark gaming navy (like Battlefy)
-      'neutral-content': '#E0E4E8',
-      'base-100': '#0F1419',     // Deep gaming background
-      'base-200': '#151B27',     // Battlefy-inspired dark navy
-      'base-300': '#1F2937',     // Elevated gaming surface
-      'base-content': '#F0F4F8',
-      info: '#00E5FF',          // Electric cyan
-      'info-content': '#000000',
-      success: '#00FF41',       // Gaming green (Matrix-like)
-      'success-content': '#000000',
-      warning: '#FFAB00',       // Gaming amber
-      'warning-content': '#000000',
-      error: '#FF1744',         // Gaming red (danger)
-      'error-content': '#ffffff',
-    },
-    customProperties: {
-      '--color-apex-orange': '#FF6D00',
-      '--color-apex-blue': '#00E5FF',
-      '--color-apex-red': '#FF1744',
-      '--color-apex-purple': '#E040FB',
-      '--color-apex-green': '#00FF41',
-      '--color-apex-dark': '#0F1419',
-      '--color-apex-light': '#F0F4F8',
-      '--color-gaming-navy': '#151B27',
-      '--color-gaming-surface': '#1F2937',
-      '--glow-primary': '0 0 20px #FF6D00',
-      '--glow-secondary': '0 0 20px #00E5FF',
-      '--glow-accent': '0 0 20px #E040FB',
-      '--gaming-gradient': 'linear-gradient(135deg, #FF6D00 0%, #00E5FF 50%, #E040FB 100%)',
-      '--gaming-dark-gradient': 'linear-gradient(180deg, #0F1419 0%, #151B27 100%)',
     }
   }
 }
 
 export const useThemeStore = defineStore('theme', () => {
   // State
-  const currentTheme = ref<ThemeName>('apex')
+  const currentTheme = ref<ThemeName>('light')
   const isTransitioning = ref(false)
   
   // Getters
@@ -164,7 +105,7 @@ export const useThemeStore = defineStore('theme', () => {
     applyTheme(themes[themeName])
     
     // Store in localStorage
-    localStorage.setItem('apex-dashboard-theme', themeName)
+    localStorage.setItem('theme', themeName)
     
     // Reset transition flag after animation
     setTimeout(() => {
@@ -174,6 +115,9 @@ export const useThemeStore = defineStore('theme', () => {
   
   const applyTheme = (themeDefinition: ThemeDefinition) => {
     const root = document.documentElement
+    
+    // Clear any existing theme classes
+    root.classList.remove('light', 'dark')
     
     // Apply DaisyUI color variables (convert hex to rgb values)
     Object.entries(themeDefinition.colors).forEach(([key, value]) => {
@@ -189,36 +133,35 @@ export const useThemeStore = defineStore('theme', () => {
       root.style.setProperty(`--${key}`, hexToRgb(value))
     })
     
-    // Apply custom properties
-    if (themeDefinition.customProperties) {
-      Object.entries(themeDefinition.customProperties).forEach(([key, value]) => {
-        root.style.setProperty(key, value)
-      })
-    }
-    
     // Set data-theme attribute for DaisyUI
     document.documentElement.setAttribute('data-theme', themeDefinition.name)
+    
+    // Add theme class to root for additional CSS targeting
+    root.classList.add(themeDefinition.name)
+    
+    // Force a repaint to ensure styles are applied
+    root.offsetHeight
   }
   
   const initializeTheme = () => {
     // Check for saved theme in localStorage
-    const savedTheme = localStorage.getItem('apex-dashboard-theme') as ThemeName
+    const savedTheme = localStorage.getItem('theme') as ThemeName
     
     // Check for URL parameter
     const urlParams = new URLSearchParams(window.location.search)
     const urlTheme = urlParams.get('theme') as ThemeName
     
-    // Priority: URL param > localStorage > default (apex)
+    // Priority: URL param > localStorage > default (light)
     const initialTheme = (urlTheme && themes[urlTheme]) ? urlTheme 
                       : (savedTheme && themes[savedTheme]) ? savedTheme 
-                      : 'apex'
+                      : 'light'
     
     currentTheme.value = initialTheme
     applyTheme(themes[initialTheme])
   }
   
   const cycleTheme = () => {
-    const themeOrder: ThemeName[] = ['light', 'dark', 'apex']
+    const themeOrder: ThemeName[] = ['light', 'dark']
     const currentIndex = themeOrder.indexOf(currentTheme.value)
     const nextIndex = (currentIndex + 1) % themeOrder.length
     setTheme(themeOrder[nextIndex])
