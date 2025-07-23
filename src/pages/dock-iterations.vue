@@ -1,296 +1,343 @@
 <template>
-  <div class="min-h-screen bg-slate-50 text-gray-900 p-6">
+  <div class="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white p-6">
     <div class="max-w-7xl mx-auto">
       <!-- Page Header -->
-      <div class="mb-8">
-        <h1 class="text-4xl font-bold mb-2">Floating Dock System Iterations</h1>
-        <p class="text-gray-600 text-lg">
-          Exploring different concepts for the central control dock system
+      <div class="mb-8 text-center">
+        <h1 class="text-5xl font-bold mb-4 bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+          🚀 Dock Effects Laboratory
+        </h1>
+        <p class="text-gray-300 text-xl">
+          Ultimate playground for experimenting with floating dock visual effects
         </p>
       </div>
 
-      <!-- Iterations Grid -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <!-- Control Panel -->
+      <div class="mb-8 bg-gray-800/50 backdrop-blur-lg rounded-2xl p-6 border border-gray-700/50">
+        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+          <!-- Effect Selector -->
+          <div>
+            <label class="block text-sm font-medium mb-3">Effect Style</label>
+            <select 
+              v-model="currentEffect" 
+              class="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:ring-2 focus:ring-purple-500"
+            >
+              <option value="glassmorphic">🔮 Glassmorphic</option>
+              <option value="holographic">✨ Holographic</option>
+              <option value="morphing">🌊 Morphing</option>
+              <option value="neon">⚡ Neon Glow</option>
+              <option value="particle">🎆 Particle Field</option>
+              <option value="cyberpunk">🤖 Cyberpunk</option>
+              <option value="quantum">⚛️ Quantum</option>
+              <option value="liquid">💧 Liquid Metal</option>
+              <option value="plasma">🔥 Plasma</option>
+              <option value="matrix">💊 Matrix</option>
+              <option value="cosmic">🌌 Cosmic</option>
+              <option value="neural">🧠 Neural Network</option>
+            </select>
+          </div>
+
+          <!-- Size Controls -->
+          <div>
+            <label class="block text-sm font-medium mb-3">Dock Size</label>
+            <div class="space-y-2">
+              <input 
+                v-model="dockWidth" 
+                type="range" 
+                min="200" 
+                max="800" 
+                class="w-full"
+              >
+              <input 
+                v-model="dockHeight" 
+                type="range" 
+                min="40" 
+                max="120" 
+                class="w-full"
+              >
+              <div class="text-xs text-gray-400">{{ dockWidth }}px × {{ dockHeight }}px</div>
+            </div>
+          </div>
+
+          <!-- Animation Controls -->
+          <div>
+            <label class="block text-sm font-medium mb-3">Animation</label>
+            <div class="space-y-2">
+              <label class="flex items-center">
+                <input v-model="animationEnabled" type="checkbox" class="mr-2">
+                <span class="text-sm">Enable Animations</span>
+              </label>
+              <input 
+                v-model="animationSpeed" 
+                type="range" 
+                min="0.5" 
+                max="3" 
+                step="0.1" 
+                class="w-full"
+                :disabled="!animationEnabled"
+              >
+              <div class="text-xs text-gray-400">Speed: {{ animationSpeed }}x</div>
+            </div>
+          </div>
+
+          <!-- Color Controls -->
+          <div>
+            <label class="block text-sm font-medium mb-3">Colors</label>
+            <div class="grid grid-cols-2 gap-2">
+              <input 
+                v-model="primaryColor" 
+                type="color" 
+                class="w-full h-10 rounded border border-gray-600"
+                title="Primary Color"
+              >
+              <input 
+                v-model="secondaryColor" 
+                type="color" 
+                class="w-full h-10 rounded border border-gray-600"
+                title="Secondary Color"
+              >
+            </div>
+          </div>
+        </div>
+
+        <!-- Advanced Controls -->
+        <div class="mt-6 pt-6 border-t border-gray-700/50">
+          <div class="grid grid-cols-1 lg:grid-cols-5 gap-4">
+            <div>
+              <label class="block text-xs font-medium mb-2">Blur Intensity</label>
+              <input v-model="blurIntensity" type="range" min="0" max="50" class="w-full">
+              <div class="text-xs text-gray-400 mt-1">{{ blurIntensity }}px</div>
+            </div>
+            <div>
+              <label class="block text-xs font-medium mb-2">Opacity</label>
+              <input v-model="opacity" type="range" min="0" max="100" class="w-full">
+              <div class="text-xs text-gray-400 mt-1">{{ opacity }}%</div>
+            </div>
+            <div>
+              <label class="block text-xs font-medium mb-2">Border Radius</label>
+              <input v-model="borderRadius" type="range" min="0" max="50" class="w-full">
+              <div class="text-xs text-gray-400 mt-1">{{ borderRadius }}px</div>
+            </div>
+            <div>
+              <label class="block text-xs font-medium mb-2">Glow Strength</label>
+              <input v-model="glowStrength" type="range" min="0" max="100" class="w-full">
+              <div class="text-xs text-gray-400 mt-1">{{ glowStrength }}%</div>
+            </div>
+            <div>
+              <label class="block text-xs font-medium mb-2">3D Depth</label>
+              <input v-model="depthStrength" type="range" min="0" max="50" class="w-full">
+              <div class="text-xs text-gray-400 mt-1">{{ depthStrength }}px</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Preset Controls -->
+        <div class="mt-6 pt-6 border-t border-gray-700/50 flex flex-wrap gap-4 justify-center">
+          <button 
+            v-for="preset in presets" 
+            :key="preset.name"
+            @click="applyPreset(preset)"
+            class="px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 rounded-lg transition-all duration-300 transform hover:scale-105"
+          >
+            {{ preset.name }}
+          </button>
+          <button 
+            @click="randomizeEffect"
+            class="px-4 py-2 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 rounded-lg transition-all duration-300 transform hover:scale-105"
+          >
+            🎲 Randomize
+          </button>
+          <button 
+            @click="resetToDefaults"
+            class="px-4 py-2 bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 rounded-lg transition-all duration-300"
+          >
+            🔄 Reset
+          </button>
+        </div>
+      </div>
+
+      <!-- Main Laboratory Area -->
+      <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
         
-        <!-- Minimal Dock -->
-        <div class="iteration-container">
-          <h2 class="text-2xl font-semibold mb-4">Minimal Dock</h2>
-          <p class="text-gray-600 mb-4">Essential controls only - clean and unobtrusive</p>
-          <div class="demo-viewport">
-            <!-- Mock visualization background -->
-            <div class="mock-chart">
-              <div class="chart-bars">
-                <div class="bar" style="height: 60%"></div>
-                <div class="bar" style="height: 80%"></div>
-                <div class="bar" style="height: 45%"></div>
-                <div class="bar" style="height: 90%"></div>
-                <div class="bar" style="height: 70%"></div>
-              </div>
-            </div>
+        <!-- Effect Preview -->
+        <div class="lg:col-span-2 xl:col-span-2">
+          <div class="bg-gray-800/30 backdrop-blur-lg rounded-2xl p-6 border border-gray-700/50">
+            <h3 class="text-2xl font-bold mb-4 text-center">Live Preview</h3>
             
-            <!-- Minimal Dock -->
-            <div class="dock minimal-dock">
-              <button class="play-btn">
-                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
-                  <path d="M8 5v10l8-5-8-5z"/>
-                </svg>
-              </button>
-              <div class="timeline-slider">
-                <div class="slider-track">
-                  <div class="slider-progress" style="width: 35%"></div>
-                  <div class="slider-thumb" style="left: 35%"></div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Expanded Dock -->
-        <div class="iteration-container">
-          <h2 class="text-2xl font-semibold mb-4">Expanded Dock</h2>
-          <p class="text-gray-600 mb-4">Full-featured dock with all controls visible</p>
-          <div class="demo-viewport">
-            <!-- Mock visualization background -->
-            <div class="mock-chart">
-              <div class="chart-bars">
-                <div class="bar" style="height: 60%"></div>
-                <div class="bar" style="height: 80%"></div>
-                <div class="bar" style="height: 45%"></div>
-                <div class="bar" style="height: 90%"></div>
-                <div class="bar" style="height: 70%"></div>
-              </div>
-            </div>
-            
-            <!-- Expanded Dock -->
-            <div class="dock expanded-dock">
-              <div class="dock-section">
-                <span class="section-label">View</span>
-                <div class="view-switcher">
-                  <button class="view-btn active">Race</button>
-                  <button class="view-btn">Damage</button>
-                  <button class="view-btn">Scatter</button>
-                </div>
+            <!-- Preview Viewport -->
+            <div 
+              class="relative bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 rounded-xl overflow-hidden border border-gray-600"
+              style="height: 400px;"
+            >
+              <!-- Background Pattern -->
+              <div class="absolute inset-0 opacity-20">
+                <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(120,119,198,0.3),transparent_50%)]"></div>
+                <div class="absolute inset-0 bg-[linear-gradient(45deg,transparent_49%,rgba(255,255,255,0.05)_49%,rgba(255,255,255,0.05)_51%,transparent_51%)] bg-[length:20px_20px]"></div>
               </div>
               
-              <div class="dock-section">
-                <span class="section-label">Control</span>
-                <div class="playback-controls">
-                  <button class="control-btn">⏮</button>
-                  <button class="control-btn play-btn-large">▶</button>
-                  <button class="control-btn">⏭</button>
-                </div>
-              </div>
-              
-              <div class="dock-section flex-1">
-                <span class="section-label">Timeline</span>
-                <div class="timeline-slider-large">
-                  <div class="slider-track">
-                    <div class="slider-progress" style="width: 45%"></div>
-                    <div class="slider-thumb" style="left: 45%"></div>
-                  </div>
-                  <div class="timeline-markers">
-                    <span class="marker">G1</span>
-                    <span class="marker">G3</span>
-                    <span class="marker active">G5</span>
-                    <span class="marker">G7</span>
-                    <span class="marker">G10</span>
-                  </div>
-                </div>
-              </div>
-              
-              <div class="dock-section">
-                <span class="section-label">Filter</span>
-                <button class="filter-btn">Teams</button>
-              </div>
-            </div>
-          </div>
-        </div>
+              <!-- The Experimental Dock -->
+              <div 
+                :class="[
+                  'experimental-dock',
+                  `dock-${currentEffect}`,
+                  animationEnabled ? 'dock-animated' : ''
+                ]"
+                :style="dockStyles"
+              >
+                <!-- Universal Controls -->
+                <div class="dock-controls">
+                  <!-- Play Button -->
+                  <button class="dock-play-btn" @click="togglePlay">
+                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                      <path v-if="!isPlaying" d="M8 5v10l8-5-8-5z"/>
+                      <path v-else d="M6 4h4v12H6V4zm8 0h-4v12h4V4z"/>
+                    </svg>
+                  </button>
 
-        <!-- Adaptive Dock -->
-        <div class="iteration-container">
-          <h2 class="text-2xl font-semibold mb-4">Adaptive Dock</h2>
-          <p class="text-gray-600 mb-4">Context-aware dock that adjusts to current view</p>
-          <div class="demo-viewport">
-            <!-- Mock visualization background -->
-            <div class="mock-chart">
-              <div class="chart-bars">
-                <div class="bar" style="height: 60%"></div>
-                <div class="bar" style="height: 80%"></div>
-                <div class="bar" style="height: 45%"></div>
-                <div class="bar" style="height: 90%"></div>
-                <div class="bar" style="height: 70%"></div>
-              </div>
-            </div>
-            
-            <!-- Adaptive Dock -->
-            <div class="dock adaptive-dock">
-              <div class="core-controls">
-                <button class="play-btn">
-                  <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M8 5v10l8-5-8-5z"/>
-                  </svg>
-                </button>
-                <div class="timeline-slider">
-                  <div class="slider-track">
-                    <div class="slider-progress" style="width: 25%"></div>
-                    <div class="slider-thumb" style="left: 25%"></div>
+                  <!-- Timeline Scrubber -->
+                  <div class="dock-timeline" :style="timelineStyles">
+                    <div class="timeline-track">
+                      <div 
+                        class="timeline-progress" 
+                        :style="{ width: `${timelineProgress}%` }"
+                      ></div>
+                      <div 
+                        class="timeline-thumb" 
+                        :style="{ left: `${timelineProgress}%` }"
+                        @mousedown="startDragging"
+                      ></div>
+                    </div>
+                    <div class="timeline-labels">
+                      <span>G1</span>
+                      <span>G5</span>
+                      <span>G10</span>
+                    </div>
                   </div>
-                </div>
-              </div>
-              
-              <div class="context-controls">
-                <div class="context-pill">Race Chart Mode</div>
-                <button class="expand-btn">⋯</button>
-              </div>
-            </div>
-          </div>
-        </div>
 
-        <!-- Mobile Dock -->
-        <div class="iteration-container">
-          <h2 class="text-2xl font-semibold mb-4">Mobile-Optimized Dock</h2>
-          <p class="text-gray-600 mb-4">Touch-friendly design for mobile devices</p>
-          <div class="demo-viewport mobile-viewport">
-            <!-- Mock visualization background -->
-            <div class="mock-chart mobile-chart">
-              <div class="chart-bars">
-                <div class="bar" style="height: 60%"></div>
-                <div class="bar" style="height: 80%"></div>
-                <div class="bar" style="height: 45%"></div>
-                <div class="bar" style="height: 90%"></div>
-              </div>
-            </div>
-            
-            <!-- Mobile Dock -->
-            <div class="dock mobile-dock">
-              <div class="mobile-row">
-                <button class="mobile-play-btn">
-                  <svg class="w-8 h-8" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M8 5v10l8-5-8-5z"/>
-                  </svg>
-                </button>
-                <div class="mobile-timeline">
-                  <div class="slider-track">
-                    <div class="slider-progress" style="width: 60%"></div>
-                    <div class="slider-thumb" style="left: 60%"></div>
+                  <!-- Toggle Buttons -->
+                  <div class="dock-toggles">
+                    <button 
+                      :class="['dock-toggle', cumulativeMode ? 'active' : '']"
+                      @click="cumulativeMode = !cumulativeMode"
+                    >
+                      {{ cumulativeMode ? 'CUM' : 'IND' }}
+                    </button>
+                    <button 
+                      :class="['dock-toggle', triangulationMode ? 'active' : '']"
+                      @click="triangulationMode = !triangulationMode"
+                    >
+                      ◢
+                    </button>
                   </div>
-                </div>
-                <button class="mobile-menu-btn">☰</button>
-              </div>
-              <div class="mobile-indicators">
-                <div class="game-indicator">Game 6/10</div>
-                <div class="view-indicator">Race Chart</div>
-              </div>
-            </div>
-          </div>
-        </div>
 
-        <!-- Translucent Variations -->
-        <div class="iteration-container">
-          <h2 class="text-2xl font-semibold mb-4">Translucent Variations</h2>
-          <p class="text-gray-600 mb-4">Different opacity and blur effects</p>
-          <div class="demo-viewport">
-            <!-- Mock visualization background -->
-            <div class="mock-chart">
-              <div class="chart-bars">
-                <div class="bar" style="height: 60%"></div>
-                <div class="bar" style="height: 80%"></div>
-                <div class="bar" style="height: 45%"></div>
-                <div class="bar" style="height: 90%"></div>
-                <div class="bar" style="height: 70%"></div>
-              </div>
-            </div>
-            
-            <!-- Multiple translucent docks -->
-            <div class="translucent-stack">
-              <div class="dock glass-dock">
-                <span class="dock-label">Glass Effect</span>
-                <button class="play-btn">▶</button>
-                <div class="timeline-slider">
-                  <div class="slider-track">
-                    <div class="slider-progress" style="width: 30%"></div>
-                    <div class="slider-thumb" style="left: 30%"></div>
+                  <!-- Menu Button -->
+                  <button class="dock-menu-btn">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"/>
+                    </svg>
+                  </button>
+                </div>
+
+                <!-- Dynamic Background Effects -->
+                <div class="dock-bg-effects">
+                  <div v-if="currentEffect === 'particle'" class="particle-system">
+                    <div v-for="i in 20" :key="i" class="particle" :style="getParticleStyle(i)"></div>
+                  </div>
+                  <div v-if="currentEffect === 'holographic'" class="holographic-grid"></div>
+                  <div v-if="currentEffect === 'quantum'" class="quantum-field">
+                    <div v-for="i in 8" :key="i" class="quantum-orb" :style="getQuantumOrbStyle(i)"></div>
+                  </div>
+                  <div v-if="currentEffect === 'neural'" class="neural-network">
+                    <svg class="neural-svg" viewBox="0 0 200 80">
+                      <g v-for="i in 12" :key="i" class="neural-node" :transform="`translate(${(i % 4) * 50 + 25}, ${Math.floor(i / 4) * 25 + 15})`">
+                        <circle cx="0" cy="0" r="3" class="neural-dot"/>
+                        <line v-if="i < 8" :x1="0" :y1="0" :x2="50" :y2="0" class="neural-line"/>
+                        <line v-if="i % 4 !== 3 && i < 8" :x1="0" :y1="0" :x2="50" :y2="25" class="neural-line"/>
+                        <line v-if="i % 4 !== 0 && i < 8" :x1="0" :y1="0" :x2="50" :y2="-25" class="neural-line"/>
+                      </g>
+                    </svg>
                   </div>
                 </div>
               </div>
-              
-              <div class="dock frosted-dock">
-                <span class="dock-label">Frosted Glass</span>
-                <button class="play-btn">▶</button>
-                <div class="timeline-slider">
-                  <div class="slider-track">
-                    <div class="slider-progress" style="width: 50%"></div>
-                    <div class="slider-thumb" style="left: 50%"></div>
-                  </div>
+
+              <!-- Effect Information -->
+              <div class="absolute top-4 right-4 bg-black/50 backdrop-blur-sm rounded-lg p-3">
+                <h4 class="text-sm font-bold mb-1">{{ getEffectName(currentEffect) }}</h4>
+                <div class="text-xs text-gray-300 space-y-1">
+                  <div>Size: {{ dockWidth }}×{{ dockHeight }}</div>
+                  <div>Animation: {{ animationEnabled ? 'ON' : 'OFF' }}</div>
+                  <div>Opacity: {{ opacity }}%</div>
                 </div>
               </div>
             </div>
           </div>
         </div>
 
-        <!-- Positioning Variants -->
-        <div class="iteration-container">
-          <h2 class="text-2xl font-semibold mb-4">Positioning Variants</h2>
-          <p class="text-gray-600 mb-4">Different dock positions and orientations</p>
-          <div class="demo-viewport">
-            <!-- Mock visualization background -->
-            <div class="mock-chart">
-              <div class="chart-bars">
-                <div class="bar" style="height: 60%"></div>
-                <div class="bar" style="height: 80%"></div>
-                <div class="bar" style="height: 45%"></div>
-                <div class="bar" style="height: 90%"></div>
-                <div class="bar" style="height: 70%"></div>
-              </div>
-            </div>
-            
-            <!-- Bottom dock (default) -->
-            <div class="dock bottom-dock">
-              <span class="position-label">Bottom</span>
-              <button class="play-btn">▶</button>
-              <div class="timeline-slider">
-                <div class="slider-track">
-                  <div class="slider-progress" style="width: 40%"></div>
-                  <div class="slider-thumb" style="left: 40%"></div>
-                </div>
-              </div>
-            </div>
-            
-            <!-- Side dock -->
-            <div class="dock side-dock">
-              <div class="vertical-controls">
-                <span class="position-label">Side</span>
-                <button class="play-btn">▶</button>
-                <div class="vertical-timeline">
-                  <div class="slider-track vertical">
-                    <div class="slider-progress" style="height: 40%"></div>
-                    <div class="slider-thumb" style="top: 40%"></div>
+        <!-- Effect Gallery -->
+        <div>
+          <div class="bg-gray-800/30 backdrop-blur-lg rounded-2xl p-6 border border-gray-700/50">
+            <h3 class="text-xl font-bold mb-4">Effect Gallery</h3>
+            <div class="grid grid-cols-2 gap-3">
+              <div 
+                v-for="effect in availableEffects" 
+                :key="effect.id"
+                :class="[
+                  'gallery-item',
+                  currentEffect === effect.id ? 'active' : ''
+                ]"
+                @click="currentEffect = effect.id"
+              >
+                <div class="gallery-preview" :class="`preview-${effect.id}`">
+                  <div class="mini-dock">
+                    <div class="mini-play"></div>
+                    <div class="mini-timeline"></div>
                   </div>
                 </div>
+                <span class="gallery-label">{{ effect.name }}</span>
               </div>
             </div>
-            
-            <!-- Floating dock -->
-            <div class="dock floating-dock">
-              <span class="position-label">Floating</span>
-              <button class="play-btn">▶</button>
-              <div class="timeline-slider">
-                <div class="slider-track">
-                  <div class="slider-progress" style="width: 65%"></div>
-                  <div class="slider-thumb" style="left: 65%"></div>
+          </div>
+
+          <!-- Performance Monitor -->
+          <div class="mt-6 bg-gray-800/30 backdrop-blur-lg rounded-2xl p-6 border border-gray-700/50">
+            <h3 class="text-lg font-bold mb-3">Performance Monitor</h3>
+            <div class="space-y-3">
+              <div class="flex justify-between items-center">
+                <span class="text-sm">GPU Usage</span>
+                <div class="w-24 h-2 bg-gray-700 rounded-full">
+                  <div class="h-full bg-green-500 rounded-full" :style="{ width: `${gpuUsage}%` }"></div>
                 </div>
+                <span class="text-xs">{{ gpuUsage }}%</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-sm">FPS</span>
+                <span class="text-lg font-mono">{{ fps }}</span>
+              </div>
+              <div class="flex justify-between items-center">
+                <span class="text-sm">Memory</span>
+                <span class="text-xs">{{ memoryUsage }}MB</span>
               </div>
             </div>
           </div>
         </div>
+      </div>
 
+      <!-- Code Export -->
+      <div class="mt-8 bg-gray-800/30 backdrop-blur-lg rounded-2xl p-6 border border-gray-700/50">
+        <h3 class="text-xl font-bold mb-4">Generated CSS</h3>
+        <pre class="bg-gray-900 rounded-lg p-4 text-sm overflow-x-auto"><code>{{ generatedCSS }}</code></pre>
+        <button 
+          @click="copyCSS"
+          class="mt-4 px-4 py-2 bg-green-600 hover:bg-green-700 rounded-lg transition-colors"
+        >
+          📋 Copy CSS
+        </button>
       </div>
       
       <!-- Navigation Back -->
       <div class="mt-12 text-center">
         <router-link 
           to="/" 
-          class="inline-flex items-center px-6 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg font-semibold transition-colors"
+          class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105"
         >
           ← Back to Dashboard
         </router-link>
@@ -300,224 +347,794 @@
 </template>
 
 <script setup lang="ts">
-// Static showcase page - no reactive functionality needed for now
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
+
+// Reactive state
+const currentEffect = ref('glassmorphic')
+const dockWidth = ref(450)
+const dockHeight = ref(80)
+const animationEnabled = ref(true)
+const animationSpeed = ref(1.5)
+const primaryColor = ref('#8b5cf6')
+const secondaryColor = ref('#06b6d4')
+const blurIntensity = ref(20)
+const opacity = ref(80)
+const borderRadius = ref(12)
+const glowStrength = ref(30)
+const depthStrength = ref(10)
+
+// Interactive state
+const isPlaying = ref(false)
+const timelineProgress = ref(35)
+const cumulativeMode = ref(true)
+const triangulationMode = ref(false)
+const isDragging = ref(false)
+
+// Performance monitoring
+const fps = ref(60)
+const gpuUsage = ref(42)
+const memoryUsage = ref(128)
+
+// Available effects
+const availableEffects = [
+  { id: 'glassmorphic', name: '🔮 Glass' },
+  { id: 'holographic', name: '✨ Holo' },
+  { id: 'morphing', name: '🌊 Morph' },
+  { id: 'neon', name: '⚡ Neon' },
+  { id: 'particle', name: '🎆 Particle' },
+  { id: 'cyberpunk', name: '🤖 Cyber' },
+  { id: 'quantum', name: '⚛️ Quantum' },
+  { id: 'liquid', name: '💧 Liquid' },
+  { id: 'plasma', name: '🔥 Plasma' },
+  { id: 'matrix', name: '💊 Matrix' },
+  { id: 'cosmic', name: '🌌 Cosmic' },
+  { id: 'neural', name: '🧠 Neural' }
+]
+
+// Presets
+const presets = [
+  {
+    name: '✨ Default Glass',
+    values: { currentEffect: 'glassmorphic', blurIntensity: 20, opacity: 80, glowStrength: 30 }
+  },
+  {
+    name: '🔥 Plasma Storm',
+    values: { currentEffect: 'plasma', blurIntensity: 15, opacity: 90, glowStrength: 70, animationSpeed: 2.5 }
+  },
+  {
+    name: '⚛️ Quantum Field',
+    values: { currentEffect: 'quantum', blurIntensity: 25, opacity: 70, glowStrength: 50, animationSpeed: 1.2 }
+  },
+  {
+    name: '🌊 Liquid Dream',
+    values: { currentEffect: 'liquid', blurIntensity: 30, opacity: 85, glowStrength: 40, animationSpeed: 0.8 }
+  },
+  {
+    name: '🤖 Cyber Punk',
+    values: { currentEffect: 'cyberpunk', blurIntensity: 5, opacity: 95, glowStrength: 80, primaryColor: '#00ff41' }
+  }
+]
+
+// Computed styles
+const dockStyles = computed(() => ({
+  width: `${dockWidth.value}px`,
+  height: `${dockHeight.value}px`,
+  '--primary-color': primaryColor.value,
+  '--secondary-color': secondaryColor.value,
+  '--blur-intensity': `${blurIntensity.value}px`,
+  '--opacity': `${opacity.value}%`,
+  '--border-radius': `${borderRadius.value}px`,
+  '--glow-strength': `${glowStrength.value}%`,
+  '--depth-strength': `${depthStrength.value}px`,
+  '--animation-speed': `${animationSpeed.value}s`,
+  opacity: opacity.value / 100,
+  filter: `blur(${blurIntensity.value * 0.1}px)`,
+  borderRadius: `${borderRadius.value}px`
+}))
+
+const timelineStyles = computed(() => ({
+  flex: '1',
+  minWidth: `${Math.max(200, dockWidth.value * 0.4)}px`
+}))
+
+const generatedCSS = computed(() => {
+  return `.dock-${currentEffect.value} {
+  width: ${dockWidth.value}px;
+  height: ${dockHeight.value}px;
+  backdrop-filter: blur(${blurIntensity.value}px);
+  opacity: ${opacity.value / 100};
+  border-radius: ${borderRadius.value}px;
+  background: ${getEffectBackground()};
+  box-shadow: ${getEffectShadow()};
+  ${animationEnabled.value ? `animation: dock-effect ${animationSpeed.value}s infinite;` : ''}
+}`
+})
+
+// Methods
+const getEffectName = (effect: string) => {
+  return availableEffects.find(e => e.id === effect)?.name || effect
+}
+
+const getEffectBackground = () => {
+  const effects: Record<string, string> = {
+    glassmorphic: `linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05))`,
+    holographic: `linear-gradient(45deg, ${primaryColor.value}20, ${secondaryColor.value}20)`,
+    neon: `linear-gradient(90deg, ${primaryColor.value}40, ${secondaryColor.value}40)`,
+    plasma: `radial-gradient(circle, ${primaryColor.value}60, ${secondaryColor.value}60)`,
+    quantum: `conic-gradient(from 180deg, ${primaryColor.value}30, ${secondaryColor.value}30, ${primaryColor.value}30)`,
+    liquid: `linear-gradient(270deg, ${primaryColor.value}50, ${secondaryColor.value}50)`,
+    matrix: `linear-gradient(135deg, #00330020, #00ff4120)`,
+    cyberpunk: `linear-gradient(45deg, #ff003350, #00ffff50)`,
+    cosmic: `radial-gradient(ellipse, #4c1d9560, #7c3aed60)`,
+    neural: `linear-gradient(90deg, rgba(99,102,241,0.3), rgba(168,85,247,0.3))`,
+    morphing: `linear-gradient(45deg, ${primaryColor.value}40, ${secondaryColor.value}40)`,
+    particle: `rgba(0,0,0,0.3)`
+  }
+  return effects[currentEffect.value] || effects.glassmorphic
+}
+
+const getEffectShadow = () => {
+  const strength = glowStrength.value
+  const effects: Record<string, string> = {
+    glassmorphic: `0 8px 32px rgba(31, 38, 135, 0.${strength})`,
+    holographic: `0 0 ${strength}px ${primaryColor.value}80, inset 0 0 ${strength}px ${secondaryColor.value}40`,
+    neon: `0 0 ${strength * 2}px ${primaryColor.value}, 0 0 ${strength * 4}px ${secondaryColor.value}80`,
+    plasma: `0 0 ${strength}px ${primaryColor.value}60, 0 ${strength/2}px ${strength}px rgba(0,0,0,0.3)`,
+    quantum: `0 0 ${strength}px rgba(147, 51, 234, 0.6), inset 0 0 ${strength/2}px rgba(59, 130, 246, 0.4)`,
+    liquid: `0 4px ${strength}px rgba(0,0,0,0.3), 0 0 ${strength}px ${primaryColor.value}40`,
+    matrix: `0 0 ${strength}px #00ff41, inset 0 0 ${strength/2}px #00330040`,
+    cyberpunk: `0 0 ${strength}px #ff0033, 0 0 ${strength * 2}px #00ffff80`,
+    cosmic: `0 0 ${strength}px #7c3aed80, 0 ${strength/3}px ${strength}px rgba(0,0,0,0.4)`,
+    neural: `0 0 ${strength}px rgba(99,102,241,0.6), inset 0 0 ${strength/3}px rgba(168,85,247,0.3)`,
+    morphing: `0 4px ${strength}px rgba(0,0,0,0.2), 0 0 ${strength}px ${primaryColor.value}50`,
+    particle: `0 0 ${strength}px rgba(139, 92, 246, 0.6)`
+  }
+  return effects[currentEffect.value] || effects.glassmorphic
+}
+
+const getParticleStyle = (index: number) => ({
+  left: `${(index * 23) % 100}%`,
+  animationDelay: `${index * 0.2}s`,
+  animationDuration: `${2 + (index % 3)}s`
+})
+
+const getQuantumOrbStyle = (index: number) => ({
+  left: `${10 + (index * 35) % 80}%`,
+  top: `${20 + (index * 20) % 40}%`,
+  animationDelay: `${index * 0.3}s`,
+  animationDuration: `${3 + (index % 2)}s`
+})
+
+const togglePlay = () => {
+  isPlaying.value = !isPlaying.value
+}
+
+const startDragging = (event: MouseEvent) => {
+  isDragging.value = true
+  const rect = (event.target as HTMLElement).closest('.timeline-track')?.getBoundingClientRect()
+  if (rect) {
+    const x = event.clientX - rect.left
+    timelineProgress.value = Math.max(0, Math.min(100, (x / rect.width) * 100))
+  }
+}
+
+const applyPreset = (preset: any) => {
+  Object.entries(preset.values).forEach(([key, value]) => {
+    const refKey = key as keyof typeof preset.values
+    if (refKey === 'currentEffect') currentEffect.value = value as string
+    else if (refKey === 'blurIntensity') blurIntensity.value = value as number
+    else if (refKey === 'opacity') opacity.value = value as number
+    else if (refKey === 'glowStrength') glowStrength.value = value as number
+    else if (refKey === 'animationSpeed') animationSpeed.value = value as number
+    else if (refKey === 'primaryColor') primaryColor.value = value as string
+  })
+}
+
+const randomizeEffect = () => {
+  currentEffect.value = availableEffects[Math.floor(Math.random() * availableEffects.length)].id
+  dockWidth.value = 200 + Math.random() * 400
+  dockHeight.value = 40 + Math.random() * 60
+  blurIntensity.value = Math.random() * 40
+  opacity.value = 50 + Math.random() * 50
+  glowStrength.value = Math.random() * 80
+  animationSpeed.value = 0.5 + Math.random() * 2.5
+  
+  // Random colors
+  const colors = ['#8b5cf6', '#06b6d4', '#f59e0b', '#ef4444', '#10b981', '#f97316', '#ec4899']
+  primaryColor.value = colors[Math.floor(Math.random() * colors.length)]
+  secondaryColor.value = colors[Math.floor(Math.random() * colors.length)]
+}
+
+const resetToDefaults = () => {
+  currentEffect.value = 'glassmorphic'
+  dockWidth.value = 450
+  dockHeight.value = 80
+  animationEnabled.value = true
+  animationSpeed.value = 1.5
+  primaryColor.value = '#8b5cf6'
+  secondaryColor.value = '#06b6d4'
+  blurIntensity.value = 20
+  opacity.value = 80
+  borderRadius.value = 12
+  glowStrength.value = 30
+  depthStrength.value = 10
+}
+
+const copyCSS = () => {
+  navigator.clipboard.writeText(generatedCSS.value)
+}
+
+// Performance monitoring simulation
+let animationFrame: number
+const updatePerformance = () => {
+  fps.value = 60 - Math.floor(Math.random() * 5)
+  gpuUsage.value = 30 + Math.floor(Math.random() * 40)
+  memoryUsage.value = 100 + Math.floor(Math.random() * 100)
+  animationFrame = requestAnimationFrame(updatePerformance)
+}
+
+onMounted(() => {
+  updatePerformance()
+  
+  // Auto-play timeline
+  const interval = setInterval(() => {
+    if (isPlaying.value) {
+      timelineProgress.value = (timelineProgress.value + 1) % 100
+    }
+  }, 100)
+
+  onUnmounted(() => {
+    clearInterval(interval)
+    cancelAnimationFrame(animationFrame)
+  })
+})
+
+// Handle mouse events for timeline dragging
+const handleMouseMove = (event: MouseEvent) => {
+  if (isDragging.value) {
+    const rect = document.querySelector('.timeline-track')?.getBoundingClientRect()
+    if (rect) {
+      const x = event.clientX - rect.left
+      timelineProgress.value = Math.max(0, Math.min(100, (x / rect.width) * 100))
+    }
+  }
+}
+
+const handleMouseUp = () => {
+  isDragging.value = false
+}
+
+onMounted(() => {
+  document.addEventListener('mousemove', handleMouseMove)
+  document.addEventListener('mouseup', handleMouseUp)
+})
+
+onUnmounted(() => {
+  document.removeEventListener('mousemove', handleMouseMove)
+  document.removeEventListener('mouseup', handleMouseUp)
+})
 </script>
 
 <style scoped>
-/* Container Styles */
-.iteration-container {
-  @apply bg-white border border-gray-200 rounded-xl p-6 shadow-lg;
+/* Base Experimental Dock */
+.experimental-dock {
+  @apply absolute bottom-8 left-1/2 transform -translate-x-1/2 flex items-center gap-4 px-6 py-4;
+  backdrop-filter: blur(var(--blur-intensity, 20px));
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+  z-index: 100;
 }
 
-.demo-viewport {
-  @apply relative bg-gray-900 rounded-lg overflow-hidden border border-gray-300;
-  height: 300px;
+.dock-controls {
+  @apply flex items-center gap-4 w-full;
 }
 
-.mobile-viewport {
-  height: 400px;
-  max-width: 300px;
-  margin: 0 auto;
+/* Play Button */
+.dock-play-btn {
+  @apply w-12 h-12 rounded-full flex items-center justify-center text-white transition-all duration-300 cursor-pointer;
+  background: linear-gradient(135deg, var(--primary-color, #8b5cf6), var(--secondary-color, #06b6d4));
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
 }
 
-/* Mock Chart Styles */
-.mock-chart {
-  @apply absolute inset-0 p-4 flex items-end justify-center;
+.dock-play-btn:hover {
+  transform: scale(1.1);
+  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.6);
 }
 
-.mobile-chart {
-  @apply p-2;
+/* Timeline */
+.dock-timeline {
+  @apply flex flex-col gap-2;
 }
 
-.chart-bars {
-  @apply flex items-end gap-2 h-full;
+.timeline-track {
+  @apply relative h-3 bg-gray-700/50 rounded-full cursor-pointer;
 }
 
-.bar {
-  @apply w-8 bg-gradient-to-t from-blue-500 to-purple-500 rounded-t;
-  min-height: 20px;
+.timeline-progress {
+  @apply absolute left-0 top-0 h-full rounded-full;
+  background: linear-gradient(90deg, var(--primary-color, #8b5cf6), var(--secondary-color, #06b6d4));
+  transition: width 0.1s ease;
 }
 
-/* Base Dock Styles */
-.dock {
-  @apply absolute flex items-center gap-4 px-4 py-2 rounded-lg;
+.timeline-thumb {
+  @apply absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2 w-5 h-5 bg-white rounded-full shadow-lg cursor-grab;
+  transition: transform 0.1s ease;
+}
+
+.timeline-thumb:hover {
+  transform: translate(-50%, -50%) scale(1.2);
+}
+
+.timeline-labels {
+  @apply flex justify-between text-xs text-gray-400 px-1;
+}
+
+/* Toggle Buttons */
+.dock-toggles {
+  @apply flex gap-2;
+}
+
+.dock-toggle {
+  @apply w-10 h-10 rounded-lg bg-gray-700/50 text-white text-xs font-bold transition-all duration-300;
   backdrop-filter: blur(10px);
 }
 
-/* Minimal Dock */
-.minimal-dock {
-  @apply bottom-4 left-1/2 transform -translate-x-1/2 bg-gray-900/70;
+.dock-toggle.active {
+  @apply bg-gradient-to-r;
+  background: linear-gradient(135deg, var(--primary-color, #8b5cf6), var(--secondary-color, #06b6d4));
 }
 
-.play-btn {
-  @apply w-10 h-10 bg-blue-600 hover:bg-blue-700 rounded-full flex items-center justify-center text-white transition-colors;
+.dock-toggle:hover {
+  transform: scale(1.05);
 }
 
-.timeline-slider {
-  @apply w-32;
+/* Menu Button */
+.dock-menu-btn {
+  @apply w-10 h-10 rounded-lg bg-gray-700/50 text-white flex items-center justify-center transition-all duration-300;
+  backdrop-filter: blur(10px);
 }
 
-.slider-track {
-  @apply relative w-full h-2 bg-gray-600 rounded-full;
+.dock-menu-btn:hover {
+  transform: scale(1.05);
+  background: rgba(139, 92, 246, 0.3);
 }
 
-.slider-progress {
-  @apply absolute left-0 top-0 h-full bg-blue-500 rounded-full;
+/* Background Effects Container */
+.dock-bg-effects {
+  @apply absolute inset-0 pointer-events-none overflow-hidden;
+  border-radius: inherit;
 }
 
-.slider-thumb {
-  @apply absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2 w-4 h-4 bg-white rounded-full shadow-lg;
+/* Effect Styles */
+
+/* Glassmorphic */
+.dock-glassmorphic {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+  backdrop-filter: blur(var(--blur-intensity, 20px)) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 
+    0 8px 32px rgba(31, 38, 135, 0.37),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
 }
 
-/* Expanded Dock */
-.expanded-dock {
-  @apply bottom-4 left-4 right-4 bg-gray-900/80 justify-between;
-  padding: 12px 16px;
+/* Holographic */
+.dock-holographic {
+  background: linear-gradient(45deg, 
+    rgba(139, 92, 246, 0.2) 0%, 
+    rgba(6, 182, 212, 0.2) 25%,
+    rgba(139, 92, 246, 0.2) 50%,
+    rgba(6, 182, 212, 0.2) 75%,
+    rgba(139, 92, 246, 0.2) 100%
+  );
+  background-size: 400% 400%;
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  box-shadow: 
+    0 0 30px rgba(139, 92, 246, 0.4),
+    inset 0 0 30px rgba(6, 182, 212, 0.2);
 }
 
-.dock-section {
-  @apply flex flex-col items-center gap-2;
+.dock-holographic.dock-animated {
+  animation: holographic-shift var(--animation-speed, 1.5s) ease-in-out infinite;
 }
 
-.section-label {
-  @apply text-xs text-gray-400 uppercase tracking-wide;
+.holographic-grid {
+  @apply absolute inset-0;
+  background-image: 
+    linear-gradient(rgba(139, 92, 246, 0.1) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(139, 92, 246, 0.1) 1px, transparent 1px);
+  background-size: 20px 20px;
+  animation: grid-drift var(--animation-speed, 1.5s) linear infinite;
 }
 
-.view-switcher {
-  @apply flex bg-gray-700 rounded-md p-1;
+/* Morphing */
+.dock-morphing {
+  background: linear-gradient(270deg, var(--primary-color, #8b5cf6)40, var(--secondary-color, #06b6d4)40);
+  background-size: 200% 200%;
+  border: 1px solid rgba(139, 92, 246, 0.4);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
 }
 
-.view-btn {
-  @apply px-3 py-1 text-sm rounded transition-colors;
+.dock-morphing.dock-animated {
+  animation: morphing-gradient var(--animation-speed, 1.5s) ease-in-out infinite;
 }
 
-.view-btn.active {
-  @apply bg-blue-600 text-white;
+/* Neon */
+.dock-neon {
+  background: rgba(0, 0, 0, 0.7);
+  border: 2px solid var(--primary-color, #8b5cf6);
+  box-shadow: 
+    0 0 20px var(--primary-color, #8b5cf6),
+    0 0 40px var(--secondary-color, #06b6d4)80,
+    inset 0 0 20px rgba(139, 92, 246, 0.1);
 }
 
-.playback-controls {
-  @apply flex items-center gap-1;
+.dock-neon.dock-animated {
+  animation: neon-pulse var(--animation-speed, 1.5s) ease-in-out infinite;
 }
 
-.control-btn {
-  @apply w-8 h-8 bg-gray-700 hover:bg-gray-600 rounded text-sm transition-colors;
+/* Particle */
+.dock-particle {
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(15px);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  box-shadow: 0 0 30px rgba(139, 92, 246, 0.5);
 }
 
-.play-btn-large {
-  @apply w-10 h-10 bg-blue-600 hover:bg-blue-700;
+.particle-system {
+  @apply absolute inset-0;
 }
 
-.timeline-slider-large {
-  @apply w-48;
+.particle {
+  @apply absolute w-1 h-1 bg-purple-400 rounded-full;
+  animation: particle-float 3s linear infinite;
+  opacity: 0.7;
 }
 
-.timeline-markers {
-  @apply flex justify-between mt-1 text-xs text-gray-400;
+/* Cyberpunk */
+.dock-cyberpunk {
+  background: linear-gradient(45deg, rgba(255, 0, 51, 0.3), rgba(0, 255, 255, 0.3));
+  border: 2px solid #00ffff;
+  box-shadow: 
+    0 0 20px #ff0033,
+    0 0 40px #00ffff80,
+    inset 0 0 10px rgba(0, 255, 255, 0.2);
+  clip-path: polygon(0 0, calc(100% - 20px) 0, 100% 100%, 20px 100%);
 }
 
-.marker.active {
-  @apply text-blue-400;
+.dock-cyberpunk.dock-animated {
+  animation: cyberpunk-glitch var(--animation-speed, 1.5s) ease-in-out infinite;
 }
 
-.filter-btn {
-  @apply px-3 py-1 bg-gray-700 hover:bg-gray-600 rounded text-sm transition-colors;
+/* Quantum */
+.dock-quantum {
+  background: conic-gradient(from 180deg, 
+    rgba(147, 51, 234, 0.3) 0deg,
+    rgba(59, 130, 246, 0.3) 90deg,
+    rgba(147, 51, 234, 0.3) 180deg,
+    rgba(59, 130, 246, 0.3) 270deg,
+    rgba(147, 51, 234, 0.3) 360deg
+  );
+  border: 1px solid rgba(147, 51, 234, 0.4);
+  box-shadow: 0 0 30px rgba(147, 51, 234, 0.6);
 }
 
-/* Adaptive Dock */
-.adaptive-dock {
-  @apply bottom-4 left-1/2 transform -translate-x-1/2 bg-gray-900/75 justify-between;
-  width: fit-content;
-  min-width: 200px;
+.dock-quantum.dock-animated {
+  animation: quantum-spin var(--animation-speed, 1.5s) linear infinite;
 }
 
-.core-controls {
-  @apply flex items-center gap-3;
+.quantum-field {
+  @apply absolute inset-0;
 }
 
-.context-controls {
-  @apply flex items-center gap-2;
+.quantum-orb {
+  @apply absolute w-2 h-2 bg-purple-400 rounded-full;
+  animation: quantum-orbit 4s linear infinite;
+  opacity: 0.8;
 }
 
-.context-pill {
-  @apply px-3 py-1 bg-blue-600/30 text-blue-300 rounded-full text-sm;
+/* Liquid */
+.dock-liquid {
+  background: linear-gradient(270deg, var(--primary-color, #8b5cf6)50, var(--secondary-color, #06b6d4)50);
+  background-size: 400% 400%;
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+  border-radius: 50px;
 }
 
-.expand-btn {
-  @apply w-8 h-8 bg-gray-700 hover:bg-gray-600 rounded transition-colors;
+.dock-liquid.dock-animated {
+  animation: liquid-flow var(--animation-speed, 1.5s) ease-in-out infinite;
 }
 
-/* Mobile Dock */
-.mobile-dock {
-  @apply bottom-4 left-2 right-2 bg-gray-900/80 flex-col gap-2;
-  padding: 12px;
+/* Plasma */
+.dock-plasma {
+  background: radial-gradient(circle at 50% 50%, 
+    rgba(139, 92, 246, 0.6) 0%,
+    rgba(6, 182, 212, 0.6) 30%,
+    rgba(139, 92, 246, 0.6) 60%,
+    rgba(6, 182, 212, 0.6) 100%
+  );
+  background-size: 200% 200%;
+  border: 1px solid rgba(139, 92, 246, 0.5);
+  box-shadow: 0 0 40px rgba(139, 92, 246, 0.7);
 }
 
-.mobile-row {
-  @apply flex items-center gap-3 w-full;
+.dock-plasma.dock-animated {
+  animation: plasma-swirl var(--animation-speed, 1.5s) linear infinite;
 }
 
-.mobile-play-btn {
-  @apply w-12 h-12 bg-blue-600 hover:bg-blue-700 rounded-full flex items-center justify-center text-white transition-colors;
+/* Matrix */
+.dock-matrix {
+  background: linear-gradient(135deg, rgba(0, 51, 0, 0.8), rgba(0, 255, 65, 0.2));
+  border: 1px solid #00ff41;
+  box-shadow: 
+    0 0 20px #00ff41,
+    inset 0 0 20px rgba(0, 51, 0, 0.4);
+  font-family: 'Courier New', monospace;
 }
 
-.mobile-timeline {
-  @apply flex-1;
+.dock-matrix.dock-animated {
+  animation: matrix-flicker var(--animation-speed, 1.5s) ease-in-out infinite;
 }
 
-.mobile-menu-btn {
-  @apply w-10 h-10 bg-gray-700 hover:bg-gray-600 rounded text-lg transition-colors;
+/* Cosmic */
+.dock-cosmic {
+  background: radial-gradient(ellipse at center, 
+    rgba(76, 29, 149, 0.6) 0%,
+    rgba(124, 58, 237, 0.6) 50%,
+    rgba(30, 58, 138, 0.6) 100%
+  );
+  border: 1px solid rgba(124, 58, 237, 0.4);
+  box-shadow: 
+    0 0 40px rgba(124, 58, 237, 0.8),
+    0 20px 40px rgba(0, 0, 0, 0.4);
 }
 
-.mobile-indicators {
-  @apply flex justify-between text-sm text-gray-400;
+.dock-cosmic.dock-animated {
+  animation: cosmic-pulse var(--animation-speed, 1.5s) ease-in-out infinite;
 }
 
-/* Translucent Variations */
-.translucent-stack {
-  @apply absolute inset-x-4 bottom-4 space-y-2;
+/* Neural */
+.dock-neural {
+  background: linear-gradient(90deg, 
+    rgba(99, 102, 241, 0.3) 0%,
+    rgba(168, 85, 247, 0.3) 100%
+  );
+  border: 1px solid rgba(99, 102, 241, 0.4);
+  box-shadow: 0 0 30px rgba(99, 102, 241, 0.6);
 }
 
-.glass-dock {
-  @apply bg-white/10 border border-white/20;
-  backdrop-filter: blur(20px);
+.neural-network {
+  @apply absolute inset-0;
 }
 
-.frosted-dock {
-  @apply bg-gray-900/40 border border-gray-700/50;
-  backdrop-filter: blur(15px) saturate(180%);
+.neural-svg {
+  @apply w-full h-full opacity-30;
 }
 
-.dock-label {
-  @apply text-xs text-gray-300;
+.neural-dot {
+  fill: #6366f1;
+  animation: neural-pulse 2s ease-in-out infinite;
 }
 
-/* Positioning Variants */
-.bottom-dock {
-  @apply bottom-4 left-1/2 transform -translate-x-1/2 bg-gray-900/70;
+.neural-line {
+  stroke: #6366f1;
+  stroke-width: 0.5;
+  opacity: 0.5;
+  animation: neural-flow 3s linear infinite;
 }
 
-.side-dock {
-  @apply right-4 top-1/2 transform -translate-y-1/2 bg-gray-900/70;
-  writing-mode: vertical-rl;
+/* Gallery Styles */
+.gallery-item {
+  @apply p-3 rounded-lg cursor-pointer transition-all duration-300 border border-gray-700;
+  background: rgba(55, 65, 81, 0.5);
 }
 
-.vertical-controls {
-  @apply flex flex-col items-center gap-3;
+.gallery-item:hover {
+  @apply border-purple-500 bg-gray-700/70;
+  transform: scale(1.02);
 }
 
-.vertical-timeline {
-  @apply h-20;
+.gallery-item.active {
+  @apply border-purple-400 bg-purple-900/30;
 }
 
-.slider-track.vertical {
-  @apply w-2 h-full;
+.gallery-preview {
+  @apply w-full h-12 rounded mb-2 flex items-center justify-center relative overflow-hidden;
 }
 
-.floating-dock {
-  @apply top-4 right-4 bg-gray-900/70;
+.mini-dock {
+  @apply flex items-center gap-1 px-2 py-1 rounded;
+  background: rgba(0, 0, 0, 0.5);
 }
 
-.position-label {
-  @apply text-xs text-gray-400;
+.mini-play {
+  @apply w-2 h-2 bg-purple-400 rounded-full;
+}
+
+.mini-timeline {
+  @apply w-8 h-1 bg-gray-600 rounded-full relative;
+}
+
+.mini-timeline::after {
+  content: '';
+  @apply absolute left-0 top-0 w-3 h-full bg-purple-400 rounded-full;
+}
+
+/* Preview-specific styles */
+.preview-glassmorphic { 
+  background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.05));
+  backdrop-filter: blur(10px);
+}
+
+.preview-holographic { 
+  background: linear-gradient(45deg, #8b5cf640, #06b6d440);
+  animation: preview-holographic 2s ease-in-out infinite;
+}
+
+.preview-neon { 
+  background: rgba(0,0,0,0.8);
+  box-shadow: 0 0 10px #8b5cf6;
+}
+
+.preview-plasma { 
+  background: radial-gradient(circle, #8b5cf660, #06b6d460);
+  animation: preview-plasma 1.5s linear infinite;
+}
+
+.preview-quantum { 
+  background: conic-gradient(from 0deg, #9333ea50, #3b82f650, #9333ea50);
+  animation: preview-quantum 2s linear infinite;
+}
+
+.preview-liquid { 
+  background: linear-gradient(270deg, #8b5cf650, #06b6d450);
+  border-radius: 20px;
+}
+
+.preview-matrix { 
+  background: linear-gradient(135deg, #00330080, #00ff4140);
+  color: #00ff41;
+}
+
+.preview-cyberpunk { 
+  background: linear-gradient(45deg, #ff003350, #00ffff50);
+  clip-path: polygon(0 0, 90% 0, 100% 100%, 10% 100%);
+}
+
+.preview-cosmic { 
+  background: radial-gradient(ellipse, #4c1d9560, #7c3aed60);
+}
+
+.preview-neural { 
+  background: linear-gradient(90deg, rgba(99,102,241,0.3), rgba(168,85,247,0.3));
+}
+
+.preview-morphing { 
+  background: linear-gradient(270deg, #8b5cf640, #06b6d440);
+  animation: preview-morphing 2s ease-in-out infinite;
+}
+
+.preview-particle { 
+  background: rgba(0,0,0,0.4);
+  position: relative;
+}
+
+.preview-particle::after {
+  content: '';
+  @apply absolute inset-0;
+  background-image: radial-gradient(1px 1px at 20% 30%, #8b5cf6, transparent),
+                   radial-gradient(1px 1px at 40% 70%, #06b6d4, transparent),
+                   radial-gradient(1px 1px at 60% 20%, #8b5cf6, transparent);
+  background-size: 20px 20px;
+  animation: preview-particle 3s linear infinite;
+}
+
+/* Animations */
+@keyframes holographic-shift {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes grid-drift {
+  0% { transform: translate(0, 0); }
+  100% { transform: translate(20px, 20px); }
+}
+
+@keyframes morphing-gradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes neon-pulse {
+  0%, 100% { box-shadow: 0 0 20px var(--primary-color, #8b5cf6), 0 0 40px var(--secondary-color, #06b6d4)80; }
+  50% { box-shadow: 0 0 40px var(--primary-color, #8b5cf6), 0 0 80px var(--secondary-color, #06b6d4); }
+}
+
+@keyframes particle-float {
+  0% { transform: translateY(100px) translateX(0px); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(-100px) translateX(20px); opacity: 0; }
+}
+
+@keyframes cyberpunk-glitch {
+  0%, 90%, 100% { transform: translate(0); }
+  5% { transform: translate(2px, 0); }
+  10% { transform: translate(-2px, 0); }
+}
+
+@keyframes quantum-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes quantum-orbit {
+  0% { transform: rotate(0deg) translateX(15px) rotate(0deg); }
+  100% { transform: rotate(360deg) translateX(15px) rotate(-360deg); }
+}
+
+@keyframes liquid-flow {
+  0% { background-position: 0% 50%; border-radius: 50px; }
+  25% { border-radius: 20px 50px 20px 50px; }
+  50% { background-position: 100% 50%; border-radius: 20px; }
+  75% { border-radius: 50px 20px 50px 20px; }
+  100% { background-position: 0% 50%; border-radius: 50px; }
+}
+
+@keyframes plasma-swirl {
+  0% { background-position: 0% 0%; }
+  100% { background-position: 100% 100%; }
+}
+
+@keyframes matrix-flicker {
+  0%, 95%, 100% { opacity: 1; }
+  96%, 98% { opacity: 0.8; }
+}
+
+@keyframes cosmic-pulse {
+  0%, 100% { transform: scale(1); box-shadow: 0 0 40px rgba(124, 58, 237, 0.8); }
+  50% { transform: scale(1.02); box-shadow: 0 0 60px rgba(124, 58, 237, 1); }
+}
+
+@keyframes neural-pulse {
+  0%, 100% { opacity: 0.8; r: 3; }
+  50% { opacity: 1; r: 4; }
+}
+
+@keyframes neural-flow {
+  0% { stroke-dasharray: 0 10; }
+  50% { stroke-dasharray: 5 5; }
+  100% { stroke-dasharray: 10 0; }
+}
+
+/* Preview animations */
+@keyframes preview-holographic {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes preview-plasma {
+  0% { background-position: 0% 0%; }
+  100% { background-position: 100% 100%; }
+}
+
+@keyframes preview-quantum {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+@keyframes preview-morphing {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes preview-particle {
+  0% { opacity: 0.5; }
+  50% { opacity: 1; }
+  100% { opacity: 0.5; }
 }
 </style>
