@@ -29,9 +29,15 @@ const devRoutes = [
     meta: { isDev: true }
   },
   {
-    path: '/daisyui-test',
-    name: 'daisyui-test',
-    component: () => import('../pages/daisyui-test.vue'),
+    path: '/library',
+    name: 'library',
+    component: () => import('../views/Library.vue'),
+    meta: { isDev: true }
+  },
+  {
+    path: '/lab',
+    name: 'lab',
+    component: () => import('../views/Lab.vue'),
     meta: { isDev: true }
   },
   {

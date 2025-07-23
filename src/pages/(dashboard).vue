@@ -147,12 +147,21 @@ const isDevelopment = computed(() => import.meta.env.DEV)
               </router-link>
 
               <router-link 
-                to="/daisyui-test"
+                to="/library"
                 class="btn btn-secondary btn-lg h-auto flex-col p-4 group btn-apex-glow"
               >
-                <div class="text-2xl mb-2 group-hover:scale-110 transition-transform">🎯✨</div>
-                <div class="font-medium">DaisyUI Components</div>
-                <div class="text-xs opacity-60 mt-1">UI + Enhanced Effects</div>
+                <div class="text-2xl mb-2 group-hover:scale-110 transition-transform">📚✨</div>
+                <div class="font-medium">UI Library</div>
+                <div class="text-xs opacity-60 mt-1">Component Showcase</div>
+              </router-link>
+
+              <router-link 
+                to="/lab"
+                class="btn btn-secondary btn-lg h-auto flex-col p-4 group btn-apex-glow"
+              >
+                <div class="text-2xl mb-2 group-hover:scale-110 transition-transform">🧪⚡</div>
+                <div class="font-medium">Testing Lab</div>
+                <div class="text-xs opacity-60 mt-1">Interactive Testing</div>
               </router-link>
               
               <router-link 
