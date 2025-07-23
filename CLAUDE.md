@@ -1,38 +1,43 @@
 Claude Development Guidelines
 Welcome, Claude. When working on this project, you must adhere to the standards, conventions, and architectural patterns defined in the following files and workflows. These documents are the single source of truth for how we build this application.
 
-Core Reference Files
-VUE_RULEKIT.md: This file is your primary guide for all Vue.js development. It contains critical information on:
+## Session Initialization Protocol
+At the start of each new conversation or session, you MUST:
 
-Project Structure: How to organize directories and files.
+1. **Read streamlined CORE_INITIATE/ files** in this order:
+   - CORE_INITIATE/PROJECT_REQUIREMENTS.md (complete project vision and core features)
+   - CORE_INITIATE/CURRENT_STATE.md (development phase, stack, and conventions)
+   - CORE_INITIATE/MEMORYLOG.md (project context and user preferences)
+   - CORE_INITIATE/TASKLIST.md (current progress and priorities)
 
-Component Patterns: The correct way to write Vue components using the Composition API, <script setup>, defineProps, defineEmits, and defineModel.
+2. **Confirm your understanding** by briefly acknowledging:
+   - Project type and main objectives
+   - Current development phase and active tasks
+   - Technology stack and key conventions
 
-Coding Standards: Naming conventions, use of TypeScript, and general best practices.
+3. **Access detailed guides when needed** from CORE_SETUP/:
+   - VUE_RULEKIT.md (Vue development patterns)
+   - CSS_GUIDELINES.md (styling architecture)
+   - PLAYWRIGHT_WORKFLOW.md (debugging protocols)
 
-Routing: File-based routing conventions with Vue Router.
+This streamlined approach reduces initialization tokens while maintaining context.
 
-State Management: Guidelines for using Pinia and Pinia Colada.
+## Core Reference Files
 
-CSS_GUIDELINES.md: This file dictates our entire approach to styling and CSS architecture. Refer to it for:
+**For Session Initialization:**
+- CORE_INITIATE/PROJECT_REQUIREMENTS.md: Complete project vision, features, and specifications
+- CORE_INITIATE/CURRENT_STATE.md: Development phase, technology stack, and conventions
+- CORE_INITIATE/MEMORYLOG.md: Project context, user preferences, and technical decisions
+- CORE_INITIATE/TASKLIST.md: Current tasks, roadmap, and progress tracking
 
-CSS Framework: Strict use of Tailwind CSS as a utility-first framework.
+**For Additional LLM Documentation:**
+- CORE_REFERENCE/ (reserved for supplementary documentation as needed)
 
-Architecture: How to implement the Critical CSS strategy for optimal performance.
-
-Design Tokens: The system for managing colors, spacing, and typography using CSS Custom Properties.
-
-Custom CSS: When and how to write custom CSS, including the use of @apply and BEM naming conventions.
-
-PROJECT_REQUIREMENTS.md: This is the master document for the application's features and goals. You must consult it for:
-
-Project Vision: It outlines the specific requirements for the "Apex Legends Tournament Dashboard," our target application.
-
-Core Features: It details the key functionalities to be built, including AI-powered analytics, dynamic race charts, and an interactive floating dock.
-
-User Experience Goals: Defines the design philosophy, emphasizing a mobile-first, performance-focused, and intuitive user interface.
-
-Development Roadmap: Provides a phased development plan that we must follow, starting with the foundational control system.
+**For Setup & Configuration:**
+- CORE_SETUP/VUE_RULEKIT.md: Vue.js development patterns and standards
+- CORE_SETUP/CSS_GUIDELINES.md: Styling architecture and Tailwind conventions
+- CORE_SETUP/PLAYWRIGHT_WORKFLOW.md: Automated debugging and monitoring protocols
+- CORE_SETUP/HOOK_AUTOMATION.md: Task tracking automation system
 
 My Development Workflow: A Spec-Driven Approach
 To ensure clarity and build my understanding, you will follow a structured, conversational workflow for all development tasks.
@@ -69,7 +74,7 @@ Saving Progress: After we successfully implement a significant feature or comple
 
 5. Handling Guideline Deviations
 
-Acknowledge and Propose: If a specific feature from PROJECT_REQUIREMENTS.md cannot be built while strictly following a rule (e.g., in CSS_GUIDELINES.md), you must first state the conflict.
+Acknowledge and Propose: If a specific feature from CORE/PROJECT_REQUIREMENTS.md cannot be built while strictly following a rule (e.g., in CORE/CSS_GUIDELINES.md), you must first state the conflict.
 
 Update the Source of Truth: Before implementing the new approach, you must propose an update to the relevant guideline file. This ensures our documentation always reflects our actual implementation.
 

@@ -1,4 +1,4 @@
-# Apex Legends Tournament Dashboard - Project Requirements
+c# Apex Legends Tournament Dashboard - Project Requirements
 
 ## Project Overview
 
@@ -106,7 +106,7 @@ A robust dashboard and data visualization application that utilizes tournament d
 - **Data Points Required:**
   - Team rankings/points per game
   - Player-level damage given/taken
-  - Team-level damage statistics  
+  - Team-level damage statistics
   - Kill counts per player/team
   - Game progression timeline data
 - **API Reliability:** Confirmed working well for data extraction
@@ -169,7 +169,7 @@ Based on existing project guidelines:
 ### Cumulative Data Processing
 - All visualizations use cumulative data by default
 - Race charts: Points/rankings accumulate across games
-- Damage analysis: Damage values stack progressively  
+- Damage analysis: Damage values stack progressively
 - Scatter plots: Kills and damage accumulate over time
 
 ### Universal State Management
