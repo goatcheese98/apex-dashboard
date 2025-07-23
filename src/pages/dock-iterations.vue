@@ -391,23 +391,32 @@
 
       </div>
 
-      <!-- Main Laboratory Area -->
-      <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
+      <!-- Main Laboratory Area - Bento Grid Layout -->
+      <div class="bento-grid grid grid-cols-12 gap-6 lg:gap-8">
         
-        <!-- Effect Preview -->
-        <div class="lg:col-span-2 xl:col-span-2">
-          <div class="bg-gray-800/30 backdrop-blur-lg rounded-2xl p-6 border border-gray-700/50">
-            <h3 class="text-2xl font-bold mb-4 text-center">Live Preview</h3>
+        <!-- Live Preview - Large Main Block (spans 8 columns on large screens) -->
+        <div class="col-span-12 lg:col-span-8 row-span-2">
+          <div class="bento-card h-full min-h-[500px] lg:min-h-[600px] bg-gradient-to-br from-gray-800/40 via-gray-800/30 to-gray-900/40 backdrop-blur-xl rounded-3xl p-6 border border-gray-700/30 shadow-2xl hover:shadow-purple-500/10 transition-all duration-500 group">
+            <div class="flex items-center justify-between mb-6">
+              <h3 class="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+                🎮 Live Preview
+              </h3>
+              <div class="flex items-center gap-2 text-xs text-gray-400">
+                <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                <span>Live</span>
+              </div>
+            </div>
             
             <!-- Preview Viewport -->
             <div 
-              class="relative bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 rounded-xl overflow-hidden border border-gray-600"
-              style="height: 400px;"
+              class="relative bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 rounded-2xl overflow-hidden border border-gray-600/50 shadow-inner"
+              style="height: calc(100% - 100px);"
             >
-              <!-- Background Pattern -->
+              <!-- Enhanced Background Pattern -->
               <div class="absolute inset-0 opacity-20">
-                <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(120,119,198,0.3),transparent_50%)]"></div>
-                <div class="absolute inset-0 bg-[linear-gradient(45deg,transparent_49%,rgba(255,255,255,0.05)_49%,rgba(255,255,255,0.05)_51%,transparent_51%)] bg-[length:20px_20px]"></div>
+                <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(120,119,198,0.4),transparent_60%)]"></div>
+                <div class="absolute inset-0 bg-[linear-gradient(45deg,transparent_49%,rgba(255,255,255,0.03)_49%,rgba(255,255,255,0.03)_51%,transparent_51%)] bg-[length:24px_24px]"></div>
+                <div class="absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(139,92,246,0.2),transparent_40%)]"></div>
               </div>
 
               <!-- Visualization Content Display (Preview Mode Only) -->
@@ -650,7 +659,7 @@
               </div>
 
               <!-- Effect Information -->
-              <div class="absolute top-4 right-4 bg-black/50 backdrop-blur-sm rounded-lg p-3">
+              <div class="absolute top-4 right-4 bg-black/50 backdrop-blur-sm rounded-xl p-3 border border-gray-600/30">
                 <h4 class="text-sm font-bold mb-1">{{ getEffectName(currentEffect) }}</h4>
                 <div class="text-xs text-gray-300 space-y-1">
                   <div>Mode: {{ getVisualizationName(currentVisualization) }}</div>
@@ -663,98 +672,138 @@
           </div>
         </div>
 
-        <!-- Effect Gallery -->
-        <div>
-          <div class="bg-gray-800/30 backdrop-blur-lg rounded-2xl p-6 border border-gray-700/50">
-            <h3 class="text-xl font-bold mb-4">Effect Gallery</h3>
-            <div class="grid grid-cols-2 gap-3">
+        <!-- Effect Gallery - Medium Block (spans 4 columns) -->
+        <div class="col-span-12 lg:col-span-4">
+          <div class="bento-card h-full min-h-[300px] bg-gradient-to-br from-purple-800/30 via-gray-800/30 to-pink-800/30 backdrop-blur-xl rounded-3xl p-6 border border-purple-700/20 shadow-2xl hover:shadow-purple-500/20 transition-all duration-500 group">
+            <div class="flex items-center gap-3 mb-6">
+              <div class="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center text-lg">
+                🎭
+              </div>
+              <h3 class="text-xl font-bold text-purple-100">Effect Gallery</h3>
+            </div>
+            <div class="grid grid-cols-2 gap-4">
               <div 
                 v-for="effect in availableEffects" 
                 :key="effect.id"
                 :class="[
-                  'gallery-item',
-                  currentEffect === effect.id ? 'active' : ''
+                  'gallery-item group/item cursor-pointer',
+                  currentEffect === effect.id ? 'active ring-2 ring-purple-400/50' : ''
                 ]"
                 @click="currentEffect = effect.id"
               >
-                <div class="gallery-preview" :class="`preview-${effect.id}`">
+                <div class="gallery-preview bg-gray-900/50 rounded-xl p-3 backdrop-blur-sm border border-gray-600/30 hover:border-purple-400/50 transition-all duration-300 group-hover/item:scale-105" :class="`preview-${effect.id}`">
                   <div class="mini-dock">
                     <div class="mini-play"></div>
                     <div class="mini-timeline"></div>
                   </div>
                 </div>
-                <span class="gallery-label">{{ effect.name }}</span>
+                <span class="gallery-label block text-center text-sm font-medium mt-2 text-gray-300 group-hover/item:text-purple-300 transition-colors">{{ effect.name }}</span>
               </div>
             </div>
           </div>
+        </div>
 
-          <!-- Component Styles Gallery -->
-          <div class="mt-6 bg-gray-800/30 backdrop-blur-lg rounded-2xl p-6 border border-gray-700/50">
-            <h3 class="text-xl font-bold mb-4">Component Styles</h3>
+        <!-- Component Styles Gallery - Smaller Block (spans 6 columns on large screens) -->
+        <div class="col-span-12 md:col-span-6 lg:col-span-6">
+          <div class="bento-card h-full min-h-[280px] bg-gradient-to-br from-blue-800/30 via-gray-800/30 to-cyan-800/30 backdrop-blur-xl rounded-3xl p-6 border border-blue-700/20 shadow-2xl hover:shadow-blue-500/20 transition-all duration-500 group">
+            <div class="flex items-center gap-3 mb-6">
+              <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center text-lg">
+                🎨
+              </div>
+              <h3 class="text-xl font-bold text-blue-100">Component Styles</h3>
+            </div>
             <div class="grid grid-cols-2 gap-3">
               <div 
                 v-for="style in ['modern', 'minimal', 'rounded', 'sharp']" 
                 :key="style"
                 :class="[
-                  'gallery-item',
-                  componentStyle === style ? 'active' : ''
+                  'gallery-item group/item cursor-pointer',
+                  componentStyle === style ? 'active ring-2 ring-blue-400/50' : ''
                 ]"
                 @click="componentStyle = style"
               >
-                <div class="component-preview" :class="`component-${style}`">
+                <div class="component-preview bg-gray-900/50 rounded-xl p-3 backdrop-blur-sm border border-gray-600/30 hover:border-blue-400/50 transition-all duration-300 group-hover/item:scale-105" :class="`component-${style}`">
                   <div class="mini-dock">
                     <div class="mini-play" :class="`style-${style}`"></div>
                     <div class="mini-timeline" :class="`style-${style}`"></div>
                     <div class="mini-toggle" :class="`style-${style}`"></div>
                   </div>
                 </div>
-                <span class="gallery-label">{{ style.charAt(0).toUpperCase() + style.slice(1) }}</span>
+                <span class="gallery-label block text-center text-sm font-medium mt-2 text-gray-300 group-hover/item:text-blue-300 transition-colors">{{ style.charAt(0).toUpperCase() + style.slice(1) }}</span>
               </div>
             </div>
           </div>
+        </div>
 
-          <!-- Slider Styles Gallery -->
-          <div class="mt-6 bg-gray-800/30 backdrop-blur-lg rounded-2xl p-6 border border-gray-700/50">
-            <h3 class="text-xl font-bold mb-4">Slider Styles</h3>
-            <div class="grid grid-cols-1 gap-3">
+        <!-- Slider Styles Gallery - Smaller Block (spans 6 columns on large screens) -->
+        <div class="col-span-12 md:col-span-6 lg:col-span-6">
+          <div class="bento-card h-full min-h-[280px] bg-gradient-to-br from-orange-800/30 via-gray-800/30 to-red-800/30 backdrop-blur-xl rounded-3xl p-6 border border-orange-700/20 shadow-2xl hover:shadow-orange-500/20 transition-all duration-500 group">
+            <div class="flex items-center gap-3 mb-6">
+              <div class="w-10 h-10 bg-gradient-to-r from-orange-500 to-red-500 rounded-xl flex items-center justify-center text-lg">
+                🎛️
+              </div>
+              <h3 class="text-xl font-bold text-orange-100">Slider Styles</h3>
+            </div>
+            <div class="space-y-3">
               <div 
                 v-for="style in ['default', 'groove', 'pill', 'neon', 'glass']" 
                 :key="style"
                 :class="[
-                  'gallery-item',
-                  sliderStyle === style ? 'active' : ''
+                  'gallery-item group/item cursor-pointer flex items-center gap-3 p-3 rounded-xl bg-gray-900/30 border border-gray-600/30 hover:border-orange-400/50 transition-all duration-300',
+                  sliderStyle === style ? 'active ring-2 ring-orange-400/50 bg-orange-900/20' : ''
                 ]"
                 @click="sliderStyle = style"
               >
-                <div class="slider-preview" :class="`slider-${style}`">
-                  <div class="mini-slider-track">
-                    <div class="mini-slider-progress"></div>
-                    <div class="mini-slider-thumb"></div>
+                <div class="slider-preview flex-1" :class="`slider-${style}`">
+                  <div class="mini-slider-track h-2 bg-gray-700 rounded-full relative">
+                    <div class="mini-slider-progress h-full bg-orange-400 rounded-full w-3/5"></div>
+                    <div class="mini-slider-thumb w-4 h-4 bg-white rounded-full absolute top-1/2 transform -translate-y-1/2 left-3/5 shadow-lg"></div>
                   </div>
                 </div>
-                <span class="gallery-label">{{ style.charAt(0).toUpperCase() + style.slice(1) }}</span>
+                <span class="gallery-label text-sm font-medium text-gray-300 group-hover/item:text-orange-300 transition-colors min-w-[60px]">{{ style.charAt(0).toUpperCase() + style.slice(1) }}</span>
               </div>
             </div>
           </div>
+        </div>
 
-          <!-- Performance Monitor -->
-          <div class="mt-6 bg-gray-800/30 backdrop-blur-lg rounded-2xl p-6 border border-gray-700/50">
-            <h3 class="text-lg font-bold mb-3">Performance Monitor</h3>
-            <div class="space-y-3">
-              <div class="flex justify-between items-center">
-                <span class="text-sm">GPU Usage</span>
-                <div class="w-24 h-2 bg-gray-700 rounded-full">
-                  <div class="h-full bg-green-500 rounded-full" :style="{ width: `${gpuUsage}%` }"></div>
+        <!-- Performance Monitor - Compact Block (spans 12 columns, compact height) -->
+        <div class="col-span-12">
+          <div class="bento-card bg-gradient-to-r from-green-800/30 via-gray-800/30 to-emerald-800/30 backdrop-blur-xl rounded-3xl p-6 border border-green-700/20 shadow-2xl hover:shadow-green-500/20 transition-all duration-500 group">
+            <div class="flex items-center justify-between mb-6">
+              <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl flex items-center justify-center text-lg">
+                  📊
                 </div>
-                <span class="text-xs">{{ gpuUsage }}%</span>
+                <h3 class="text-xl font-bold text-green-100">Performance Monitor</h3>
               </div>
-              <div class="flex justify-between items-center">
-                <span class="text-sm">FPS</span>
-                <span class="text-lg font-mono">{{ fps }}</span>
+              <div class="flex items-center gap-2 text-xs text-green-400">
+                <div class="w-2 h-2 bg-green-400 rounded-full animate-pulse"></div>
+                <span>Real-time</span>
               </div>
-              <div class="flex justify-between items-center">
-                <span class="text-sm">Memory</span>
-                <span class="text-xs">{{ memoryUsage }}MB</span>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+              <div class="performance-metric bg-gray-900/50 rounded-xl p-4 backdrop-blur-sm border border-gray-600/30">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="text-sm font-medium text-gray-300">GPU Usage</span>
+                  <span class="text-xs text-green-400 font-mono">{{ gpuUsage }}%</span>
+                </div>
+                <div class="w-full h-3 bg-gray-700 rounded-full overflow-hidden">
+                  <div class="h-full bg-gradient-to-r from-green-500 to-emerald-400 rounded-full transition-all duration-1000" :style="{ width: `${gpuUsage}%` }"></div>
+                </div>
+              </div>
+              <div class="performance-metric bg-gray-900/50 rounded-xl p-4 backdrop-blur-sm border border-gray-600/30">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="text-sm font-medium text-gray-300">Frame Rate</span>
+                  <span class="text-xs text-green-400">Target: 60</span>
+                </div>
+                <div class="text-2xl font-bold font-mono text-green-400">{{ fps }} <span class="text-sm text-gray-400">FPS</span></div>
+              </div>
+              <div class="performance-metric bg-gray-900/50 rounded-xl p-4 backdrop-blur-sm border border-gray-600/30">
+                <div class="flex justify-between items-center mb-2">
+                  <span class="text-sm font-medium text-gray-300">Memory Usage</span>
+                  <span class="text-xs text-green-400">Available: 1.2GB</span>
+                </div>
+                <div class="text-2xl font-bold font-mono text-green-400">{{ memoryUsage }} <span class="text-sm text-gray-400">MB</span></div>
               </div>
             </div>
           </div>
@@ -2126,5 +2175,119 @@ onUnmounted(() => {
 @keyframes mini-neon-thumb-glow {
   0% { box-shadow: 0 0 8px rgba(139, 92, 246, 1); }
   100% { box-shadow: 0 0 12px rgba(139, 92, 246, 1); }
+}
+
+/* Bento Grid Styles */
+.bento-grid {
+  min-height: 800px;
+}
+
+.bento-card {
+  position: relative;
+  overflow: hidden;
+}
+
+.bento-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.02) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Live Preview (Main Block) Enhancements */
+.bento-card:has(h3:contains('Live Preview')) {
+  background: linear-gradient(135deg, 
+    rgba(139, 92, 246, 0.08) 0%, 
+    rgba(75, 85, 99, 0.06) 30%, 
+    rgba(139, 92, 246, 0.04) 100%
+  );
+}
+
+/* Responsive Grid Adjustments */
+@media (max-width: 768px) {
+  .bento-grid {
+    gap: 1rem;
+  }
+  
+  .bento-card {
+    min-height: 250px !important;
+    padding: 1rem;
+  }
+  
+  .bento-card h3 {
+    font-size: 1.25rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .bento-grid {
+    gap: 0.75rem;
+  }
+  
+  .bento-card {
+    border-radius: 1.5rem;
+    min-height: 200px !important;
+  }
+}
+
+/* Interactive Hover Effects */
+.bento-card:hover {
+  transform: translateY(-2px);
+}
+
+.bento-card:hover::before {
+  background: linear-gradient(135deg, rgba(255,255,255,0.04) 0%, transparent 50%);
+}
+
+/* Gallery Item Enhancements for Bento Layout */
+.gallery-item:hover {
+  transform: none; /* Prevent double transform */
+}
+
+.gallery-item.group\/item:hover {
+  transform: scale(1.02);
+}
+
+/* Performance Monitor Enhancements */
+.performance-metric {
+  position: relative;
+  overflow: hidden;
+}
+
+.performance-metric::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(34, 197, 94, 0.1), transparent);
+  transition: left 2s ease-in-out;
+}
+
+.performance-metric:hover::before {
+  left: 100%;
+}
+
+/* Icon Container Styles */
+.bento-card .w-10.h-10 {
+  position: relative;
+  z-index: 2;
+}
+
+.bento-card .w-10.h-10::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  background: inherit;
+  border-radius: inherit;
+  opacity: 0.3;
+  filter: blur(8px);
+  z-index: -1;
 }
 </style>
