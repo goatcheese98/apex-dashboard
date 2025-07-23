@@ -114,6 +114,7 @@
 
         <!-- Advanced Controls -->
         <div class="mt-6 pt-6 border-t border-gray-700/50">
+          <h3 class="text-lg font-semibold mb-4 text-purple-300">🎨 Dock Effect Controls</h3>
           <div class="grid grid-cols-1 lg:grid-cols-5 gap-4">
             <div>
               <label class="block text-xs font-medium mb-2">Blur Intensity</label>
@@ -139,6 +140,111 @@
               <label class="block text-xs font-medium mb-2">3D Depth</label>
               <input v-model="depthStrength" type="range" min="0" max="50" class="w-full">
               <div class="text-xs text-gray-400 mt-1">{{ depthStrength }}px</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Component Customization Controls -->
+        <div class="mt-6 pt-6 border-t border-gray-700/50">
+          <h3 class="text-lg font-semibold mb-4 text-cyan-300">🔧 Component Customization</h3>
+          
+          <!-- Component Style Selector -->
+          <div class="mb-4">
+            <label class="block text-sm font-medium mb-3">Component Style</label>
+            <div class="grid grid-cols-4 gap-2">
+              <button 
+                v-for="style in ['modern', 'minimal', 'rounded', 'sharp']" 
+                :key="style"
+                @click="componentStyle = style"
+                :class="[
+                  'px-3 py-2 rounded-lg text-xs font-medium transition-all duration-300',
+                  componentStyle === style 
+                    ? 'bg-cyan-600 text-white' 
+                    : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                ]"
+              >
+                {{ style.charAt(0).toUpperCase() + style.slice(1) }}
+              </button>
+            </div>
+          </div>
+
+          <!-- Button Customization -->
+          <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-4">
+            <div>
+              <label class="block text-xs font-medium mb-2">Button Size</label>
+              <input v-model="buttonSize" type="range" min="24" max="64" class="w-full">
+              <div class="text-xs text-gray-400 mt-1">{{ buttonSize }}px</div>
+            </div>
+            <div>
+              <label class="block text-xs font-medium mb-2">Button Radius</label>
+              <input v-model="buttonRadius" type="range" min="0" max="32" class="w-full">
+              <div class="text-xs text-gray-400 mt-1">{{ buttonRadius }}px</div>
+            </div>
+            <div>
+              <label class="block text-xs font-medium mb-2">Button Spacing</label>
+              <input v-model="buttonSpacing" type="range" min="8" max="32" class="w-full">
+              <div class="text-xs text-gray-400 mt-1">{{ buttonSpacing }}px</div>
+            </div>
+            <div>
+              <label class="block text-xs font-medium mb-2">Layout Compactness</label>
+              <input v-model="layoutCompactness" type="range" min="0" max="100" class="w-full">
+              <div class="text-xs text-gray-400 mt-1">{{ layoutCompactness }}%</div>
+            </div>
+          </div>
+
+          <!-- Slider Style Selector -->
+          <div class="mb-4">
+            <label class="block text-sm font-medium mb-3">Slider/Timeline Style</label>
+            <div class="grid grid-cols-5 gap-2">
+              <button 
+                v-for="style in ['default', 'groove', 'pill', 'neon', 'glass']" 
+                :key="style"
+                @click="sliderStyle = style"
+                :class="[
+                  'px-2 py-2 rounded-lg text-xs font-medium transition-all duration-300',
+                  sliderStyle === style 
+                    ? 'bg-green-600 text-white' 
+                    : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+                ]"
+              >
+                {{ style.charAt(0).toUpperCase() + style.slice(1) }}
+              </button>
+            </div>
+          </div>
+
+          <!-- Timeline Customization -->
+          <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
+            <div>
+              <label class="block text-xs font-medium mb-2">Timeline Height</label>
+              <input v-model="timelineHeight" type="range" min="6" max="24" class="w-full">
+              <div class="text-xs text-gray-400 mt-1">{{ timelineHeight }}px</div>
+            </div>
+            <div>
+              <label class="block text-xs font-medium mb-2">Timeline Radius</label>
+              <input v-model="timelineRadius" type="range" min="0" max="20" class="w-full">
+              <div class="text-xs text-gray-400 mt-1">{{ timelineRadius }}px</div>
+            </div>
+            <div>
+              <label class="block text-xs font-medium mb-2">Label Font Size</label>
+              <input v-model="labelFontSize" type="range" min="8" max="16" class="w-full">
+              <div class="text-xs text-gray-400 mt-1">{{ labelFontSize }}px</div>
+            </div>
+          </div>
+
+          <!-- Label Customization -->
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-medium mb-2">Label Opacity</label>
+              <input v-model="labelOpacity" type="range" min="0" max="100" class="w-full">
+              <div class="text-xs text-gray-400 mt-1">{{ labelOpacity }}%</div>
+            </div>
+            <div class="flex items-end">
+              <button 
+                @click="resetComponentStyles"
+                class="px-4 py-2 bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 rounded-lg transition-all duration-300 text-sm"
+              >
+                🔄 Reset Components
+              </button>
             </div>
           </div>
         </div>
@@ -198,8 +304,8 @@
                 <div class="absolute inset-0 bg-[linear-gradient(45deg,transparent_49%,rgba(255,255,255,0.05)_49%,rgba(255,255,255,0.05)_51%,transparent_51%)] bg-[length:20px_20px]"></div>
               </div>
 
-              <!-- Visualization Content Display -->
-              <div class="absolute inset-0 flex items-center justify-center p-8">
+              <!-- Visualization Content Display (Preview Mode Only) -->
+              <div v-if="!isFloatingMode" class="absolute inset-0 flex items-center justify-center p-8">
                 <div class="text-center text-white max-w-lg">
                   <!-- Race Chart Content -->
                   <div v-if="currentVisualization === 'race-chart'" class="space-y-4">
@@ -328,9 +434,11 @@
                 :class="[
                   'experimental-dock',
                   `dock-${currentEffect}`,
+                  `component-${componentStyle}`,
+                  `slider-${sliderStyle}`,
                   animationEnabled ? 'dock-animated' : ''
                 ]"
-                :style="dockStyles"
+                :style="{ ...dockStyles, ...componentStyles }"
               >
                 <!-- Universal Controls -->
                 <div class="dock-controls">
@@ -373,15 +481,6 @@
                       {{ cumulativeMode ? 'CUM' : 'IND' }}
                     </button>
                     
-                    <!-- Race Chart Specific: View Mode Toggle -->
-                    <button 
-                      v-if="currentVisualization === 'race-chart'"
-                      :class="['dock-toggle', viewMode === 'points' ? 'active' : '']"
-                      @click="cycleViewMode"
-                      title="Toggle between Points, Kills, Damage view"
-                    >
-                      {{ viewMode.toUpperCase().substring(0, 3) }}
-                    </button>
                     
                     <!-- Damage Analysis Specific: Player Breakdown Toggle -->
                     <button 
@@ -483,6 +582,55 @@
             </div>
           </div>
 
+          <!-- Component Styles Gallery -->
+          <div class="mt-6 bg-gray-800/30 backdrop-blur-lg rounded-2xl p-6 border border-gray-700/50">
+            <h3 class="text-xl font-bold mb-4">Component Styles</h3>
+            <div class="grid grid-cols-2 gap-3">
+              <div 
+                v-for="style in ['modern', 'minimal', 'rounded', 'sharp']" 
+                :key="style"
+                :class="[
+                  'gallery-item',
+                  componentStyle === style ? 'active' : ''
+                ]"
+                @click="componentStyle = style"
+              >
+                <div class="component-preview" :class="`component-${style}`">
+                  <div class="mini-dock">
+                    <div class="mini-play" :class="`style-${style}`"></div>
+                    <div class="mini-timeline" :class="`style-${style}`"></div>
+                    <div class="mini-toggle" :class="`style-${style}`"></div>
+                  </div>
+                </div>
+                <span class="gallery-label">{{ style.charAt(0).toUpperCase() + style.slice(1) }}</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Slider Styles Gallery -->
+          <div class="mt-6 bg-gray-800/30 backdrop-blur-lg rounded-2xl p-6 border border-gray-700/50">
+            <h3 class="text-xl font-bold mb-4">Slider Styles</h3>
+            <div class="grid grid-cols-1 gap-3">
+              <div 
+                v-for="style in ['default', 'groove', 'pill', 'neon', 'glass']" 
+                :key="style"
+                :class="[
+                  'gallery-item',
+                  sliderStyle === style ? 'active' : ''
+                ]"
+                @click="sliderStyle = style"
+              >
+                <div class="slider-preview" :class="`slider-${style}`">
+                  <div class="mini-slider-track">
+                    <div class="mini-slider-progress"></div>
+                    <div class="mini-slider-thumb"></div>
+                  </div>
+                </div>
+                <span class="gallery-label">{{ style.charAt(0).toUpperCase() + style.slice(1) }}</span>
+              </div>
+            </div>
+          </div>
+
           <!-- Performance Monitor -->
           <div class="mt-6 bg-gray-800/30 backdrop-blur-lg rounded-2xl p-6 border border-gray-700/50">
             <h3 class="text-lg font-bold mb-3">Performance Monitor</h3>
@@ -536,9 +684,11 @@
       :class="[
         'floating-dock-overlay',
         `dock-${currentEffect}`,
+        `component-${componentStyle}`,
+        `slider-${sliderStyle}`,
         animationEnabled ? 'dock-animated' : ''
       ]"
-      :style="floatingDockStyles"
+      :style="{ ...floatingDockStyles, ...componentStyles }"
     >
       <!-- Universal Controls -->
       <div class="dock-controls">
@@ -581,15 +731,6 @@
             {{ cumulativeMode ? 'CUM' : 'IND' }}
           </button>
           
-          <!-- Race Chart Specific: View Mode Toggle -->
-          <button 
-            v-if="currentVisualization === 'race-chart'"
-            :class="['dock-toggle', viewMode === 'points' ? 'active' : '']"
-            @click="cycleViewMode"
-            title="Toggle between Points, Kills, Damage view"
-          >
-            {{ viewMode.toUpperCase().substring(0, 3) }}
-          </button>
           
           <!-- Damage Analysis Specific: Player Breakdown Toggle -->
           <button 
@@ -670,11 +811,22 @@ const triangulationMode = ref(false)
 const isDragging = ref(false)
 
 // Visualization-specific state
-const viewMode = ref('points') // points, kills, damage
 const playerBreakdownMode = ref(false) // team vs player-wise breakdown
 
 // Floating dock mode
 const isFloatingMode = ref(false)
+
+// Component customization state
+const buttonSize = ref(40) // 40px default
+const buttonRadius = ref(8) // 8px border radius
+const buttonSpacing = ref(16) // 16px gap between buttons
+const timelineHeight = ref(12) // 12px timeline height
+const timelineRadius = ref(6) // 6px timeline border radius
+const labelFontSize = ref(12) // 12px font size for labels
+const labelOpacity = ref(70) // 70% opacity for labels
+const layoutCompactness = ref(50) // 50% compactness (affects padding)
+const componentStyle = ref('modern') // modern, minimal, rounded, sharp
+const sliderStyle = ref('default') // default, groove, pill, neon, glass
 
 // Performance monitoring
 const fps = ref(60)
@@ -750,6 +902,18 @@ const floatingDockStyles = computed(() => ({
   left: '50%',
   transform: 'translateX(-50%)',
   zIndex: 9999
+}))
+
+const componentStyles = computed(() => ({
+  '--button-size': `${buttonSize.value}px`,
+  '--button-radius': `${buttonRadius.value}px`,
+  '--button-spacing': `${buttonSpacing.value}px`,
+  '--timeline-height': `${timelineHeight.value}px`,
+  '--timeline-radius': `${timelineRadius.value}px`,
+  '--label-font-size': `${labelFontSize.value}px`,
+  '--label-opacity': `${labelOpacity.value}%`,
+  '--layout-padding': `${Math.max(12, layoutCompactness.value * 0.24)}px`,
+  '--layout-gap': `${Math.max(8, layoutCompactness.value * 0.16)}px`
 }))
 
 const generatedCSS = computed(() => {
@@ -833,14 +997,22 @@ const togglePlay = () => {
   isPlaying.value = !isPlaying.value
 }
 
-const cycleViewMode = () => {
-  const modes = ['points', 'kills', 'damage']
-  const currentIndex = modes.indexOf(viewMode.value)
-  viewMode.value = modes[(currentIndex + 1) % modes.length]
-}
 
 const toggleFloatingMode = () => {
   isFloatingMode.value = !isFloatingMode.value
+}
+
+const resetComponentStyles = () => {
+  buttonSize.value = 40
+  buttonRadius.value = 8
+  buttonSpacing.value = 16
+  timelineHeight.value = 12
+  timelineRadius.value = 6
+  labelFontSize.value = 12
+  labelOpacity.value = 70
+  layoutCompactness.value = 50
+  componentStyle.value = 'modern'
+  sliderStyle.value = 'default'
 }
 
 const startDragging = (event: MouseEvent) => {
@@ -969,12 +1141,17 @@ onUnmounted(() => {
 }
 
 .dock-controls {
-  @apply flex items-center gap-4 w-full;
+  @apply flex items-center w-full;
+  gap: var(--button-spacing, 16px);
+  padding: var(--layout-padding, 16px);
 }
 
 /* Play Button */
 .dock-play-btn {
-  @apply w-12 h-12 rounded-full flex items-center justify-center text-white transition-all duration-300 cursor-pointer;
+  @apply flex items-center justify-center text-white transition-all duration-300 cursor-pointer;
+  width: var(--button-size, 40px);
+  height: var(--button-size, 40px);
+  border-radius: var(--button-radius, 8px);
   background: linear-gradient(135deg, var(--primary-color, #8b5cf6), var(--secondary-color, #06b6d4));
   box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
 }
@@ -990,11 +1167,14 @@ onUnmounted(() => {
 }
 
 .timeline-track {
-  @apply relative h-3 bg-gray-700/50 rounded-full cursor-pointer;
+  @apply relative bg-gray-700/50 cursor-pointer;
+  height: var(--timeline-height, 12px);
+  border-radius: var(--timeline-radius, 6px);
 }
 
 .timeline-progress {
-  @apply absolute left-0 top-0 h-full rounded-full;
+  @apply absolute left-0 top-0 h-full;
+  border-radius: var(--timeline-radius, 6px);
   background: linear-gradient(90deg, var(--primary-color, #8b5cf6), var(--secondary-color, #06b6d4));
   transition: width 0.1s ease;
 }
@@ -1009,16 +1189,22 @@ onUnmounted(() => {
 }
 
 .timeline-labels {
-  @apply flex justify-between text-xs text-gray-400 px-1;
+  @apply flex justify-between text-gray-400 px-1;
+  font-size: var(--label-font-size, 12px);
+  opacity: calc(var(--label-opacity, 70) / 100);
 }
 
 /* Toggle Buttons */
 .dock-toggles {
-  @apply flex gap-2;
+  @apply flex;
+  gap: calc(var(--button-spacing, 16px) / 2);
 }
 
 .dock-toggle {
-  @apply w-10 h-10 rounded-lg bg-gray-700/50 text-white text-xs font-bold transition-all duration-300;
+  @apply bg-gray-700/50 text-white text-xs font-bold transition-all duration-300;
+  width: var(--button-size, 40px);
+  height: var(--button-size, 40px);
+  border-radius: var(--button-radius, 8px);
   backdrop-filter: blur(10px);
 }
 
@@ -1033,7 +1219,10 @@ onUnmounted(() => {
 
 /* Menu Button */
 .dock-menu-btn {
-  @apply w-10 h-10 rounded-lg bg-gray-700/50 text-white flex items-center justify-center transition-all duration-300;
+  @apply bg-gray-700/50 text-white flex items-center justify-center transition-all duration-300;
+  width: var(--button-size, 40px);
+  height: var(--button-size, 40px);
+  border-radius: var(--button-radius, 8px);
   backdrop-filter: blur(10px);
 }
 
@@ -1479,5 +1668,348 @@ onUnmounted(() => {
   0% { opacity: 0.5; }
   50% { opacity: 1; }
   100% { opacity: 0.5; }
+}
+
+/* Component Style Variations */
+
+/* Modern Style (Default) */
+.component-modern .dock-play-btn {
+  border-radius: calc(var(--button-radius, 8px) * 1.5);
+  box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.component-modern .dock-toggle,
+.component-modern .dock-menu-btn {
+  border-radius: calc(var(--button-radius, 8px) * 1.2);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.component-modern .timeline-track {
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+/* Minimal Style */
+.component-minimal .dock-play-btn {
+  box-shadow: none;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.component-minimal .dock-toggle,
+.component-minimal .dock-menu-btn {
+  box-shadow: none;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.component-minimal .timeline-track {
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: none;
+}
+
+/* Rounded Style */
+.component-rounded .dock-play-btn,
+.component-rounded .dock-toggle,
+.component-rounded .dock-menu-btn {
+  border-radius: 50%;
+}
+
+.component-rounded .timeline-track,
+.component-rounded .timeline-progress {
+  border-radius: calc(var(--timeline-height, 12px) / 2);
+}
+
+.component-rounded .dock-play-btn {
+  box-shadow: 0 6px 20px rgba(139, 92, 246, 0.5);
+}
+
+/* Sharp Style */
+.component-sharp .dock-play-btn,
+.component-sharp .dock-toggle,
+.component-sharp .dock-menu-btn {
+  border-radius: 2px;
+  clip-path: polygon(0 0, calc(100% - 6px) 0, 100% 100%, 6px 100%);
+}
+
+.component-sharp .timeline-track,
+.component-sharp .timeline-progress {
+  border-radius: 2px;
+}
+
+.component-sharp .dock-play-btn {
+  box-shadow: 0 4px 12px rgba(139, 92, 246, 0.6), 0 0 0 1px rgba(139, 92, 246, 0.3);
+}
+
+/* Component Gallery Styles */
+.component-preview {
+  @apply w-full h-12 rounded mb-2 flex items-center justify-center relative overflow-hidden;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.mini-toggle {
+  @apply w-1.5 h-1.5 bg-gray-500 rounded-sm ml-1;
+}
+
+/* Component Style Previews */
+.style-modern {
+  border-radius: 4px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.style-minimal {
+  border-radius: 2px;
+  border: 0.5px solid rgba(255, 255, 255, 0.2);
+  box-shadow: none;
+}
+
+.style-rounded {
+  border-radius: 50%;
+}
+
+.style-sharp {
+  border-radius: 1px;
+  clip-path: polygon(0 0, 90% 0, 100% 100%, 10% 100%);
+}
+
+/* Slider Style Variations */
+
+/* Default Slider Style */
+.slider-default .timeline-track {
+  background: rgba(107, 114, 128, 0.5);
+  border: none;
+}
+
+.slider-default .timeline-progress {
+  background: linear-gradient(90deg, var(--primary-color, #8b5cf6), var(--secondary-color, #06b6d4));
+}
+
+.slider-default .timeline-thumb {
+  background: #ffffff;
+  border: 2px solid rgba(255, 255, 255, 0.9);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* Groove Slider Style */
+.slider-groove .timeline-track {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.4) 0%, rgba(255, 255, 255, 0.1) 100%);
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.4);
+}
+
+.slider-groove .timeline-progress {
+  background: linear-gradient(180deg, var(--primary-color, #8b5cf6) 0%, var(--secondary-color, #06b6d4) 100%);
+  box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.3);
+}
+
+.slider-groove .timeline-thumb {
+  background: linear-gradient(180deg, #ffffff 0%, #e5e7eb 100%);
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+}
+
+/* Pill Slider Style */
+.slider-pill .timeline-track {
+  background: rgba(31, 41, 55, 0.8);
+  border-radius: 999px;
+  border: 1px solid rgba(75, 85, 99, 0.6);
+}
+
+.slider-pill .timeline-progress {
+  background: linear-gradient(90deg, var(--primary-color, #8b5cf6), var(--secondary-color, #06b6d4));
+  border-radius: 999px;
+  box-shadow: 0 0 8px rgba(139, 92, 246, 0.4);
+}
+
+.slider-pill .timeline-thumb {
+  background: #ffffff;
+  border-radius: 999px;
+  border: 2px solid var(--primary-color, #8b5cf6);
+  box-shadow: 0 0 12px rgba(139, 92, 246, 0.6);
+}
+
+/* Neon Slider Style */
+.slider-neon .timeline-track {
+  background: rgba(0, 0, 0, 0.8);
+  border: 1px solid var(--primary-color, #8b5cf6);
+  box-shadow: 
+    0 0 10px rgba(139, 92, 246, 0.3),
+    inset 0 0 10px rgba(139, 92, 246, 0.1);
+}
+
+.slider-neon .timeline-progress {
+  background: linear-gradient(90deg, var(--primary-color, #8b5cf6), var(--secondary-color, #06b6d4));
+  box-shadow: 
+    0 0 15px rgba(139, 92, 246, 0.8),
+    0 0 30px rgba(6, 182, 212, 0.4);
+  animation: neon-pulse 2s ease-in-out infinite alternate;
+}
+
+.slider-neon .timeline-thumb {
+  background: #ffffff;
+  border: 2px solid var(--primary-color, #8b5cf6);
+  box-shadow: 
+    0 0 15px rgba(139, 92, 246, 1),
+    0 0 30px rgba(139, 92, 246, 0.6),
+    inset 0 0 10px rgba(139, 92, 246, 0.2);
+  animation: neon-thumb-glow 2s ease-in-out infinite alternate;
+}
+
+/* Glass Slider Style */
+.slider-glass .timeline-track {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 
+    0 4px 6px rgba(0, 0, 0, 0.1),
+    inset 0 1px 0 rgba(255, 255, 255, 0.2);
+}
+
+.slider-glass .timeline-progress {
+  background: linear-gradient(90deg, 
+    rgba(139, 92, 246, 0.8), 
+    rgba(6, 182, 212, 0.8)
+  );
+  backdrop-filter: blur(5px);
+  box-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+}
+
+.slider-glass .timeline-thumb {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 
+    0 4px 12px rgba(0, 0, 0, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.6);
+}
+
+/* Neon animations */
+@keyframes neon-pulse {
+  0% { box-shadow: 0 0 15px rgba(139, 92, 246, 0.8), 0 0 30px rgba(6, 182, 212, 0.4); }
+  100% { box-shadow: 0 0 25px rgba(139, 92, 246, 1), 0 0 40px rgba(6, 182, 212, 0.6); }
+}
+
+@keyframes neon-thumb-glow {
+  0% { 
+    box-shadow: 
+      0 0 15px rgba(139, 92, 246, 1),
+      0 0 30px rgba(139, 92, 246, 0.6),
+      inset 0 0 10px rgba(139, 92, 246, 0.2);
+  }
+  100% { 
+    box-shadow: 
+      0 0 25px rgba(139, 92, 246, 1),
+      0 0 40px rgba(139, 92, 246, 0.8),
+      inset 0 0 15px rgba(139, 92, 246, 0.4);
+  }
+}
+
+/* Slider Gallery Styles */
+.slider-preview {
+  @apply w-full h-12 rounded mb-2 flex items-center justify-center relative overflow-hidden px-4;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.mini-slider-track {
+  @apply relative w-full bg-gray-600 rounded-full;
+  height: 3px;
+}
+
+.mini-slider-progress {
+  @apply absolute left-0 top-0 h-full rounded-full;
+  width: 60%;
+  background: linear-gradient(90deg, #8b5cf6, #06b6d4);
+}
+
+.mini-slider-thumb {
+  @apply absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2 w-3 h-3 bg-white rounded-full;
+  left: 60%;
+}
+
+/* Slider preview style variations */
+.slider-default .mini-slider-track {
+  background: rgba(107, 114, 128, 0.5);
+}
+
+.slider-groove .mini-slider-track {
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0.4) 0%, rgba(255, 255, 255, 0.1) 100%);
+  border: 0.5px solid rgba(0, 0, 0, 0.3);
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.4);
+}
+
+.slider-groove .mini-slider-progress {
+  background: linear-gradient(180deg, #8b5cf6 0%, #06b6d4 100%);
+  box-shadow: inset 0 0.5px 1px rgba(255, 255, 255, 0.3);
+}
+
+.slider-groove .mini-slider-thumb {
+  background: linear-gradient(180deg, #ffffff 0%, #e5e7eb 100%);
+  border: 0.5px solid rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0.5px 1px rgba(0, 0, 0, 0.4);
+}
+
+.slider-pill .mini-slider-track {
+  background: rgba(31, 41, 55, 0.8);
+  border: 0.5px solid rgba(75, 85, 99, 0.6);
+  border-radius: 999px;
+}
+
+.slider-pill .mini-slider-progress {
+  border-radius: 999px;
+  box-shadow: 0 0 4px rgba(139, 92, 246, 0.4);
+}
+
+.slider-pill .mini-slider-thumb {
+  border-radius: 999px;
+  border: 1px solid #8b5cf6;
+  box-shadow: 0 0 6px rgba(139, 92, 246, 0.6);
+}
+
+.slider-neon .mini-slider-track {
+  background: rgba(0, 0, 0, 0.8);
+  border: 0.5px solid #8b5cf6;
+  box-shadow: 0 0 5px rgba(139, 92, 246, 0.3);
+}
+
+.slider-neon .mini-slider-progress {
+  box-shadow: 0 0 8px rgba(139, 92, 246, 0.8);
+  animation: mini-neon-pulse 2s ease-in-out infinite alternate;
+}
+
+.slider-neon .mini-slider-thumb {
+  border: 1px solid #8b5cf6;
+  box-shadow: 0 0 8px rgba(139, 92, 246, 1);
+  animation: mini-neon-thumb-glow 2s ease-in-out infinite alternate;
+}
+
+.slider-glass .mini-slider-track {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(5px);
+  border: 0.5px solid rgba(255, 255, 255, 0.2);
+  box-shadow: 0 2px 3px rgba(0, 0, 0, 0.1);
+}
+
+.slider-glass .mini-slider-progress {
+  background: linear-gradient(90deg, rgba(139, 92, 246, 0.8), rgba(6, 182, 212, 0.8));
+  backdrop-filter: blur(2px);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.slider-glass .mini-slider-thumb {
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(5px);
+  border: 0.5px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+/* Mini neon animations */
+@keyframes mini-neon-pulse {
+  0% { box-shadow: 0 0 8px rgba(139, 92, 246, 0.8); }
+  100% { box-shadow: 0 0 12px rgba(139, 92, 246, 1); }
+}
+
+@keyframes mini-neon-thumb-glow {
+  0% { box-shadow: 0 0 8px rgba(139, 92, 246, 1); }
+  100% { box-shadow: 0 0 12px rgba(139, 92, 246, 1); }
 }
 </style>
