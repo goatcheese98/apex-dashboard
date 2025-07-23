@@ -12,277 +12,383 @@
       </div>
 
       <!-- Control Panel -->
-      <div class="mb-8 bg-gray-800/50 backdrop-blur-lg rounded-2xl p-6 border border-gray-700/50">
-        <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
-          <!-- Effect Selector -->
-          <div>
-            <label class="block text-sm font-medium mb-3">Effect Style</label>
-            <select 
-              v-model="currentEffect" 
-              class="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:ring-2 focus:ring-purple-500"
-            >
-              <option value="glassmorphic">🔮 Glassmorphic</option>
-              <option value="holographic">✨ Holographic</option>
-              <option value="morphing">🌊 Morphing</option>
-              <option value="neon">⚡ Neon Glow</option>
-              <option value="particle">🎆 Particle Field</option>
-              <option value="cyberpunk">🤖 Cyberpunk</option>
-              <option value="quantum">⚛️ Quantum</option>
-              <option value="liquid">💧 Liquid Metal</option>
-              <option value="plasma">🔥 Plasma</option>
-              <option value="matrix">💊 Matrix</option>
-              <option value="cosmic">🌌 Cosmic</option>
-              <option value="neural">🧠 Neural Network</option>
-            </select>
-          </div>
-
-          <!-- Visualization Mode Selector -->
-          <div>
-            <label class="block text-sm font-medium mb-3">Visualization Mode</label>
-            <select 
-              v-model="currentVisualization" 
-              class="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:ring-2 focus:ring-purple-500"
-            >
-              <option value="race-chart">🏁 Race Chart</option>
-              <option value="damage-analysis">⚔️ Damage Analysis</option>
-              <option value="scatter-plot">📊 Scatter Plot</option>
-            </select>
-          </div>
-
-          <!-- Size Controls -->
-          <div>
-            <label class="block text-sm font-medium mb-3">Dock Size</label>
-            <div class="space-y-2">
-              <input 
-                v-model="dockWidth" 
-                type="range" 
-                min="200" 
-                max="800" 
-                class="w-full"
-              >
-              <input 
-                v-model="dockHeight" 
-                type="range" 
-                min="40" 
-                max="120" 
-                class="w-full"
-              >
-              <div class="text-xs text-gray-400">{{ dockWidth }}px × {{ dockHeight }}px</div>
-            </div>
-          </div>
-
-          <!-- Animation Controls -->
-          <div>
-            <label class="block text-sm font-medium mb-3">Animation</label>
-            <div class="space-y-2">
-              <label class="flex items-center">
-                <input v-model="animationEnabled" type="checkbox" class="mr-2">
-                <span class="text-sm">Enable Animations</span>
-              </label>
-              <input 
-                v-model="animationSpeed" 
-                type="range" 
-                min="0.5" 
-                max="3" 
-                step="0.1" 
-                class="w-full"
-                :disabled="!animationEnabled"
-              >
-              <div class="text-xs text-gray-400">Speed: {{ animationSpeed }}x</div>
-            </div>
-          </div>
-
-          <!-- Color Controls -->
-          <div>
-            <label class="block text-sm font-medium mb-3">Colors</label>
-            <div class="grid grid-cols-2 gap-2">
-              <input 
-                v-model="primaryColor" 
-                type="color" 
-                class="w-full h-10 rounded border border-gray-600"
-                title="Primary Color"
-              >
-              <input 
-                v-model="secondaryColor" 
-                type="color" 
-                class="w-full h-10 rounded border border-gray-600"
-                title="Secondary Color"
-              >
-            </div>
-          </div>
-        </div>
-
-        <!-- Advanced Controls -->
-        <div class="mt-6 pt-6 border-t border-gray-700/50">
-          <h3 class="text-lg font-semibold mb-4 text-purple-300">🎨 Dock Effect Controls</h3>
-          <div class="grid grid-cols-1 lg:grid-cols-5 gap-4">
-            <div>
-              <label class="block text-xs font-medium mb-2">Blur Intensity</label>
-              <input v-model="blurIntensity" type="range" min="0" max="50" class="w-full">
-              <div class="text-xs text-gray-400 mt-1">{{ blurIntensity }}px</div>
-            </div>
-            <div>
-              <label class="block text-xs font-medium mb-2">Opacity</label>
-              <input v-model="opacity" type="range" min="0" max="100" class="w-full">
-              <div class="text-xs text-gray-400 mt-1">{{ opacity }}%</div>
-            </div>
-            <div>
-              <label class="block text-xs font-medium mb-2">Border Radius</label>
-              <input v-model="borderRadius" type="range" min="0" max="50" class="w-full">
-              <div class="text-xs text-gray-400 mt-1">{{ borderRadius }}px</div>
-            </div>
-            <div>
-              <label class="block text-xs font-medium mb-2">Glow Strength</label>
-              <input v-model="glowStrength" type="range" min="0" max="100" class="w-full">
-              <div class="text-xs text-gray-400 mt-1">{{ glowStrength }}%</div>
-            </div>
-            <div>
-              <label class="block text-xs font-medium mb-2">3D Depth</label>
-              <input v-model="depthStrength" type="range" min="0" max="50" class="w-full">
-              <div class="text-xs text-gray-400 mt-1">{{ depthStrength }}px</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Component Customization Controls -->
-        <div class="mt-6 pt-6 border-t border-gray-700/50">
-          <h3 class="text-lg font-semibold mb-4 text-cyan-300">🔧 Component Customization</h3>
-          
-          <!-- Component Style Selector -->
-          <div class="mb-4">
-            <label class="block text-sm font-medium mb-3">Component Style</label>
-            <div class="grid grid-cols-4 gap-2">
-              <button 
-                v-for="style in ['modern', 'minimal', 'rounded', 'sharp']" 
-                :key="style"
-                @click="componentStyle = style"
-                :class="[
-                  'px-3 py-2 rounded-lg text-xs font-medium transition-all duration-300',
-                  componentStyle === style 
-                    ? 'bg-cyan-600 text-white' 
-                    : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-                ]"
-              >
-                {{ style.charAt(0).toUpperCase() + style.slice(1) }}
-              </button>
-            </div>
-          </div>
-
-          <!-- Button Customization -->
-          <div class="grid grid-cols-1 lg:grid-cols-4 gap-4 mb-4">
-            <div>
-              <label class="block text-xs font-medium mb-2">Button Size</label>
-              <input v-model="buttonSize" type="range" min="24" max="64" class="w-full">
-              <div class="text-xs text-gray-400 mt-1">{{ buttonSize }}px</div>
-            </div>
-            <div>
-              <label class="block text-xs font-medium mb-2">Button Radius</label>
-              <input v-model="buttonRadius" type="range" min="0" max="32" class="w-full">
-              <div class="text-xs text-gray-400 mt-1">{{ buttonRadius }}px</div>
-            </div>
-            <div>
-              <label class="block text-xs font-medium mb-2">Button Spacing</label>
-              <input v-model="buttonSpacing" type="range" min="8" max="32" class="w-full">
-              <div class="text-xs text-gray-400 mt-1">{{ buttonSpacing }}px</div>
-            </div>
-            <div>
-              <label class="block text-xs font-medium mb-2">Layout Compactness</label>
-              <input v-model="layoutCompactness" type="range" min="0" max="100" class="w-full">
-              <div class="text-xs text-gray-400 mt-1">{{ layoutCompactness }}%</div>
-            </div>
-          </div>
-
-          <!-- Slider Style Selector -->
-          <div class="mb-4">
-            <label class="block text-sm font-medium mb-3">Slider/Timeline Style</label>
-            <div class="grid grid-cols-5 gap-2">
-              <button 
-                v-for="style in ['default', 'groove', 'pill', 'neon', 'glass']" 
-                :key="style"
-                @click="sliderStyle = style"
-                :class="[
-                  'px-2 py-2 rounded-lg text-xs font-medium transition-all duration-300',
-                  sliderStyle === style 
-                    ? 'bg-green-600 text-white' 
-                    : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
-                ]"
-              >
-                {{ style.charAt(0).toUpperCase() + style.slice(1) }}
-              </button>
-            </div>
-          </div>
-
-          <!-- Timeline Customization -->
-          <div class="grid grid-cols-1 lg:grid-cols-3 gap-4 mb-4">
-            <div>
-              <label class="block text-xs font-medium mb-2">Timeline Height</label>
-              <input v-model="timelineHeight" type="range" min="6" max="24" class="w-full">
-              <div class="text-xs text-gray-400 mt-1">{{ timelineHeight }}px</div>
-            </div>
-            <div>
-              <label class="block text-xs font-medium mb-2">Timeline Radius</label>
-              <input v-model="timelineRadius" type="range" min="0" max="20" class="w-full">
-              <div class="text-xs text-gray-400 mt-1">{{ timelineRadius }}px</div>
-            </div>
-            <div>
-              <label class="block text-xs font-medium mb-2">Label Font Size</label>
-              <input v-model="labelFontSize" type="range" min="8" max="16" class="w-full">
-              <div class="text-xs text-gray-400 mt-1">{{ labelFontSize }}px</div>
-            </div>
-          </div>
-
-          <!-- Label Customization -->
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
-            <div>
-              <label class="block text-xs font-medium mb-2">Label Opacity</label>
-              <input v-model="labelOpacity" type="range" min="0" max="100" class="w-full">
-              <div class="text-xs text-gray-400 mt-1">{{ labelOpacity }}%</div>
-            </div>
-            <div class="flex items-end">
-              <button 
-                @click="resetComponentStyles"
-                class="px-4 py-2 bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 rounded-lg transition-all duration-300 text-sm"
-              >
-                🔄 Reset Components
-              </button>
-            </div>
-          </div>
-        </div>
-
-        <!-- Preset Controls -->
-        <div class="mt-6 pt-6 border-t border-gray-700/50 flex flex-wrap gap-4 justify-center">
+      <div class="mb-8 bg-gray-800/50 backdrop-blur-lg rounded-2xl border border-gray-700/50 overflow-hidden">
+        <!-- Tab Navigation -->
+        <div class="flex border-b border-gray-700/50">
           <button 
-            v-for="preset in presets" 
-            :key="preset.name"
-            @click="applyPreset(preset)"
-            class="px-4 py-2 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 rounded-lg transition-all duration-300 transform hover:scale-105"
-          >
-            {{ preset.name }}
-          </button>
-          <button 
-            @click="randomizeEffect"
-            class="px-4 py-2 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 rounded-lg transition-all duration-300 transform hover:scale-105"
-          >
-            🎲 Randomize
-          </button>
-          <button 
-            @click="resetToDefaults"
-            class="px-4 py-2 bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 rounded-lg transition-all duration-300"
-          >
-            🔄 Reset
-          </button>
-          <button 
-            @click="toggleFloatingMode"
+            v-for="tab in controlTabs" 
+            :key="tab.id"
+            @click="activeTab = tab.id"
             :class="[
-              'px-4 py-2 rounded-lg transition-all duration-300 transform hover:scale-105',
-              isFloatingMode 
-                ? 'bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800' 
-                : 'bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800'
+              'px-6 py-4 text-sm font-medium transition-all duration-300 border-b-2 flex items-center gap-2',
+              activeTab === tab.id 
+                ? 'text-white border-purple-500 bg-purple-900/30' 
+                : 'text-gray-400 border-transparent hover:text-white hover:bg-gray-700/30'
             ]"
           >
-            {{ isFloatingMode ? '🔒 Exit Floating' : '🚀 Float Dock' }}
+            <span>{{ tab.icon }}</span>
+            <span>{{ tab.name }}</span>
           </button>
         </div>
+
+        <!-- Tab Content -->
+        <div class="p-6">
+          <!-- Basic Settings Tab -->
+          <div v-show="activeTab === 'basic'" class="space-y-6">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              <!-- Effect & Mode Column -->
+              <div class="space-y-6">
+                <div>
+                  <label class="block text-lg font-semibold mb-4 text-purple-300">🎭 Style & Mode</label>
+                  <div class="space-y-4">
+                    <div>
+                      <label class="block text-sm font-medium mb-2">Effect Style</label>
+                      <select 
+                        v-model="currentEffect" 
+                        class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-purple-500"
+                      >
+                        <option value="glassmorphic">🔮 Glassmorphic</option>
+                        <option value="holographic">✨ Holographic</option>
+                        <option value="morphing">🌊 Morphing</option>
+                        <option value="neon">⚡ Neon Glow</option>
+                        <option value="particle">🎆 Particle Field</option>
+                        <option value="cyberpunk">🤖 Cyberpunk</option>
+                        <option value="quantum">⚛️ Quantum</option>
+                        <option value="liquid">💧 Liquid Metal</option>
+                        <option value="plasma">🔥 Plasma</option>
+                        <option value="matrix">💊 Matrix</option>
+                        <option value="cosmic">🌌 Cosmic</option>
+                        <option value="neural">🧠 Neural Network</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium mb-2">Visualization Mode</label>
+                      <select 
+                        v-model="currentVisualization" 
+                        class="w-full bg-gray-700 border border-gray-600 rounded-lg px-4 py-3 text-white focus:ring-2 focus:ring-purple-500"
+                      >
+                        <option value="race-chart">🏁 Race Chart</option>
+                        <option value="damage-analysis">⚔️ Damage Analysis</option>
+                        <option value="scatter-plot">📊 Scatter Plot</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Size & Animation Column -->
+              <div class="space-y-6">
+                <div>
+                  <label class="block text-lg font-semibold mb-4 text-cyan-300">📐 Size & Motion</label>
+                  <div class="space-y-6">
+                    <div>
+                      <label class="block text-sm font-medium mb-3">Dock Dimensions</label>
+                      <div class="space-y-4">
+                        <div>
+                          <div class="flex justify-between items-center mb-2">
+                            <span class="text-xs text-gray-400">Width</span>
+                            <span class="text-xs font-mono text-white">{{ dockWidth }}px</span>
+                          </div>
+                          <input v-model="dockWidth" type="range" min="200" max="800" class="w-full">
+                        </div>
+                        <div>
+                          <div class="flex justify-between items-center mb-2">
+                            <span class="text-xs text-gray-400">Height</span>
+                            <span class="text-xs font-mono text-white">{{ dockHeight }}px</span>
+                          </div>
+                          <input v-model="dockHeight" type="range" min="40" max="120" class="w-full">
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium mb-3">Animation Settings</label>
+                      <div class="space-y-3">
+                        <label class="flex items-center p-3 bg-gray-700/30 rounded-lg">
+                          <input v-model="animationEnabled" type="checkbox" class="mr-3">
+                          <span class="text-sm font-medium">Enable Animations</span>
+                        </label>
+                        <div>
+                          <div class="flex justify-between items-center mb-2">
+                            <span class="text-xs text-gray-400">Speed</span>
+                            <span class="text-xs font-mono text-white">{{ animationSpeed }}x</span>
+                          </div>
+                          <input v-model="animationSpeed" type="range" min="0.5" max="3" step="0.1" class="w-full" :disabled="!animationEnabled">
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Colors Column -->
+              <div class="space-y-6">
+                <div>
+                  <label class="block text-lg font-semibold mb-4 text-pink-300">🎨 Color Palette</label>
+                  <div class="space-y-4">
+                    <div>
+                      <label class="block text-sm font-medium mb-3">Primary Color</label>
+                      <div class="flex items-center gap-3">
+                        <input v-model="primaryColor" type="color" class="w-16 h-16 rounded-lg border border-gray-600">
+                        <div class="flex-1">
+                          <div class="text-xs font-mono text-gray-400 mb-1">{{ primaryColor }}</div>
+                          <div class="h-8 rounded-md" :style="{ backgroundColor: primaryColor }"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <label class="block text-sm font-medium mb-3">Secondary Color</label>
+                      <div class="flex items-center gap-3">
+                        <input v-model="secondaryColor" type="color" class="w-16 h-16 rounded-lg border border-gray-600">
+                        <div class="flex-1">
+                          <div class="text-xs font-mono text-gray-400 mb-1">{{ secondaryColor }}</div>
+                          <div class="h-8 rounded-md" :style="{ backgroundColor: secondaryColor }"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Effects Tab -->
+          <div v-show="activeTab === 'effects'" class="space-y-6">
+            <div class="text-center mb-6">
+              <h3 class="text-lg font-semibold text-purple-300">🎨 Visual Effect Controls</h3>
+              <p class="text-gray-400 text-sm mt-2">Fine-tune the visual appearance and styling of your dock</p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+              <!-- Blur & Transparency -->
+              <div class="space-y-4">
+                <label class="block text-sm font-semibold mb-3 text-blue-300">🌀 Blur & Transparency</label>
+                <div class="space-y-3">
+                  <div>
+                    <label class="block text-xs font-medium mb-2">Blur Intensity</label>
+                    <input v-model="blurIntensity" type="range" min="0" max="50" class="w-full">
+                    <div class="text-xs text-gray-400 mt-1">{{ blurIntensity }}px</div>
+                  </div>
+                  <div>
+                    <label class="block text-xs font-medium mb-2">Opacity</label>
+                    <input v-model="opacity" type="range" min="0" max="100" class="w-full">
+                    <div class="text-xs text-gray-400 mt-1">{{ opacity }}%</div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- Shape & Lighting -->
+              <div class="space-y-4">
+                <label class="block text-sm font-semibold mb-3 text-green-300">✨ Shape & Lighting</label>
+                <div class="space-y-3">
+                  <div>
+                    <label class="block text-xs font-medium mb-2">Border Radius</label>
+                    <input v-model="borderRadius" type="range" min="0" max="50" class="w-full">
+                    <div class="text-xs text-gray-400 mt-1">{{ borderRadius }}px</div>
+                  </div>
+                  <div>
+                    <label class="block text-xs font-medium mb-2">Glow Strength</label>
+                    <input v-model="glowStrength" type="range" min="0" max="100" class="w-full">
+                    <div class="text-xs text-gray-400 mt-1">{{ glowStrength }}%</div>
+                  </div>
+                </div>
+              </div>
+              
+              <!-- 3D Effects -->
+              <div class="space-y-4">
+                <label class="block text-sm font-semibold mb-3 text-orange-300">🎭 3D Effects</label>
+                <div class="space-y-3">
+                  <div>
+                    <label class="block text-xs font-medium mb-2">3D Depth</label>
+                    <input v-model="depthStrength" type="range" min="0" max="50" class="w-full">
+                    <div class="text-xs text-gray-400 mt-1">{{ depthStrength }}px</div>
+                  </div>
+                  <div class="flex items-end h-12">
+                    <button 
+                      @click="randomizeEffect"
+                      class="w-full px-3 py-2 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 rounded-lg transition-all duration-300 text-sm"
+                    >
+                      🎲 Randomize Effects
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Components Tab -->
+          <div v-show="activeTab === 'components'" class="space-y-6">
+            <div class="text-center mb-6">
+              <h3 class="text-lg font-semibold text-cyan-300">🔧 Component Customization</h3>
+              <p class="text-gray-400 text-sm mt-2">Customize individual components, buttons, sliders, and layout elements</p>
+            </div>
+
+            <!-- Component Style Selector -->
+            <div class="mb-6">
+              <label class="block text-sm font-semibold mb-3 text-cyan-300">Component Style Theme</label>
+              <div class="grid grid-cols-4 gap-3">
+                <button 
+                  v-for="style in ['modern', 'minimal', 'rounded', 'sharp']" 
+                  :key="style"
+                  @click="componentStyle = style"
+                  :class="[
+                    'px-4 py-3 rounded-lg font-medium transition-all duration-300 border-2',
+                    componentStyle === style 
+                      ? 'bg-cyan-600 text-white border-cyan-400' 
+                      : 'bg-gray-700 text-gray-300 border-gray-600 hover:bg-gray-600 hover:border-gray-500'
+                  ]"
+                >
+                  {{ style.charAt(0).toUpperCase() + style.slice(1) }}
+                </button>
+              </div>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+              <!-- Button Controls -->
+              <div class="space-y-4">
+                <label class="block text-sm font-semibold mb-3 text-purple-300">🔘 Button Controls</label>
+                <div class="space-y-3">
+                  <div>
+                    <label class="block text-xs font-medium mb-2">Button Size</label>
+                    <input v-model="buttonSize" type="range" min="24" max="64" class="w-full">
+                    <div class="text-xs text-gray-400 mt-1">{{ buttonSize }}px</div>
+                  </div>
+                  <div>
+                    <label class="block text-xs font-medium mb-2">Button Radius</label>
+                    <input v-model="buttonRadius" type="range" min="0" max="32" class="w-full">
+                    <div class="text-xs text-gray-400 mt-1">{{ buttonRadius }}px</div>
+                  </div>
+                  <div>
+                    <label class="block text-xs font-medium mb-2">Button Spacing</label>
+                    <input v-model="buttonSpacing" type="range" min="8" max="32" class="w-full">
+                    <div class="text-xs text-gray-400 mt-1">{{ buttonSpacing }}px</div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Layout Controls -->
+              <div class="space-y-4">
+                <label class="block text-sm font-semibold mb-3 text-green-300">📐 Layout Controls</label>
+                <div class="space-y-3">
+                  <div>
+                    <label class="block text-xs font-medium mb-2">Layout Compactness</label>
+                    <input v-model="layoutCompactness" type="range" min="0" max="100" class="w-full">
+                    <div class="text-xs text-gray-400 mt-1">{{ layoutCompactness }}%</div>
+                  </div>
+                  <div>
+                    <label class="block text-xs font-medium mb-2">Label Font Size</label>
+                    <input v-model="labelFontSize" type="range" min="8" max="16" class="w-full">
+                    <div class="text-xs text-gray-400 mt-1">{{ labelFontSize }}px</div>
+                  </div>
+                  <div>
+                    <label class="block text-xs font-medium mb-2">Label Opacity</label>
+                    <input v-model="labelOpacity" type="range" min="0" max="100" class="w-full">
+                    <div class="text-xs text-gray-400 mt-1">{{ labelOpacity }}%</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Slider Style Selector -->
+            <div class="mt-6">
+              <label class="block text-sm font-semibold mb-3 text-indigo-300">🎚️ Slider/Timeline Style</label>
+              <div class="grid grid-cols-5 gap-2 mb-4">
+                <button 
+                  v-for="style in ['default', 'groove', 'pill', 'neon', 'glass']" 
+                  :key="style"
+                  @click="sliderStyle = style"
+                  :class="[
+                    'px-3 py-2 rounded-lg text-xs font-medium transition-all duration-300 border',
+                    sliderStyle === style 
+                      ? 'bg-green-600 text-white border-green-400' 
+                      : 'bg-gray-700 text-gray-300 border-gray-600 hover:bg-gray-600'
+                  ]"
+                >
+                  {{ style.charAt(0).toUpperCase() + style.slice(1) }}
+                </button>
+              </div>
+              
+              <!-- Timeline Fine-tuning -->
+              <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                <div>
+                  <label class="block text-xs font-medium mb-2">Timeline Height</label>
+                  <input v-model="timelineHeight" type="range" min="6" max="24" class="w-full">
+                  <div class="text-xs text-gray-400 mt-1">{{ timelineHeight }}px</div>
+                </div>
+                <div>
+                  <label class="block text-xs font-medium mb-2">Timeline Radius</label>
+                  <input v-model="timelineRadius" type="range" min="0" max="20" class="w-full">
+                  <div class="text-xs text-gray-400 mt-1">{{ timelineRadius }}px</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Reset Button -->
+            <div class="pt-4 border-t border-gray-700/50 flex justify-center">
+              <button 
+                @click="resetComponentStyles"
+                class="px-6 py-3 bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 rounded-lg transition-all duration-300 text-sm font-medium"
+              >
+                🔄 Reset All Components
+              </button>
+            </div>
+          </div>
+
+          <!-- Presets Tab -->
+          <div v-show="activeTab === 'presets'" class="space-y-6">
+            <div class="text-center mb-6">
+              <h3 class="text-lg font-semibold text-pink-300">✨ Quick Presets & Actions</h3>
+              <p class="text-gray-400 text-sm mt-2">Apply ready-made configurations or perform global actions</p>
+            </div>
+
+            <div class="grid grid-cols-1 gap-8">
+              <!-- Preset Configurations -->
+              <div>
+                <label class="block text-sm font-semibold mb-4 text-purple-300">🎨 Style Presets</label>
+                <div class="grid grid-cols-2 lg:grid-cols-3 gap-3">
+                  <button 
+                    v-for="preset in presets" 
+                    :key="preset.name"
+                    @click="applyPreset(preset)"
+                    class="px-4 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 rounded-lg transition-all duration-300 transform hover:scale-105 font-medium text-center"
+                  >
+                    {{ preset.name }}
+                  </button>
+                </div>
+              </div>
+
+              <!-- Global Actions -->
+              <div>
+                <label class="block text-sm font-semibold mb-4 text-cyan-300">⚡ Global Actions</label>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                  <button 
+                    @click="randomizeEffect"
+                    class="px-4 py-3 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 rounded-lg transition-all duration-300 transform hover:scale-105 font-medium"
+                  >
+                    🎲 Randomize Everything
+                  </button>
+                  <button 
+                    @click="resetToDefaults"
+                    class="px-4 py-3 bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 rounded-lg transition-all duration-300 font-medium"
+                  >
+                    🔄 Reset to Defaults
+                  </button>
+                  <button 
+                    @click="toggleFloatingMode"
+                    :class="[
+                      'px-4 py-3 rounded-lg transition-all duration-300 transform hover:scale-105 font-medium',
+                      isFloatingMode 
+                        ? 'bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800' 
+                        : 'bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800'
+                    ]"
+                  >
+                    {{ isFloatingMode ? '🔒 Exit Floating Mode' : '🚀 Enable Floating Mode' }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
       </div>
 
       <!-- Main Laboratory Area -->
@@ -815,6 +921,15 @@ const playerBreakdownMode = ref(false) // team vs player-wise breakdown
 
 // Floating dock mode
 const isFloatingMode = ref(false)
+
+// Tab navigation
+const activeTab = ref('basic')
+const controlTabs = [
+  { id: 'basic', name: 'Basic', icon: '⚙️' },
+  { id: 'effects', name: 'Effects', icon: '🎨' },
+  { id: 'components', name: 'Components', icon: '🔧' },
+  { id: 'presets', name: 'Presets', icon: '✨' }
+]
 
 // Component customization state
 const buttonSize = ref(40) // 40px default
