@@ -59,35 +59,68 @@ A robust dashboard and data visualization application that utilizes tournament d
 - **Cumulative by Default:** Points accumulate from previous games
 - **Interactive Exploration:** Click and explore individual data points
 
-### 3. Floating Dock Control System
+### 3. Enhanced Floating Dock Control System
 
 #### A. Dock Architecture
-- **Floating Translucent Design:** Adaptive dock that expands/contracts based on current view
-- **Context-Aware Expansion:** Size adjusts dynamically to available controls
-- **Positioning:** Strategically placed to avoid obstruction of key data
-- **Translucency:** Semi-transparent to maintain visibility of underlying visualizations
+- **Enlarged Professional Design:** Dock size increased to 450-500px width × 80-90px height for better usability
+- **Context-Aware Intelligence:** Dynamic controls that adapt based on currently displayed chart type
+- **Enhanced Visual Styling:** Three distinct dock variations (Glassmorphic, Holographic, Morphing) with premium visual effects
+- **Strategic Positioning:** Optimally placed to avoid obstruction while maintaining easy access
+- **Advanced Translucency:** Enhanced glass effects with backdrop blur and dynamic lighting
 
-#### B. Primary Controls
-- **Timeline Slider:** Interactive scrubber for match progression control
-- **Play/Pause Animation:** Smooth animation controls with visual feedback
-- **Universal Filter Sync:** All changes affect race charts, damage diffs, and scatter plots simultaneously
+#### B. Universal Core Features (All Charts)
+- **Timeline Scrubbing (PRIMARY FEATURE):** 
+  - Most prominent dock element with enhanced visual prominence
+  - Scrubs from 0 (pregame) to maximum games (6-10+ range)
+  - Universal control affecting all three chart types simultaneously
+  - Large, interactive scrubber with clear visual feedback
+- **Cumulative vs Individual Toggle:**
+  - Controls data calculation method based on timeline position
+  - **Cumulative Mode:** Aggregates data from game 1 to current timeline position
+  - **Individual Mode:** Shows data only for the specific game at timeline position
+  - Affects scatter plot and damage analysis calculations in real-time
+- **Universal Game Filter System:**
+  - Basic game filtering by clicking on game numbers
+  - Filters data to show only selected game across all charts
+  - Foundation for advanced filtering features (to be added later)
+- **Play/Pause Controls:** Smooth animation controls with visual feedback
 
-#### C. Visualization Switching
-- **Default View:** Race charts displayed at the top by default
-- **Card Stack Animation:** Visualizations animate like stacked cards being lifted and unveiled
+#### C. Chart-Specific Special Features
+
+##### Race Chart Dock
+- **Game Progression Controls:** Navigate through tournament games (1-10+)
+- **View Switching:** Toggle between Points, Kills, and Damage display modes
+- **Team Display Options:** Show all teams or apply performance-based cropping
+
+##### Scatter Plot Dock (Kills vs Damage)
+- **Triangulation Feature (CRITICAL):**
+  - Toggle button to enable/disable triangulation mode
+  - On hover over player point: draws connecting lines to teammates
+  - Creates translucent triangle area showing team performance spread
+  - Essential for understanding team cohesion and performance relationships
+
+##### Damage Analysis Dock (Given vs Taken)
+- **Player-wise Breakdown Toggle:**
+  - Switches between team-aggregated and individual player damage display
+  - **ON:** Stacked bars showing individual player contributions within team bars
+  - **OFF:** Unified team damage bars (space-efficient approach)
+  - Critical for detailed player performance analysis
+
+#### D. Enhanced Visualization Switching
+- **Carousel-Based Architecture:** Three slides (Race Chart, Scatter Plot, Damage Analysis)
+- **Performance-Optimized:** Prevents DOM destruction through smart rendering
 - **Smooth Transitions:** Fluid animations between different visualization types
-- **View Toggle Button:** Simple button to cycle through visualization modes
+- **Context Preservation:** Dock controls adapt automatically to active chart
 
-#### D. Pre-Selection Workflow
-- **Tournament Selection:** Choose specific tournament (e.g., EWC 2025)
-- **Series Selection:** Select day/series within tournament
-- **Match Selection:** Pick specific matches to analyze
-- **Dynamic Dock Appearance:** Dock appears after all selections are made
+#### E. Dock Visual Variations
+- **Glassmorphic Style:** Enhanced glass effects with dynamic color blobs, advanced blur, and interactive lighting
+- **Holographic Style:** Futuristic grid effects, animated corners, rotating borders, and dual ripple effects
+- **Morphing Style:** Dynamic shape transformations with spring animations and gradient shifts
 
-#### E. Filter Controls
-- **Game Selection Filters:** Toggle specific games (e.g., "Game 3, 5, and 7")
-- **Team-specific filters:** Focus on particular teams
-- **Performance threshold filters:** Filter by ranking/performance metrics
+#### F. Advanced Interaction Model
+- **Timeline-Centric Design:** Timeline scrubbing receives maximum visual priority and space
+- **Smart Control Grouping:** Logical organization of play controls, timeline, toggles, and special features
+- **Touch-Optimized:** Larger targets and improved spacing for mobile and tablet users
 - **Real-time Synchronization:** Instant updates across all visualization types
 
 ### 4. Performance Requirements

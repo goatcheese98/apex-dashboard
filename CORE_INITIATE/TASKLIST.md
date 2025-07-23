@@ -12,28 +12,38 @@
 
 ---
 
-## Current Sprint: Foundation & Automation Setup
-### New Tasks
-- [ ] create a new authentication component
-<!-- Type: create, Priority: medium, Added: 2025-07-23T20:27:25.458780 -->
+## Current Sprint: Enhanced Dock System Development
+### 🚀 Primary Dock Enhancement Tasks
+- [🔄] Enlarge dock size to 450-500px × 80-90px dimensions
+- [🔄] Make timeline scrubbing the most prominent dock feature
+- [ ] Implement contextual dock controls based on chart type
+- [ ] Add triangulation feature for scatter plot dock
+- [ ] Add player-wise breakdown toggle for damage analysis dock
+- [ ] Implement cumulative vs individual calculation logic
 
-
-- [🔄] implement a new dashboard component for user analytics
-<!-- Type: create, Priority: medium, Added: 2025-07-23T20:09:04.611459 -->
-
-
-### Meta: Automation Infrastructure
-- [🔄] Create TASKLIST.md template  
-- [ ] Update CLAUDE.md session initialization protocol
-- [ ] Implement hook-based task tracking system
-- [ ] Test automated task status updates
+### 🎯 Special Features Implementation
+- [ ] **Scatter Plot Triangulation:**
+  - Toggle button for triangulation mode
+  - Hover detection on player points
+  - Dynamic line drawing between teammates  
+  - Translucent triangle area highlighting
+- [ ] **Damage Analysis Player Breakdown:**
+  - Toggle for individual vs team-aggregated view
+  - Stacked bar implementation for player contributions
+  - Space-efficient display optimization
+- [ ] **Universal Timeline Integration:**
+  - Timeline scrubbing from 0 (pregame) to max games
+  - Real-time data recalculation based on timeline position
+  - Visual prominence and enhanced user interaction
 
 #### Dependencies
-- None
+- Current dock-iterations.vue implementation
+- Vue 3 Composition API and reactive data structures
 
 #### Notes
-- Setting up persistent context and progress tracking system
-- Will enable better session continuity and project awareness
+- Timeline scrubbing is THE primary feature - must be most visually prominent
+- Creative freedom encouraged for dock layout experimentation
+- All effects using pure CSS - no external animation libraries
 
 ---
 
