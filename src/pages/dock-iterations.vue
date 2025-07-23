@@ -13,7 +13,7 @@
 
       <!-- Control Panel -->
       <div class="mb-8 bg-gray-800/50 backdrop-blur-lg rounded-2xl p-6 border border-gray-700/50">
-        <div class="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        <div class="grid grid-cols-1 lg:grid-cols-5 gap-6">
           <!-- Effect Selector -->
           <div>
             <label class="block text-sm font-medium mb-3">Effect Style</label>
@@ -33,6 +33,19 @@
               <option value="matrix">💊 Matrix</option>
               <option value="cosmic">🌌 Cosmic</option>
               <option value="neural">🧠 Neural Network</option>
+            </select>
+          </div>
+
+          <!-- Visualization Mode Selector -->
+          <div>
+            <label class="block text-sm font-medium mb-3">Visualization Mode</label>
+            <select 
+              v-model="currentVisualization" 
+              class="w-full bg-gray-700 border border-gray-600 rounded-lg px-3 py-2 text-white focus:ring-2 focus:ring-purple-500"
+            >
+              <option value="race-chart">🏁 Race Chart</option>
+              <option value="damage-analysis">⚔️ Damage Analysis</option>
+              <option value="scatter-plot">📊 Scatter Plot</option>
             </select>
           </div>
 
@@ -152,6 +165,17 @@
           >
             🔄 Reset
           </button>
+          <button 
+            @click="toggleFloatingMode"
+            :class="[
+              'px-4 py-2 rounded-lg transition-all duration-300 transform hover:scale-105',
+              isFloatingMode 
+                ? 'bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800' 
+                : 'bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800'
+            ]"
+          >
+            {{ isFloatingMode ? '🔒 Exit Floating' : '🚀 Float Dock' }}
+          </button>
         </div>
       </div>
 
@@ -173,9 +197,134 @@
                 <div class="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(120,119,198,0.3),transparent_50%)]"></div>
                 <div class="absolute inset-0 bg-[linear-gradient(45deg,transparent_49%,rgba(255,255,255,0.05)_49%,rgba(255,255,255,0.05)_51%,transparent_51%)] bg-[length:20px_20px]"></div>
               </div>
+
+              <!-- Visualization Content Display -->
+              <div class="absolute inset-0 flex items-center justify-center p-8">
+                <div class="text-center text-white max-w-lg">
+                  <!-- Race Chart Content -->
+                  <div v-if="currentVisualization === 'race-chart'" class="space-y-4">
+                    <h3 class="text-2xl font-bold mb-4 text-cyan-300">🏁 Race Chart Visualization</h3>
+                    <div class="grid grid-cols-4 gap-3 text-sm">
+                      <div class="bg-black/30 rounded-lg p-3 backdrop-blur-sm">
+                        <div class="text-purple-300 font-semibold">TSM</div>
+                        <div class="text-xl font-bold">{{ timelineProgress > 20 ? '145' : '89' }} pts</div>
+                        <div class="text-xs text-gray-400">Rank #1</div>
+                      </div>
+                      <div class="bg-black/30 rounded-lg p-3 backdrop-blur-sm">
+                        <div class="text-blue-300 font-semibold">C9</div>
+                        <div class="text-xl font-bold">{{ timelineProgress > 20 ? '132' : '76' }} pts</div>
+                        <div class="text-xs text-gray-400">Rank #2</div>
+                      </div>
+                      <div class="bg-black/30 rounded-lg p-3 backdrop-blur-sm">
+                        <div class="text-orange-300 font-semibold">FNC</div>
+                        <div class="text-xl font-bold">{{ timelineProgress > 20 ? '128' : '71' }} pts</div>
+                        <div class="text-xs text-gray-400">Rank #3</div>
+                      </div>
+                      <div class="bg-black/30 rounded-lg p-3 backdrop-blur-sm">
+                        <div class="text-green-300 font-semibold">NRG</div>
+                        <div class="text-xl font-bold">{{ timelineProgress > 20 ? '121' : '68' }} pts</div>
+                        <div class="text-xs text-gray-400">Rank #4</div>
+                      </div>
+                    </div>
+                    <p class="text-gray-300 text-sm mt-4">Dynamic race progression showing {{ cumulativeMode ? 'cumulative' : 'individual' }} team rankings</p>
+                  </div>
+
+                  <!-- Damage Analysis Content -->
+                  <div v-else-if="currentVisualization === 'damage-analysis'" class="space-y-4">
+                    <h3 class="text-2xl font-bold mb-4 text-red-300">⚔️ Damage Analysis</h3>
+                    <div class="grid grid-cols-2 gap-4 text-sm">
+                      <div class="space-y-2">
+                        <h4 class="text-lg font-semibold text-red-200">Damage Given</h4>
+                        <div class="bg-black/30 rounded-lg p-3 backdrop-blur-sm">
+                          <div class="flex justify-between items-center mb-1">
+                            <span class="text-purple-300">TSM</span>
+                            <span class="font-bold">{{ timelineProgress > 50 ? '24,350' : '15,200' }}</span>
+                          </div>
+                          <div class="w-full bg-gray-700 rounded-full h-2">
+                            <div class="bg-red-500 h-2 rounded-full" :style="{ width: timelineProgress > 50 ? '85%' : '70%' }"></div>
+                          </div>
+                        </div>
+                        <div class="bg-black/30 rounded-lg p-3 backdrop-blur-sm">
+                          <div class="flex justify-between items-center mb-1">
+                            <span class="text-blue-300">C9</span>
+                            <span class="font-bold">{{ timelineProgress > 50 ? '22,180' : '14,800' }}</span>
+                          </div>
+                          <div class="w-full bg-gray-700 rounded-full h-2">
+                            <div class="bg-red-500 h-2 rounded-full" :style="{ width: timelineProgress > 50 ? '78%' : '68%' }"></div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="space-y-2">
+                        <h4 class="text-lg font-semibold text-blue-200">Damage Taken</h4>
+                        <div class="bg-black/30 rounded-lg p-3 backdrop-blur-sm">
+                          <div class="flex justify-between items-center mb-1">
+                            <span class="text-purple-300">TSM</span>
+                            <span class="font-bold">{{ timelineProgress > 50 ? '18,200' : '12,100' }}</span>
+                          </div>
+                          <div class="w-full bg-gray-700 rounded-full h-2">
+                            <div class="bg-blue-500 h-2 rounded-full" :style="{ width: timelineProgress > 50 ? '65%' : '55%' }"></div>
+                          </div>
+                        </div>
+                        <div class="bg-black/30 rounded-lg p-3 backdrop-blur-sm">
+                          <div class="flex justify-between items-center mb-1">
+                            <span class="text-blue-300">C9</span>
+                            <span class="font-bold">{{ timelineProgress > 50 ? '19,500' : '13,200' }}</span>
+                          </div>
+                          <div class="w-full bg-gray-700 rounded-full h-2">
+                            <div class="bg-blue-500 h-2 rounded-full" :style="{ width: timelineProgress > 50 ? '70%' : '60%' }"></div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <p class="text-gray-300 text-sm mt-4">Team damage statistics {{ cumulativeMode ? 'across all games' : 'for current game' }}</p>
+                  </div>
+
+                  <!-- Scatter Plot Content -->
+                  <div v-else-if="currentVisualization === 'scatter-plot'" class="space-y-4">
+                    <h3 class="text-2xl font-bold mb-4 text-green-300">📊 Kills vs Damage Scatter</h3>
+                    <div class="relative bg-black/30 rounded-lg p-4 backdrop-blur-sm h-48">
+                      <!-- Scatter Plot Simulation -->
+                      <div class="relative w-full h-full">
+                        <!-- Axes Labels -->
+                        <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 text-xs text-gray-400">Kills →</div>
+                        <div class="absolute left-0 top-1/2 transform -translate-y-1/2 -rotate-90 text-xs text-gray-400">Damage ↑</div>
+                        
+                        <!-- Data Points -->
+                        <div class="absolute w-3 h-3 bg-purple-400 rounded-full shadow-lg" 
+                             :style="{ left: timelineProgress > 30 ? '75%' : '65%', bottom: timelineProgress > 30 ? '80%' : '70%' }"
+                             :class="{ 'ring-4 ring-purple-300/50': triangulationMode }"
+                        ></div>
+                        <div class="absolute w-3 h-3 bg-blue-400 rounded-full shadow-lg"
+                             :style="{ left: timelineProgress > 30 ? '70%' : '60%', bottom: timelineProgress > 30 ? '75%' : '65%' }"
+                             :class="{ 'ring-4 ring-blue-300/50': triangulationMode }"
+                        ></div>
+                        <div class="absolute w-3 h-3 bg-orange-400 rounded-full shadow-lg"
+                             :style="{ left: timelineProgress > 30 ? '65%' : '55%', bottom: timelineProgress > 30 ? '70%' : '60%' }"
+                             :class="{ 'ring-4 ring-orange-300/50': triangulationMode }"
+                        ></div>
+                        <div class="absolute w-3 h-3 bg-green-400 rounded-full shadow-lg"
+                             :style="{ left: timelineProgress > 30 ? '60%' : '50%', bottom: timelineProgress > 30 ? '65%' : '55%' }"
+                             :class="{ 'ring-4 ring-green-300/50': triangulationMode }"
+                        ></div>
+
+                        <!-- Triangulation Lines (when enabled) -->
+                        <div v-if="triangulationMode" class="absolute inset-0">
+                          <svg class="w-full h-full">
+                            <line x1="75%" y1="20%" x2="70%" y2="25%" stroke="rgba(139, 92, 246, 0.5)" stroke-width="1"/>
+                            <line x1="70%" y1="25%" x2="65%" y2="30%" stroke="rgba(139, 92, 246, 0.5)" stroke-width="1"/>
+                            <line x1="65%" y1="30%" x2="75%" y2="20%" stroke="rgba(139, 92, 246, 0.5)" stroke-width="1"/>
+                          </svg>
+                        </div>
+                      </div>
+                    </div>
+                    <p class="text-gray-300 text-sm mt-4">Performance correlation showing {{ cumulativeMode ? 'total' : 'game-specific' }} metrics</p>
+                  </div>
+                </div>
+              </div>
               
-              <!-- The Experimental Dock -->
+              <!-- The Experimental Dock (Preview Mode Only) -->
               <div 
+                v-if="!isFloatingMode"
                 :class="[
                   'experimental-dock',
                   `dock-${currentEffect}`,
@@ -213,17 +362,43 @@
                     </div>
                   </div>
 
-                  <!-- Toggle Buttons -->
+                  <!-- Context-Aware Toggle Buttons -->
                   <div class="dock-toggles">
+                    <!-- Universal Cumulative/Individual Toggle -->
                     <button 
                       :class="['dock-toggle', cumulativeMode ? 'active' : '']"
                       @click="cumulativeMode = !cumulativeMode"
+                      title="Cumulative vs Individual data mode"
                     >
                       {{ cumulativeMode ? 'CUM' : 'IND' }}
                     </button>
+                    
+                    <!-- Race Chart Specific: View Mode Toggle -->
                     <button 
+                      v-if="currentVisualization === 'race-chart'"
+                      :class="['dock-toggle', viewMode === 'points' ? 'active' : '']"
+                      @click="cycleViewMode"
+                      title="Toggle between Points, Kills, Damage view"
+                    >
+                      {{ viewMode.toUpperCase().substring(0, 3) }}
+                    </button>
+                    
+                    <!-- Damage Analysis Specific: Player Breakdown Toggle -->
+                    <button 
+                      v-if="currentVisualization === 'damage-analysis'"
+                      :class="['dock-toggle', playerBreakdownMode ? 'active' : '']"
+                      @click="playerBreakdownMode = !playerBreakdownMode"
+                      title="Toggle player-wise breakdown"
+                    >
+                      {{ playerBreakdownMode ? 'PLY' : 'TM' }}
+                    </button>
+                    
+                    <!-- Scatter Plot Specific: Triangulation Toggle -->
+                    <button 
+                      v-if="currentVisualization === 'scatter-plot'"
                       :class="['dock-toggle', triangulationMode ? 'active' : '']"
                       @click="triangulationMode = !triangulationMode"
+                      title="Toggle triangulation mode"
                     >
                       ◢
                     </button>
@@ -259,13 +434,24 @@
                 </div>
               </div>
 
+              <!-- Floating Mode Placeholder -->
+              <div v-else class="flex items-center justify-center h-full">
+                <div class="text-center text-white/70">
+                  <div class="text-6xl mb-4">🚀</div>
+                  <h3 class="text-xl font-bold mb-2">Floating Dock Active</h3>
+                  <p class="text-sm">The dock is now floating at the bottom of your screen</p>
+                  <p class="text-xs mt-2 text-gray-400">Scroll up and down to see how it stays in position</p>
+                </div>
+              </div>
+
               <!-- Effect Information -->
               <div class="absolute top-4 right-4 bg-black/50 backdrop-blur-sm rounded-lg p-3">
                 <h4 class="text-sm font-bold mb-1">{{ getEffectName(currentEffect) }}</h4>
                 <div class="text-xs text-gray-300 space-y-1">
+                  <div>Mode: {{ getVisualizationName(currentVisualization) }}</div>
                   <div>Size: {{ dockWidth }}×{{ dockHeight }}</div>
                   <div>Animation: {{ animationEnabled ? 'ON' : 'OFF' }}</div>
-                  <div>Opacity: {{ opacity }}%</div>
+                  <div>Data: {{ cumulativeMode ? 'Cumulative' : 'Individual' }}</div>
                 </div>
               </div>
             </div>
@@ -343,6 +529,118 @@
         </router-link>
       </div>
     </div>
+
+    <!-- Floating Dock Overlay (when enabled) -->
+    <div 
+      v-if="isFloatingMode"
+      :class="[
+        'floating-dock-overlay',
+        `dock-${currentEffect}`,
+        animationEnabled ? 'dock-animated' : ''
+      ]"
+      :style="floatingDockStyles"
+    >
+      <!-- Universal Controls -->
+      <div class="dock-controls">
+        <!-- Play Button -->
+        <button class="dock-play-btn" @click="togglePlay">
+          <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+            <path v-if="!isPlaying" d="M8 5v10l8-5-8-5z"/>
+            <path v-else d="M6 4h4v12H6V4zm8 0h-4v12h4V4z"/>
+          </svg>
+        </button>
+
+        <!-- Timeline Scrubber -->
+        <div class="dock-timeline" :style="timelineStyles">
+          <div class="timeline-track">
+            <div 
+              class="timeline-progress" 
+              :style="{ width: `${timelineProgress}%` }"
+            ></div>
+            <div 
+              class="timeline-thumb" 
+              :style="{ left: `${timelineProgress}%` }"
+              @mousedown="startDragging"
+            ></div>
+          </div>
+          <div class="timeline-labels">
+            <span>G1</span>
+            <span>G5</span>
+            <span>G10</span>
+          </div>
+        </div>
+
+        <!-- Context-Aware Toggle Buttons -->
+        <div class="dock-toggles">
+          <!-- Universal Cumulative/Individual Toggle -->
+          <button 
+            :class="['dock-toggle', cumulativeMode ? 'active' : '']"
+            @click="cumulativeMode = !cumulativeMode"
+            title="Cumulative vs Individual data mode"
+          >
+            {{ cumulativeMode ? 'CUM' : 'IND' }}
+          </button>
+          
+          <!-- Race Chart Specific: View Mode Toggle -->
+          <button 
+            v-if="currentVisualization === 'race-chart'"
+            :class="['dock-toggle', viewMode === 'points' ? 'active' : '']"
+            @click="cycleViewMode"
+            title="Toggle between Points, Kills, Damage view"
+          >
+            {{ viewMode.toUpperCase().substring(0, 3) }}
+          </button>
+          
+          <!-- Damage Analysis Specific: Player Breakdown Toggle -->
+          <button 
+            v-if="currentVisualization === 'damage-analysis'"
+            :class="['dock-toggle', playerBreakdownMode ? 'active' : '']"
+            @click="playerBreakdownMode = !playerBreakdownMode"
+            title="Toggle player-wise breakdown"
+          >
+            {{ playerBreakdownMode ? 'PLY' : 'TM' }}
+          </button>
+          
+          <!-- Scatter Plot Specific: Triangulation Toggle -->
+          <button 
+            v-if="currentVisualization === 'scatter-plot'"
+            :class="['dock-toggle', triangulationMode ? 'active' : '']"
+            @click="triangulationMode = !triangulationMode"
+            title="Toggle triangulation mode"
+          >
+            ◢
+          </button>
+        </div>
+
+        <!-- Menu Button -->
+        <button class="dock-menu-btn">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Dynamic Background Effects -->
+      <div class="dock-bg-effects">
+        <div v-if="currentEffect === 'particle'" class="particle-system">
+          <div v-for="i in 20" :key="i" class="particle" :style="getParticleStyle(i)"></div>
+        </div>
+        <div v-if="currentEffect === 'holographic'" class="holographic-grid"></div>
+        <div v-if="currentEffect === 'quantum'" class="quantum-field">
+          <div v-for="i in 8" :key="i" class="quantum-orb" :style="getQuantumOrbStyle(i)"></div>
+        </div>
+        <div v-if="currentEffect === 'neural'" class="neural-network">
+          <svg class="neural-svg" viewBox="0 0 200 80">
+            <g v-for="i in 12" :key="i" class="neural-node" :transform="`translate(${(i % 4) * 50 + 25}, ${Math.floor(i / 4) * 25 + 15})`">
+              <circle cx="0" cy="0" r="3" class="neural-dot"/>
+              <line v-if="i < 8" :x1="0" :y1="0" :x2="50" :y2="0" class="neural-line"/>
+              <line v-if="i % 4 !== 3 && i < 8" :x1="0" :y1="0" :x2="50" :y2="25" class="neural-line"/>
+              <line v-if="i % 4 !== 0 && i < 8" :x1="0" :y1="0" :x2="50" :y2="-25" class="neural-line"/>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -351,6 +649,7 @@ import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 
 // Reactive state
 const currentEffect = ref('glassmorphic')
+const currentVisualization = ref('race-chart')
 const dockWidth = ref(450)
 const dockHeight = ref(80)
 const animationEnabled = ref(true)
@@ -369,6 +668,13 @@ const timelineProgress = ref(35)
 const cumulativeMode = ref(true)
 const triangulationMode = ref(false)
 const isDragging = ref(false)
+
+// Visualization-specific state
+const viewMode = ref('points') // points, kills, damage
+const playerBreakdownMode = ref(false) // team vs player-wise breakdown
+
+// Floating dock mode
+const isFloatingMode = ref(false)
 
 // Performance monitoring
 const fps = ref(60)
@@ -437,6 +743,15 @@ const timelineStyles = computed(() => ({
   minWidth: `${Math.max(200, dockWidth.value * 0.4)}px`
 }))
 
+const floatingDockStyles = computed(() => ({
+  ...dockStyles.value,
+  position: 'fixed',
+  bottom: '32px',
+  left: '50%',
+  transform: 'translateX(-50%)',
+  zIndex: 9999
+}))
+
 const generatedCSS = computed(() => {
   return `.dock-${currentEffect.value} {
   width: ${dockWidth.value}px;
@@ -453,6 +768,15 @@ const generatedCSS = computed(() => {
 // Methods
 const getEffectName = (effect: string) => {
   return availableEffects.find(e => e.id === effect)?.name || effect
+}
+
+const getVisualizationName = (viz: string) => {
+  const modes = {
+    'race-chart': '🏁 Race Chart',
+    'damage-analysis': '⚔️ Damage Analysis', 
+    'scatter-plot': '📊 Scatter Plot'
+  }
+  return modes[viz as keyof typeof modes] || viz
 }
 
 const getEffectBackground = () => {
@@ -507,6 +831,16 @@ const getQuantumOrbStyle = (index: number) => ({
 
 const togglePlay = () => {
   isPlaying.value = !isPlaying.value
+}
+
+const cycleViewMode = () => {
+  const modes = ['points', 'kills', 'damage']
+  const currentIndex = modes.indexOf(viewMode.value)
+  viewMode.value = modes[(currentIndex + 1) % modes.length]
+}
+
+const toggleFloatingMode = () => {
+  isFloatingMode.value = !isFloatingMode.value
 }
 
 const startDragging = (event: MouseEvent) => {
@@ -623,6 +957,15 @@ onUnmounted(() => {
   border: 1px solid rgba(255, 255, 255, 0.2);
   transition: all 0.3s ease;
   z-index: 100;
+}
+
+/* Floating Dock Overlay */
+.floating-dock-overlay {
+  @apply flex items-center gap-4 px-6 py-4;
+  backdrop-filter: blur(var(--blur-intensity, 20px));
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  transition: all 0.3s ease;
+  pointer-events: auto;
 }
 
 .dock-controls {
