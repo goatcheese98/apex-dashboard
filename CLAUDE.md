@@ -8,18 +8,24 @@ At the start of each new conversation or session, you MUST:
    - CORE_INITIATE/PROJECT_REQUIREMENTS.md (complete project vision and core features)
    - CORE_INITIATE/DEVELOPMENT_STATE.md (current phase, progress, and user preferences)
    - CORE_INITIATE/TASKLIST.md (current progress and priorities)
+   - CORE_INITIATE/PROJECT_DIRECTORY.md (latest directory tree)
 
-2. **Confirm your understanding** by briefly acknowledging:
+2. **Initialize Playwright Chrome Environment** automatically:
+   - Check for `.claude/browser-ready.signal` file existence
+   - If signal file exists, immediately launch Playwright browser via `mcp__playwright__browser_navigate`
+   - Navigate to `http://localhost:5173` for development monitoring
+   - This provides automatic browser session for testing and monitoring
+
+3. **Confirm your understanding** by briefly acknowledging:
    - Project type and main objectives
    - Current development phase and active tasks
    - Technology stack and key conventions
+   - Browser environment status (if launched)
 
-3. **Access detailed guides when needed** from CORE_SETUP/:
+4. **Access detailed guides when needed** from CORE_SETUP/:
    - VUE_RULEKIT.md (Vue development patterns)
    - CSS_GUIDELINES.md (styling architecture)
    - PLAYWRIGHT_WORKFLOW.md (debugging protocols)
-
-This streamlined approach reduces initialization tokens while maintaining context.
 
 ## Core Reference Files
 
@@ -27,6 +33,7 @@ This streamlined approach reduces initialization tokens while maintaining contex
 - CORE_INITIATE/PROJECT_REQUIREMENTS.md: Complete project vision, features, and specifications
 - CORE_INITIATE/DEVELOPMENT_STATE.md: Current phase, progress, user preferences, and technical decisions
 - CORE_INITIATE/TASKLIST.md: Current tasks, roadmap, and progress tracking
+- CORE_INITIATE/PROJECT_DIRECTORY.md : latest directory tree updated automatically after STOP hook
 
 **For Additional LLM Documentation:**
 - CORE_REFERENCE/ (reserved for supplementary documentation as needed)
@@ -68,7 +75,7 @@ Safe Implementation Trials: When you need to try a new approach, you will comple
 
 Code Cleanup: Once I confirm that I am satisfied with a new implementation, you will remind me to delete the old, commented-out code blocks to keep our codebase clean.
 
-Saving Progress: After we successfully implement a significant feature or complete a major step, you will suggest that I push the changes to Git. This will help me save my progress regularly.
+Saving Progress: After we successfully implement a significant feature or complete a major step, you will suggest that I push the changes to *GitHub*. This will help me save my progress regularly.
 
 5. Handling Guideline Deviations
 

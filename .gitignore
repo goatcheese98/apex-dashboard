@@ -79,6 +79,13 @@ temp-vue/
 # MCP development files
 .mcp/
 
+# Chrome DevTools Protocol (CDP) browser profile
+# This directory contains Chrome browser profile data created when using CDP browser automation.
+# It stores cookies, cache, local storage, and session data for the development server.
+# Size: ~50MB+ (grows with usage). Safe to delete - will be recreated on next CDP browser launch.
+# Purpose: Enables shared browser state across multiple Claude sessions for development.
+.claude/chrome-shared-profile/
+
 # Test results
 test-results/
 playwright-report/

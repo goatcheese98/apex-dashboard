@@ -1,0 +1,15 @@
+#!/bin/bash
+# apex-claude - Start Claude session with Apex Dashboard project
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+
+echo "🚀 Starting Apex Claude Session..."
+
+# Ensure browser is running
+python3 "$SCRIPT_DIR/project-manager.py" --browser-ensure
+
+# Launch Claude with the project
+echo "🤖 Starting Claude Code..."
+cd "$PROJECT_ROOT"
+claude --dir "$PROJECT_ROOT" "$@"

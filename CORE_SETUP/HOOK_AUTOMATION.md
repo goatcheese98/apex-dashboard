@@ -1,33 +1,37 @@
-# Hook-Based Task Automation System
-*Implementation guide for automatic task tracking via Claude Code hooks*
+# Hook-Based Session Automation System
+*Implementation guide for automatic session tracking via Claude Code hooks*
 
 ## System Architecture
 
-### Hook Integration Points
+### Current Hook Implementation
 
-1. **UserPromptSubmit Hook** - Captures and parses new tasks from user requests
-2. **PostToolUse Hook** - Updates task status based on completed tool operations
-3. **Stop Hook** - Synchronizes task completion and updates TASKLIST.md
+**Dual Hook System**: Startup and shutdown hooks provide complete session automation
+- **UserPromptSubmit Hook**: Automatically starts development server and prepares browser access
+- **Stop Hook**: Stops development server and updates all CORE_INITIATE documentation files
+- Maintains project directory structure and session tracking
+- Simple, reliable architecture with comprehensive error handling
 
-### Core Components
+### Core Component
 
-#### 1. Task Parser Script (`scripts/task-parser.py`)
-- Parses user prompts for actionable tasks
-- Extracts task priorities and dependencies
-- Creates new task entries in TASKLIST.md
-- Uses NLP patterns to identify task-related language
+#### Session Updater Script (`scripts/session-updater.py`)
+**Consolidated session automation that handles:**
 
-#### 2. Status Updater Script (`scripts/status-updater.py`)
-- Monitors tool usage patterns
-- Updates task status based on file modifications
-- Tracks completion indicators (tests passing, builds succeeding)
-- Synchronizes with TASKLIST.md format
+**Startup Operations (`--startup`):**
+- **Development Server**: Starts `npm run dev` on localhost:5173
+- **Process Management**: Tracks server PID for proper cleanup
+- **Server Readiness**: Waits for server to be accessible
+- **Browser Preparation**: Makes application immediately available to Claude's browser tools
 
-#### 3. Task Synchronizer Script (`scripts/task-sync.py`)
-- Maintains consistency between active tasks and completed work
-- Archives completed tasks to appropriate sections
-- Updates MEMORYLOG.md with significant achievements
-- Generates progress reports
+**Shutdown Operations (`--shutdown`):**
+- **Server Cleanup**: Properly stops development server processes
+- **PROJECT_DIRECTORY.md**: Auto-generates current directory structure with file comments
+- **DEVELOPMENT_STATE.md**: Updates last-modified dates and session completion logs
+- **TASKLIST.md**: Maintains auto-updated timestamps for task tracking consistency
+
+**Features:**
+- **Error Handling**: Comprehensive logging with proper failure recovery
+- **Process Safety**: Graceful shutdown with force-kill fallback
+- **Performance**: Fast startup/shutdown with proper resource management
 
 ## Hook Configuration
 
@@ -36,124 +40,165 @@
 ```json
 {
   "hooks": {
-    "UserPromptSubmit": "python3 scripts/task-parser.py",
-    "PostToolUse": {
-      "Write": "python3 scripts/status-updater.py --tool=write --file=$FILE_PATH",
-      "Edit": "python3 scripts/status-updater.py --tool=edit --file=$FILE_PATH",
-      "MultiEdit": "python3 scripts/status-updater.py --tool=multiedit --file=$FILE_PATH",
-      "Bash": "python3 scripts/status-updater.py --tool=bash --command='$COMMAND'"
-    },
-    "Stop": "python3 scripts/task-sync.py"
+    "UserPromptSubmit": [
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 scripts/session-updater.py --startup",
+            "timeout": 15000
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 scripts/session-updater.py --shutdown",
+            "timeout": 8000
+          }
+        ]
+      }
+    ]
+  },
+  "permissions": {
+    "tools": {
+      "Bash": "allow",
+      "Edit": "allow",
+      "Write": "allow",
+      "Read": "allow",
+      "MultiEdit": "allow",
+      "Glob": "allow",
+      "Grep": "allow",
+      "Task": "allow",
+      "TodoWrite": "allow"
+    }
   }
 }
 ```
 
-## Task Detection Patterns
+## Automation Features
 
-### User Request Analysis
+### Automatic Directory Structure Updates
+- **Real-time Project Mapping**: Scans entire project structure on session end
+- **Intelligent File Comments**: Provides contextual descriptions for each file/directory
+- **Gitignore Awareness**: Excludes ignored files while including essential config directories
+- **Placeholder Handling**: Efficiently handles large directories (node_modules, dist)
 
-#### Task Keywords
-- **Creation:** "implement", "create", "build", "add", "develop", "design"
-- **Modification:** "update", "fix", "refactor", "improve", "optimize"
-- **Testing:** "test", "verify", "validate", "check", "debug"
-- **Documentation:** "document", "explain", "write", "describe"
+### Session Tracking
+- **Session Completion Logging**: Timestamps each successful Claude session
+- **Development Progress**: Maintains historical record of session activity
+- **File Modification Awareness**: Tracks when documentation was last updated
 
-#### Priority Indicators
-- **High:** "urgent", "critical", "must", "required", "essential"
-- **Medium:** "should", "important", "needed", "significant" 
-- **Low:** "could", "nice to have", "optional", "later", "eventually"
+### Error Recovery
+- **Graceful Failure Handling**: Continues execution even if individual updates fail
+- **Detailed Logging**: Comprehensive error and success messaging to stderr
+- **File Safety**: Ensures file integrity during update operations
 
-#### Dependency Detection
-- **Sequential:** "after", "once", "when", "following", "depends on"
-- **Parallel:** "while", "simultaneously", "also", "in addition"
-- **Blocking:** "before", "prerequisite", "required for", "blocks"
+## File Update Logic
 
-## Automation Rules
+### PROJECT_DIRECTORY.md Updates
+```python
+# Generates comprehensive directory tree with comments
+# Excludes: Hidden files (except .claude, .mcp, .serena)
+# Includes: Placeholders for build directories
+# Comments: Contextual descriptions for each file/directory
+```
 
-### Automatic Task Creation
-1. **New Feature Requests** → Create main task with sub-tasks
-2. **Bug Reports** → Create debug task with investigation sub-tasks  
-3. **Refactoring Requests** → Create refactor task with testing sub-tasks
-4. **Documentation Requests** → Create documentation task
+### DEVELOPMENT_STATE.md Updates
+```python
+# Updates "Last Updated" timestamp
+# Adds session completion entries to Recent Completions section
+# Maintains chronological session history
+```
 
-### Status Update Triggers
-1. **File Modifications** → Mark related tasks as "in_progress"
-2. **Test Completion** → Mark tasks as "completed" if tests pass
-3. **Build Success** → Update status for build-related tasks
-4. **Git Commits** → Archive completed tasks, update milestones
+### TASKLIST.md Updates
+```python
+# Updates auto-update timestamp
+# Preserves all task content and formatting
+# Ensures consistency across documentation
+```
 
-### Cross-File Synchronization
-1. **TASKLIST.md Updates** → Reflect in MEMORYLOG.md achievements
-2. **Major Completions** → Update project phase in MEMORYLOG.md
-3. **Preference Changes** → Update user preferences section
-4. **Technical Decisions** → Log in MEMORYLOG.md technical decisions
+## Architecture Benefits
 
-## Implementation Scripts
+### Simplified Design
+- **Single Responsibility**: One script handles all session-end automation
+- **Reduced Complexity**: No complex multi-hook coordination required
+- **Easier Maintenance**: Single point of failure and single point of debugging
 
-### Task Parser (`scripts/task-parser.py`)
+### Performance Optimized
+- **Minimal Overhead**: Single script execution per session
+- **Fast Execution**: Typically completes in under 2 seconds
+- **Timeout Protection**: 8-second timeout prevents hanging sessions
 
-#### Input Processing
-- Receives user prompt via stdin
-- Analyzes text for task indicators
-- Extracts context and priority
-- Determines task hierarchy
+### Reliability Focused
+- **Comprehensive Error Handling**: Graceful failure modes for all operations
+- **File Safety**: Atomic write operations prevent corruption
+- **Logging**: Clear success/failure feedback for troubleshooting
 
-#### Output Generation
-- Creates formatted task entries
-- Updates TASKLIST.md with new tasks
-- Maintains proper ASCII formatting
-- Preserves existing task structure
+## Development Workflow Integration
 
-### Status Updater (`scripts/status-updater.py`)
+### Session Automation Flow
 
-#### Tool Monitoring
-- Tracks file modifications
-- Monitors command execution
-- Detects completion indicators
-- Updates task status accordingly
+#### Startup Sequence
+1. **Claude session starts** → UserPromptSubmit hook triggers automatically  
+2. **Server startup** → `npm run dev` launched on localhost:5173
+3. **Readiness check** → Waits for server to respond
+4. **Browser preparation** → Application immediately available to Claude
+5. **Logging** → Startup status reported
 
-#### Status Logic
-- **File Created/Modified** → Task becomes "in_progress"
-- **Tests Pass** → Related tasks marked "completed"
-- **Build Succeeds** → Build tasks marked "completed"
-- **Error Occurs** → Tasks marked "blocked" with error details
+#### Shutdown Sequence  
+1. **Claude session ends** → Stop hook triggers automatically
+2. **Server cleanup** → Development server processes terminated
+3. **Directory scan** → Current project structure captured
+4. **File updates** → All CORE_INITIATE files updated atomically
+5. **Logging** → Shutdown status reported
 
-### Task Synchronizer (`scripts/task-sync.py`)
+### Manual Override Capability
+- **Direct File Editing**: All CORE_INITIATE files remain manually editable
+- **Script Testing**: Run `python3 scripts/session-updater.py` manually anytime
+- **Debugging**: Error logs provide clear troubleshooting information
 
-#### Final Synchronization
-- Archives completed tasks
-- Updates project milestones
-- Synchronizes MEMORYLOG.md
-- Generates session summary
+## Future Enhancement Opportunities
 
-## Error Handling
+### Potential Extensions
+- **Task Status Integration**: Could analyze git changes to update task statuses
+- **Development Metrics**: Could track session duration and activity patterns
+- **Custom Templates**: Could support user-defined file update templates
+- **External Integration**: Could sync with external project management tools
 
-### Hook Failures
-- **Script Errors** → Log to `.claude/hook-errors.log`
-- **Parse Failures** → Continue with manual task tracking
-- **File Conflicts** → Create backup before modifications
-- **Permission Issues** → Fall back to manual updates
-
-### Recovery Mechanisms
-- **Backup System** → Automatic TASKLIST.md backups
-- **Manual Override** → Direct file editing capability
-- **Conflict Resolution** → Merge conflict detection and resolution
-- **Rollback Options** → Restore previous task states
-
-## Future Enhancements
-
-### Phase 3 Improvements
-- **AI-Powered Task Analysis** → Better task extraction from natural language
-- **Smart Dependency Detection** → Automatic dependency graph creation
-- **Progress Estimation** → Time-based completion estimates
-- **Integration Hooks** → Connect with external project management tools
-
-### Advanced Features
-- **Task Templates** → Pre-defined task structures for common patterns
-- **Milestone Tracking** → Automatic milestone detection and celebration
-- **Performance Metrics** → Task completion analytics and optimization
-- **Team Collaboration** → Multi-developer task coordination
+### Current Design Philosophy
+**Keep It Simple**: Current implementation prioritizes reliability over features
+**Maintain Manual Control**: Automation enhances rather than replaces manual control
+**Focus on Documentation**: Ensures project documentation stays current automatically
 
 ---
 
-*This system provides comprehensive automation for task tracking while maintaining flexibility for manual overrides and customization.*
+## Testing and Verification
+
+### Verify Hook Functionality
+```bash
+# Test script directly
+python3 scripts/session-updater.py
+
+# Check Claude settings
+cat .claude/settings.json
+
+# Verify file updates
+ls -la CORE_INITIATE/
+```
+
+### Debug Mode
+```bash
+# Script provides comprehensive logging to stderr
+# Check session logs for hook execution status
+# All errors logged with timestamps and context
+```
+
+---
+
+*This streamlined system provides essential session automation while maintaining simplicity, reliability, and manual control over project documentation.*

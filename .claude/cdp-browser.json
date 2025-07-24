@@ -1,0 +1,7 @@
+{
+  "cdp_port": 57290,
+  "ws_endpoint": "ws://localhost:57290/devtools/browser/c3f8b547-f778-4f6b-9f75-5dc855fb187e",
+  "started_at": "2025-07-24T16:36:40.111742",
+  "pid": 72112,
+  "status": "running"
+}

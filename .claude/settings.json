@@ -1,12 +1,24 @@
 {
   "hooks": {
+    "UserPromptSubmit": [
+      {
+        "matcher": ".*",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 scripts/project-manager.py --startup",
+            "timeout": 15000
+          }
+        ]
+      }
+    ],
     "Stop": [
       {
         "matcher": ".*",
         "hooks": [
           {
             "type": "command",
-            "command": "python3 scripts/session-updater.py",
+            "command": "python3 scripts/project-manager.py --shutdown",
             "timeout": 8000
           }
         ]
@@ -25,5 +37,11 @@
       "Task": "allow",
       "TodoWrite": "allow"
     }
+  },
+  "browser": {
+    "coordination_mode": "shared",
+    "allow_multiple_sessions": true,
+    "auto_navigate": false,
+    "use_existing_session": true
   }
 }
