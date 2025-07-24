@@ -6,8 +6,7 @@ At the start of each new conversation or session, you MUST:
 
 1. **Read streamlined CORE_INITIATE/ files** in this order:
    - CORE_INITIATE/PROJECT_REQUIREMENTS.md (complete project vision and core features)
-   - CORE_INITIATE/CURRENT_STATE.md (development phase, stack, and conventions)
-   - CORE_INITIATE/MEMORYLOG.md (project context and user preferences)
+   - CORE_INITIATE/DEVELOPMENT_STATE.md (current phase, progress, and user preferences)
    - CORE_INITIATE/TASKLIST.md (current progress and priorities)
 
 2. **Confirm your understanding** by briefly acknowledging:
@@ -26,8 +25,7 @@ This streamlined approach reduces initialization tokens while maintaining contex
 
 **For Session Initialization:**
 - CORE_INITIATE/PROJECT_REQUIREMENTS.md: Complete project vision, features, and specifications
-- CORE_INITIATE/CURRENT_STATE.md: Development phase, technology stack, and conventions
-- CORE_INITIATE/MEMORYLOG.md: Project context, user preferences, and technical decisions
+- CORE_INITIATE/DEVELOPMENT_STATE.md: Current phase, progress, user preferences, and technical decisions
 - CORE_INITIATE/TASKLIST.md: Current tasks, roadmap, and progress tracking
 
 **For Additional LLM Documentation:**

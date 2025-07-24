@@ -1,67 +1,13 @@
 {
   "hooks": {
-    "UserPromptSubmit": [
-      {
-        "matcher": ".*",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 scripts/task-parser.py",
-            "timeout": 10000
-          }
-        ]
-      }
-    ],
-    "PostToolUse": [
-      {
-        "matcher": "Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 scripts/status-updater.py --tool=write --file=\"$FILE_PATH\"",
-            "timeout": 5000
-          }
-        ]
-      },
-      {
-        "matcher": "Edit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 scripts/status-updater.py --tool=edit --file=\"$FILE_PATH\"",
-            "timeout": 5000
-          }
-        ]
-      },
-      {
-        "matcher": "MultiEdit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 scripts/status-updater.py --tool=multiedit --file=\"$FILE_PATH\"",
-            "timeout": 5000
-          }
-        ]
-      },
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 scripts/status-updater.py --tool=bash --command=\"$COMMAND\"",
-            "timeout": 5000
-          }
-        ]
-      }
-    ],
     "Stop": [
       {
         "matcher": ".*",
         "hooks": [
           {
             "type": "command",
-            "command": "python3 scripts/task-sync.py",
-            "timeout": 10000
+            "command": "python3 scripts/session-updater.py",
+            "timeout": 8000
           }
         ]
       }
