@@ -1,7 +1,0 @@
-{
-  "cdp_port": 9222,
-  "ws_endpoint": "ws://localhost:9222/devtools/browser/6583d4c8-a111-435f-87f6-65b6674ac1b7",
-  "status": "running",
-  "connection_type": "user_chrome",
-  "last_checked": "2025-07-24T19:20:08.421804"
-}

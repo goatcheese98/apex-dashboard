@@ -8,39 +8,35 @@
 **Dock Enhancement Features** - Enlarging dock to 450-500px × 80-90px with timeline prominence
 
 ### Development Server
-localhost:5173 (CDP browser on port 9222 or managed port)
+localhost:5173 (Chrome dev profile on port 9222)
 
-## ✅ Browser Coordination - ENHANCED!
+## ✅ Browser Coordination - Chrome Dev Profile
 
 ### Solution Summary
-Browser coordination now supports TWO approaches: User's Chrome dev profile OR managed CDP browser.
+Browser coordination uses Chrome DevTools Protocol (CDP) with your personal Chrome dev profile for direct visual feedback and multi-project support.
 
-**Option 1: User's Chrome Dev Profile (NEW - Recommended)**
+**Chrome Dev Profile Features:**
 - Launch personal Chrome with debugging flags
 - Direct visual feedback in your browser
 - Works across multiple projects
 - Full browser DevTools access
-
-**Option 2: Managed CDP Browser (Original)**
-- Automated browser lifecycle management
-- Isolated development environment
-- Managed by project scripts
+- Terminal-independent (survives terminal closure)
 
 **How to Use:**
 ```bash
-# Option 1: Launch your Chrome dev profile
+# Step 1: Launch your Chrome dev profile
 ./scripts/launch-dev-chrome.sh
 
-# Option 2: Use managed browser
-./scripts/apex-claud
+# Step 2: Start Claude session
+./scripts/apex-claude
+# or just 'claude' from any directory
 ```
 
 **Key Files:**
-- `scripts/launch-dev-chrome.sh` - Chrome dev profile launcher (NEW)
-- `scripts/project-manager.py` - Unified browser interaction (works with both)
-- `scripts/cdp-browser-lite.py` - Managed browser option
-- `scripts/apex-claud` - Session launcher with auto-browser support
-- `.claude/cdp-browser.json` - Browser connection info
+- `scripts/launch-dev-chrome.sh` - Chrome dev profile launcher
+- `scripts/stop-dev-chrome.sh` - Stop Chrome dev profile
+- `scripts/project-manager.py` - Browser interaction via CDP
+- `scripts/apex-claude` - Session launcher with Chrome detection
 
 ## Implementation Progress
 

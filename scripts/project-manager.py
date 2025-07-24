@@ -26,35 +26,8 @@ class ApexProjectManager:
         self.scripts_dir = self.project_root / "scripts"
         self.claude_dir.mkdir(exist_ok=True)
         
-        # Browser management
-        self.cdp_info_file = self.claude_dir / "cdp-browser.json"
-        self.chrome_user_data = self.claude_dir / "chrome-shared-profile"
-        self.chrome_user_data.mkdir(exist_ok=True)
-        
-        # Chrome paths
-        self.chrome_paths = [
-            "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",  # macOS
-            "/usr/bin/google-chrome",  # Linux
-            "/usr/bin/chromium-browser",  # Linux alternative
-        ]
-        
-    # ===== BROWSER MANAGEMENT =====
+    # ===== CHROME DEV PROFILE CONNECTION =====
     
-    def find_chrome(self):
-        """Find Chrome executable"""
-        for path in self.chrome_paths:
-            if Path(path).exists():
-                return path
-        raise FileNotFoundError("Chrome not found. Please install Google Chrome.")
-        
-    def find_free_port(self):
-        """Find a free port for CDP"""
-        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-            s.bind(('', 0))
-            s.listen(1)
-            port = s.getsockname()[1]
-        return port
-        
     def check_port(self, port):
         """Check if a port is accessible"""
         try:
@@ -63,108 +36,38 @@ class ApexProjectManager:
         except:
             return None
             
-    def start_browser(self):
-        """Start shared Chrome browser with CDP"""
-        chrome_path = self.find_chrome()
-        cdp_port = self.find_free_port()
-        
-        chrome_args = [
-            chrome_path,
-            f"--remote-debugging-port={cdp_port}",
-            f"--user-data-dir={self.chrome_user_data}",
-            f"--remote-allow-origins=http://localhost:{cdp_port}",
-            "--no-first-run",
-            "--disable-default-apps",
-            "--disable-popup-blocking",
-            "--disable-translate",
-            "http://localhost:5173"
-        ]
-        
-        print(f"🚀 Starting shared Chrome browser on CDP port {cdp_port}...")
-        
-        chrome_process = subprocess.Popen(chrome_args, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
-        
-        # Wait for Chrome to start
-        for i in range(10):
-            time.sleep(1)
-            browser_info = self.check_port(cdp_port)
-            if browser_info:
-                break
-        else:
-            print("❌ Chrome failed to start")
-            return None
-            
-        # Save CDP info
-        cdp_info = {
-            "cdp_port": cdp_port,
-            "ws_endpoint": browser_info.get("webSocketDebuggerUrl", f"ws://localhost:{cdp_port}/devtools/browser"),
-            "started_at": datetime.now().isoformat(),
-            "pid": chrome_process.pid,
-            "status": "running"
-        }
-        
-        with open(self.cdp_info_file, 'w') as f:
-            json.dump(cdp_info, f, indent=2)
-            
-        print(f"✅ Browser started on port {cdp_port}")
-        return cdp_info
-        
-    def stop_browser(self):
-        """Stop the shared browser"""
-        try:
-            with open(self.cdp_info_file, 'r') as f:
-                cdp_info = json.load(f)
-                
-            pid = cdp_info.get('pid')
-            if pid:
-                try:
-                    os.kill(pid, signal.SIGTERM)
-                    print(f"✅ Stopped browser (PID: {pid})")
-                except ProcessLookupError:
-                    print(f"⚠️  Browser process {pid} not found")
-                    
-            cdp_info['status'] = 'stopped'
-            with open(self.cdp_info_file, 'w') as f:
-                json.dump(cdp_info, f, indent=2)
-                
-        except Exception as e:
-            print(f"❌ Error stopping browser: {e}")
-            
     def browser_status(self):
-        """Check browser status - now connects to user's Chrome on port 9222"""
-        try:
-            # Check if user's Chrome is running with debugging on port 9222
-            browser_info = self.check_port(9222)
-            if browser_info:
-                # Create/update CDP info for consistency
-                cdp_info = {
-                    "cdp_port": 9222,
-                    "ws_endpoint": browser_info.get("webSocketDebuggerUrl", "ws://localhost:9222/devtools/browser"),
-                    "status": "running",
-                    "connection_type": "user_chrome",
-                    "last_checked": datetime.now().isoformat()
-                }
-                
-                # Save CDP info
-                with open(self.cdp_info_file, 'w') as f:
-                    json.dump(cdp_info, f, indent=2)
-                    
-                return True, cdp_info
-            else:
-                return False, None
-        except Exception:
+        """Check if Chrome dev profile is running on port 9222"""
+        browser_info = self.check_port(9222)
+        if browser_info:
+            # Chrome is running with debugging enabled
+            cdp_info = {
+                "cdp_port": 9222,
+                "ws_endpoint": browser_info.get("webSocketDebuggerUrl", "ws://localhost:9222/devtools/browser"),
+                "status": "running"
+            }
+            return True, cdp_info
+        else:
             return False, None
             
     def ensure_browser(self):
-        """Ensure browser is running - now connects to user's Chrome"""
+        """Ensure Chrome dev profile is running"""
         is_running, cdp_info = self.browser_status()
         
         if is_running:
-            print(f"✅ Connected to user's Chrome on port {cdp_info['cdp_port']}")
+            print(f"✅ Connected to Chrome dev profile on port {cdp_info['cdp_port']}")
             return cdp_info
         else:
-            print("❌ User's Chrome not found on port 9222")
-            print("Please launch Chrome with: /Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome --remote-debugging-port=9222 --user-data-dir=~/dev-chrome")
+            print("❌ Chrome dev profile not found on port 9222")
+            print("")
+            print("Please launch Chrome dev profile with:")
+            print("  ./scripts/launch-dev-chrome.sh")
+            print("")
+            print("Or manually:")
+            print('  "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \\')
+            print('    --remote-debugging-port=9222 \\')
+            print("    --remote-allow-origins='*' \\")
+            print('    --user-data-dir="$HOME/chrome-dev-profile"')
             return None
             
     # ===== SESSION HOOKS =====
@@ -173,14 +76,16 @@ class ApexProjectManager:
         """Called when Claude session starts"""
         print("🚀 Apex Claude Session Starting...")
         
-        # Ensure browser is running
-        cdp_info = self.ensure_browser()
+        # Check if Chrome dev profile is running
+        is_running, cdp_info = self.browser_status()
         
-        # CDP browser is ready for automation
-        if cdp_info:
-            print(f"🔗 CDP browser available on port {cdp_info['cdp_port']}")
-        print("📸 Use: python3 scripts/project-manager.py --screenshot")
-        print("🌐 Use: python3 scripts/project-manager.py --navigate <url>")
+        if is_running:
+            print(f"✅ Chrome dev profile available on port {cdp_info['cdp_port']}")
+            print("📸 Use: python3 scripts/project-manager.py --screenshot")
+            print("🌐 Use: python3 scripts/project-manager.py --navigate <url>")
+        else:
+            print("⚠️  Chrome dev profile not detected")
+            print("Launch with: ./scripts/launch-dev-chrome.sh")
             
         print("✅ Session initialized")
         
@@ -225,8 +130,7 @@ class ApexProjectManager:
         path = Path(path)
         
         # Skip certain directories
-        # chrome-shared-profile: Chrome browser profile data (50MB+) used by CDP browser automation
-        skip_dirs = {'.git', 'node_modules', 'dist', '.nuxt', '.next', 'coverage', '.pytest_cache', '__pycache__', 'chrome-shared-profile'}
+        skip_dirs = {'.git', 'node_modules', 'dist', '.nuxt', '.next', 'coverage', '.pytest_cache', '__pycache__'}
         
         # Get all items
         try:
@@ -393,17 +297,17 @@ class ApexProjectManager:
             return False
     
     def browser_verify(self):
-        """Verify CDP browser connection and show details"""
+        """Verify Chrome dev profile connection"""
         try:
             is_running, cdp_info = self.browser_status()
             if not is_running:
-                print("❌ Browser not running")
+                print("❌ Chrome dev profile not running on port 9222")
+                print("Please launch with: ./scripts/launch-dev-chrome.sh")
                 return False
                 
             tabs = self.get_tabs()
             
-            print(f"✅ Connected to shared browser on port {cdp_info['cdp_port']}")
-            print(f"📋 Browser PID: {cdp_info['pid']}")
+            print(f"✅ Connected to Chrome dev profile on port {cdp_info['cdp_port']}")
             print(f"🔗 WebSocket: {cdp_info['ws_endpoint']}")
             print(f"📑 Active tabs: {len(tabs)}")
             
@@ -653,13 +557,7 @@ class ApexProjectManager:
             return None
 
 def main():
-    parser = argparse.ArgumentParser(description='Apex Dashboard Project Manager')
-    
-    # Browser commands
-    parser.add_argument('--browser-start', action='store_true', help='Start shared browser')
-    parser.add_argument('--browser-stop', action='store_true', help='Stop shared browser')
-    parser.add_argument('--browser-status', action='store_true', help='Check browser status')
-    parser.add_argument('--browser-ensure', action='store_true', help='Ensure browser is running')
+    parser = argparse.ArgumentParser(description='Apex Dashboard Project Manager - Chrome Dev Profile Integration')
     
     # Session hooks
     parser.add_argument('--startup', action='store_true', help='Session startup hook')
@@ -686,19 +584,7 @@ def main():
     manager = ApexProjectManager()
     
     # Execute commands
-    if args.browser_start:
-        manager.start_browser()
-    elif args.browser_stop:
-        manager.stop_browser()
-    elif args.browser_status:
-        is_running, cdp_info = manager.browser_status()
-        if is_running:
-            print(f"✅ Browser running on port {cdp_info['cdp_port']}")
-        else:
-            print("❌ Browser not running")
-    elif args.browser_ensure:
-        manager.ensure_browser()
-    elif args.startup:
+    if args.startup:
         manager.session_startup()
     elif args.shutdown:
         manager.session_shutdown()
@@ -729,20 +615,23 @@ def main():
     else:
         # Default: show status
         is_running, cdp_info = manager.browser_status()
-        print("Apex Dashboard Project Manager")
-        print("=" * 40)
+        print("Apex Dashboard Project Manager - Chrome Dev Profile Integration")
+        print("=" * 60)
         if is_running:
-            print(f"✅ Browser: Running on port {cdp_info['cdp_port']}")
+            print(f"✅ Chrome dev profile: Connected on port {cdp_info['cdp_port']}")
         else:
-            print("❌ Browser: Not running")
-        print("\nUse --help for available commands")
-        print("\nNew interaction commands:")
-        print("  --scroll [up|down|left|right|top|bottom]")
-        print("  --click x,y")
-        print("  --type 'text to type'")
-        print("  --key [Enter|Escape|Space|ArrowUp|ArrowDown|etc.]")
-        print("  --evaluate 'JavaScript expression'")
-        print("  --reload")
+            print("❌ Chrome dev profile: Not running")
+            print("\nLaunch with: ./scripts/launch-dev-chrome.sh")
+        print("\nAvailable commands:")
+        print("  --screenshot          Take a screenshot")
+        print("  --navigate <url>      Navigate to URL")
+        print("  --verify              Verify connection")
+        print("  --reload              Reload current page")
+        print("  --scroll <direction>  Scroll page")
+        print("  --click x,y           Click at coordinates")
+        print("  --type 'text'         Type text")
+        print("  --key <key>           Press key")
+        print("\nUse --help for all options")
 
 if __name__ == '__main__':
     main()

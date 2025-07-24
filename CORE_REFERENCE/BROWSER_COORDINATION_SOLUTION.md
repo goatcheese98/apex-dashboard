@@ -1,22 +1,30 @@
-# 🎯 Browser Coordination Solution - ENHANCED!
+# 🎯 Chrome Dev Profile Browser Solution
 
-## The Problem We Fixed
-Multiple Claude sessions couldn't share the same browser because Playwright MCP creates isolated browser contexts for each session. No amount of signal files or coordination scripts could overcome this architectural limitation.
+## The Problem We Solved
+Multiple Claude sessions couldn't share the same browser because Playwright MCP creates isolated browser contexts for each session. We needed a way to have direct visual feedback and browser control across sessions.
 
-## The Solutions: Two Approaches
+## The Solution: Chrome Dev Profile with CDP
 
-### Option 1: User's Chrome Dev Profile (NEW - Recommended)
-Perfect for developers who want direct visual feedback and multi-project support.
-
-#### How It Works
+### How It Works
 1. **Your Chrome Instance**: Launch your personal Chrome with debugging flags
 2. **Chrome DevTools Protocol**: Chrome exposes CDP on port 9222
 3. **Direct Control**: See all changes in real-time in your browser
 4. **Multi-Project**: One browser for all your development projects
+5. **Multi-Session**: All Claude sessions connect to the same Chrome instance
 
-#### Setup
+### Key Benefits
+- **Visual Development**: See changes as Claude makes them
+- **DevTools Access**: Use Chrome DevTools alongside Claude
+- **Multi-Project**: One browser for all your projects
+- **Manual Override**: You can interact directly when needed
+- **Terminal Independent**: Chrome survives terminal closure
+- **No Process Management**: Chrome stays open between sessions
+
+## Setup Instructions
+
+### 1. Launch Chrome Dev Profile
 ```bash
-# Use the launcher script
+# Recommended: Use the launcher script
 ./scripts/launch-dev-chrome.sh
 
 # Or manually:
@@ -28,126 +36,110 @@ Perfect for developers who want direct visual feedback and multi-project support
   --no-default-browser-check
 ```
 
-### Option 2: Managed CDP Browser (Original)
-Automated browser lifecycle management for hands-off operation.
+This launches Chrome with:
+- Remote debugging enabled on port 9222
+- A separate profile at `~/chrome-dev-profile`
+- WebSocket access from any origin
+- Terminal-independent process (uses `nohup`)
 
-#### How It Works
-1. **External Chrome Instance**: We launch Chrome OUTSIDE of Claude/Playwright MCP
-2. **Chrome DevTools Protocol**: Chrome exposes CDP on a dynamic port
-3. **Multiple Connections**: ALL Claude sessions connect to the SAME Chrome instance
-4. **True Sharing**: Changes in one session are immediately visible to all others
-
-### Key Components
-
-#### 1. CDP Browser Server (`scripts/cdp-browser-server.py`)
-- Launches a persistent Chrome instance with CDP enabled
-- Saves connection info to `.claude/cdp-browser.json`
-- Manages browser lifecycle (start/stop/status)
-
-#### 2. CDP Browser Client (`scripts/cdp-browser-client.py`)
-- Connects Claude sessions to the shared browser
-- Provides simple commands: navigate, screenshot, verify
-- Uses WebSocket connection to CDP endpoint
-
-#### 3. Apex-Claud Command (`scripts/apex-claud`)
-- Ensures shared browser is running before starting Claude
-- Creates connection instructions for the session
-- Launches Claude with proper context
-
-## Usage Instructions
-
-### Starting Your First Session
+### 2. Start Claude Session
 ```bash
-# Use the apex-claud command
-./scripts/apex-claud
+# Use apex-claude (checks Chrome and navigates to localhost:5173)
+./scripts/apex-claude
+
+# Or just run claude from anywhere
+claude
 ```
 
-This will:
-1. Check if shared browser is running
-2. Start it if needed
-3. Launch Claude with connection instructions
-
-### Starting Additional Sessions
+### 3. Stop Chrome When Done
 ```bash
-# Just run apex-claud again in new terminal
-./scripts/apex-claud
+# Use the stop script
+./scripts/stop-dev-chrome.sh
+
+# Or manually: kill $(cat ~/.chrome-dev-pid)
 ```
 
-Additional sessions will:
-1. Detect the existing shared browser
-2. Connect to it (no new browser launched!)
-3. Share the same browser state
+## Key Components
 
-### Interacting with the Browser
+### launch-dev-chrome.sh
+- Launches Chrome with debugging enabled
+- Uses `nohup` for terminal independence
+- Saves PID to `~/.chrome-dev-pid`
+- Checks if Chrome already running
+- Verifies successful launch
 
-#### From Any Claude Session:
+### project-manager.py
+- Connects to Chrome on port 9222
+- Provides CDP commands: navigate, screenshot, click, type, etc.
+- Works with any project using the same Chrome instance
+- No browser lifecycle management needed
+
+### apex-claude
+- Checks if Chrome dev profile is running
+- Navigates to localhost:5173
+- Takes initial screenshot
+- Launches Claude with project context
+
+## Usage Examples
+
+### Basic Commands
 ```bash
 # Verify connection
-python scripts/cdp-browser-client.py --verify
-
-# Navigate to URL
-python scripts/cdp-browser-client.py --navigate "http://localhost:5173"
+python3 scripts/project-manager.py --verify
 
 # Take screenshot
-python scripts/cdp-browser-client.py --screenshot
+python3 scripts/project-manager.py --screenshot
+
+# Navigate to URL
+python3 scripts/project-manager.py --navigate "http://localhost:3000"
+
+# Interact with page
+python3 scripts/project-manager.py --click 450,300
+python3 scripts/project-manager.py --type "search query"
+python3 scripts/project-manager.py --scroll down
 ```
 
-### Managing the Browser
-
+### Multi-Project Workflow
 ```bash
-# Check browser status
-python scripts/cdp-browser-server.py --status
+# Terminal 1: Launch Chrome once
+cd ~/Projects/any-project
+~/Projects/apex-dashboard/scripts/launch-dev-chrome.sh
 
-# Manually start browser
-python scripts/cdp-browser-server.py --start
+# Terminal 2: Work on React project
+cd ~/Projects/react-app
+claude  # Chrome at localhost:9222 is available
 
-# Stop browser
-python scripts/cdp-browser-server.py --stop
+# Terminal 3: Work on Vue project  
+cd ~/Projects/vue-app
+claude  # Same Chrome instance!
 ```
-
-## Why This Works
-
-1. **Single Browser Instance**: Only ONE Chrome process runs, regardless of Claude sessions
-2. **CDP Protocol**: Industry-standard protocol for browser automation
-3. **No Playwright Isolation**: We bypass Playwright MCP's session isolation
-4. **True State Sharing**: All sessions see the same tabs, same content, same state
-
-## Benefits of User's Chrome Dev Profile (Option 1)
-
-1. **Visual Development**: See changes as Claude makes them
-2. **DevTools Access**: Use Chrome DevTools alongside Claude
-3. **Multi-Project**: One browser for all your projects
-4. **Manual Override**: You can interact directly when needed
-5. **Familiar Environment**: Your bookmarks, extensions (isolated profile)
-6. **No Process Management**: Chrome stays open between sessions
-
-## Important Notes
-
-- **DO NOT** use Playwright MCP browser commands anymore
-- **DO NOT** try to launch browsers with `mcp__playwright__browser_navigate`
-- **DO** use the CDP client for all browser interactions
-- The browser persists across Claude session restarts
-- If browser crashes, any session can restart it
 
 ## Troubleshooting
 
-### "Browser not running" error
+### "Chrome not found on port 9222"
 ```bash
-python scripts/cdp-browser-server.py --start
+# Check if Chrome is running
+curl http://localhost:9222/json/version
+
+# If not, launch it:
+./scripts/launch-dev-chrome.sh
 ```
 
-### "Cannot connect" error
-Check if Chrome process is actually running:
+### Chrome won't start
 ```bash
-ps aux | grep "chrome.*remote-debugging"
+# Check if port 9222 is in use
+lsof -i :9222
+
+# Kill any existing Chrome on 9222
+kill $(lsof -ti :9222)
+
+# Try again
+./scripts/launch-dev-chrome.sh
 ```
 
-### Clean restart
-```bash
-python scripts/cdp-browser-server.py --stop
-python scripts/cdp-browser-server.py --start
-```
+### Multiple Chrome profiles running
+Keep your personal Chrome separate from dev Chrome - they can run simultaneously without conflicts.
 
 ---
 
-This solution permanently fixes the multi-Claude browser coordination issue. No more conflicts!
+This solution provides a clean, reliable way to share a browser across Claude sessions while maintaining direct visual feedback and control.

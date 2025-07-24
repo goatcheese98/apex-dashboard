@@ -10,11 +10,10 @@ At the start of each new conversation or session, you MUST:
    - CORE_INITIATE/TASKLIST.md (current progress and priorities)
    - CORE_INITIATE/PROJECT_DIRECTORY.md (latest directory tree)
 
-2. **Initialize CDP Browser Environment** automatically:
-   - Verify CDP browser connection: `python3 scripts/project-manager.py --verify`
-   - Take initial screenshot: `python3 scripts/project-manager.py --screenshot`
-   - Navigate if needed: `python3 scripts/project-manager.py --navigate http://localhost:5173`
-   - This provides shared browser automation across all Claude sessions
+2. **Check Chrome Dev Profile Connection**:
+   - Note if Chrome dev profile is available on port 9222
+   - Browser automation is available via `python3 scripts/project-manager.py` commands
+   - No automatic navigation or screenshots needed - browser state is persistent
 
 3. **Confirm your understanding** by briefly acknowledging:
    - Project type and main objectives
@@ -27,14 +26,13 @@ At the start of each new conversation or session, you MUST:
    - CSS_GUIDELINES.md (styling architecture)
    - PLAYWRIGHT_WORKFLOW.md (debugging protocols)
 
-## CDP Browser Automation System
+## Chrome Dev Profile Browser Automation
 
-### Browser Setup - Two Options
+### Browser Setup
 
-#### Option 1: User's Chrome Dev Profile (Recommended)
-Launch your own Chrome with debugging enabled:
+Launch your Chrome dev profile with debugging enabled:
 ```bash
-# Launch Chrome with CDP debugging (or use the helper script)
+# Launch Chrome with CDP debugging (recommended)
 ./scripts/launch-dev-chrome.sh
 
 # Or manually:
@@ -46,11 +44,14 @@ Launch your own Chrome with debugging enabled:
   --no-default-browser-check
 ```
 
-#### Option 2: Managed CDP Browser
-Use the automated CDP browser system:
+### Starting Claude Sessions
+Once Chrome is running with debugging enabled:
 ```bash
-# Start with apex-claud command
-./scripts/apex-claud
+# Use apex-claude to start a session
+./scripts/apex-claude
+
+# Or just run claude from any directory
+claude
 ```
 
 ### Available Commands

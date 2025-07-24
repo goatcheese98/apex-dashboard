@@ -3,27 +3,13 @@
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
+CURRENT_DIR="$(pwd)"
 
 echo "🚀 Starting Apex Claude Session..."
-echo "📍 Project: $PROJECT_ROOT"
 
 # Check if Chrome dev profile is running on port 9222
-echo "🔍 Checking for Chrome dev profile on port 9222..."
 if curl -s http://localhost:9222/json/version > /dev/null 2>&1; then
-    echo "✅ Chrome dev profile is running!"
-    
-    # Navigate to localhost:5173
-    echo "🌐 Navigating to http://localhost:5173..."
-    python3 "$SCRIPT_DIR/project-manager.py" --navigate "http://localhost:5173"
-    
-    # Wait a moment for page to load
-    sleep 2
-    
-    # Take a screenshot
-    echo "📸 Taking screenshot to verify setup..."
-    python3 "$SCRIPT_DIR/project-manager.py" --screenshot
-    
-    echo "✅ Browser setup complete!"
+    echo "✅ Chrome dev profile connected on port 9222"
 else
     echo "❌ Chrome dev profile not found on port 9222"
     echo ""
@@ -34,8 +20,14 @@ else
     exit 1
 fi
 
+# Check if we're already in the project directory
+if [ "$CURRENT_DIR" = "$PROJECT_ROOT" ]; then
+    echo "📍 Already in apex-dashboard directory"
+else
+    echo "📂 Changing to apex-dashboard directory..."
+    cd "$PROJECT_ROOT"
+fi
+
 # Launch Claude with the project
-echo ""
-echo "🤖 Starting Claude Code..."
-cd "$PROJECT_ROOT"
-claude --dir "$PROJECT_ROOT" "$@"
+echo "🤖 Starting Claude Code with project context..."
+claude "$@"

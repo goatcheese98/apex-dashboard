@@ -37,11 +37,5 @@
       "Task": "allow",
       "TodoWrite": "allow"
     }
-  },
-  "browser": {
-    "coordination_mode": "shared",
-    "allow_multiple_sessions": true,
-    "auto_navigate": false,
-    "use_existing_session": true
   }
 }
