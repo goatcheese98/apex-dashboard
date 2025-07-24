@@ -10,22 +10,47 @@ At the start of each new conversation or session, you MUST:
    - CORE_INITIATE/TASKLIST.md (current progress and priorities)
    - CORE_INITIATE/PROJECT_DIRECTORY.md (latest directory tree)
 
-2. **Initialize Playwright Chrome Environment** automatically:
-   - Check for `.claude/browser-ready.signal` file existence
-   - If signal file exists, immediately launch Playwright browser via `mcp__playwright__browser_navigate`
-   - Navigate to `http://localhost:5173` for development monitoring
-   - This provides automatic browser session for testing and monitoring
+2. **Initialize CDP Browser Environment** automatically:
+   - Verify CDP browser connection: `python3 scripts/project-manager.py --verify`
+   - Take initial screenshot: `python3 scripts/project-manager.py --screenshot`
+   - Navigate if needed: `python3 scripts/project-manager.py --navigate http://localhost:5173`
+   - This provides shared browser automation across all Claude sessions
 
 3. **Confirm your understanding** by briefly acknowledging:
    - Project type and main objectives
    - Current development phase and active tasks
    - Technology stack and key conventions
-   - Browser environment status (if launched)
+   - CDP browser environment status and capabilities
 
 4. **Access detailed guides when needed** from CORE_SETUP/:
    - VUE_RULEKIT.md (Vue development patterns)
    - CSS_GUIDELINES.md (styling architecture)
    - PLAYWRIGHT_WORKFLOW.md (debugging protocols)
+
+## CDP Browser Automation System
+
+### Available Commands
+- **Screenshot:** `python3 scripts/project-manager.py --screenshot`
+- **Navigate:** `python3 scripts/project-manager.py --navigate <url>`
+- **Verify Connection:** `python3 scripts/project-manager.py --verify`
+- **Browser Management:** `--browser-start`, `--browser-stop`, `--browser-status`
+
+### Key Features
+- **True Session Sharing:** All Claude sessions use the same browser instance
+- **No Conflicts:** No "browser in use" errors between sessions
+- **Visual Monitoring:** Screenshots for development verification
+- **Navigation Control:** Programmatic page navigation
+- **Persistent State:** Browser survives Claude session restarts
+
+### Usage Examples
+```bash
+# Verify browser is running and take screenshot
+python3 scripts/project-manager.py --verify
+python3 scripts/project-manager.py --screenshot
+
+# Navigate to different pages
+python3 scripts/project-manager.py --navigate http://localhost:5173/dock-iterations
+```
 
 ## Core Reference Files
 
