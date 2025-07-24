@@ -29,17 +29,44 @@ At the start of each new conversation or session, you MUST:
 
 ## CDP Browser Automation System
 
+### Browser Setup - Two Options
+
+#### Option 1: User's Chrome Dev Profile (Recommended)
+Launch your own Chrome with debugging enabled:
+```bash
+# Launch Chrome with CDP debugging (or use the helper script)
+./scripts/launch-dev-chrome.sh
+
+# Or manually:
+"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
+  --remote-debugging-port=9222 \
+  --remote-allow-origins='*' \
+  --user-data-dir="$HOME/chrome-dev-profile" \
+  --no-first-run \
+  --no-default-browser-check
+```
+
+#### Option 2: Managed CDP Browser
+Use the automated CDP browser system:
+```bash
+# Start with apex-claud command
+./scripts/apex-claud
+```
+
 ### Available Commands
 - **Screenshot:** `python3 scripts/project-manager.py --screenshot`
 - **Navigate:** `python3 scripts/project-manager.py --navigate <url>`
 - **Verify Connection:** `python3 scripts/project-manager.py --verify`
-- **Browser Management:** `--browser-start`, `--browser-stop`, `--browser-status`
+- **Reload:** `python3 scripts/project-manager.py --reload`
+- **Scroll:** `python3 scripts/project-manager.py --scroll [up|down|left|right]`
+- **Click:** `python3 scripts/project-manager.py --click x,y`
+- **Type:** `python3 scripts/project-manager.py --type "text"`
 
 ### Key Features
-- **True Session Sharing:** All Claude sessions use the same browser instance
-- **No Conflicts:** No "browser in use" errors between sessions
+- **Direct Browser Control:** See changes in your actual Chrome browser
+- **Multi-Project Support:** One browser instance for all development projects
 - **Visual Monitoring:** Screenshots for development verification
-- **Navigation Control:** Programmatic page navigation
+- **Full Interaction:** Click, type, scroll, and navigate programmatically
 - **Persistent State:** Browser survives Claude session restarts
 
 ### Usage Examples
@@ -50,6 +77,11 @@ python3 scripts/project-manager.py --screenshot
 
 # Navigate to different pages
 python3 scripts/project-manager.py --navigate http://localhost:5173/dock-iterations
+
+# Interact with the page
+python3 scripts/project-manager.py --click 450,300
+python3 scripts/project-manager.py --type "search query"
+python3 scripts/project-manager.py --scroll down
 ```
 
 ## Core Reference Files

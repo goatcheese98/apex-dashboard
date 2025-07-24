@@ -1,13 +1,39 @@
-# 🎯 Browser Coordination Solution - SOLVED!
+# 🎯 Browser Coordination Solution - ENHANCED!
 
 ## The Problem We Fixed
 Multiple Claude sessions couldn't share the same browser because Playwright MCP creates isolated browser contexts for each session. No amount of signal files or coordination scripts could overcome this architectural limitation.
 
-## The Solution: CDP-Based Shared Browser
+## The Solutions: Two Approaches
 
-### How It Works
+### Option 1: User's Chrome Dev Profile (NEW - Recommended)
+Perfect for developers who want direct visual feedback and multi-project support.
+
+#### How It Works
+1. **Your Chrome Instance**: Launch your personal Chrome with debugging flags
+2. **Chrome DevTools Protocol**: Chrome exposes CDP on port 9222
+3. **Direct Control**: See all changes in real-time in your browser
+4. **Multi-Project**: One browser for all your development projects
+
+#### Setup
+```bash
+# Use the launcher script
+./scripts/launch-dev-chrome.sh
+
+# Or manually:
+"/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" \
+  --remote-debugging-port=9222 \
+  --remote-allow-origins='*' \
+  --user-data-dir="$HOME/chrome-dev-profile" \
+  --no-first-run \
+  --no-default-browser-check
+```
+
+### Option 2: Managed CDP Browser (Original)
+Automated browser lifecycle management for hands-off operation.
+
+#### How It Works
 1. **External Chrome Instance**: We launch Chrome OUTSIDE of Claude/Playwright MCP
-2. **Chrome DevTools Protocol**: Chrome exposes CDP on a specific port
+2. **Chrome DevTools Protocol**: Chrome exposes CDP on a dynamic port
 3. **Multiple Connections**: ALL Claude sessions connect to the SAME Chrome instance
 4. **True Sharing**: Changes in one session are immediately visible to all others
 
@@ -85,6 +111,15 @@ python scripts/cdp-browser-server.py --stop
 2. **CDP Protocol**: Industry-standard protocol for browser automation
 3. **No Playwright Isolation**: We bypass Playwright MCP's session isolation
 4. **True State Sharing**: All sessions see the same tabs, same content, same state
+
+## Benefits of User's Chrome Dev Profile (Option 1)
+
+1. **Visual Development**: See changes as Claude makes them
+2. **DevTools Access**: Use Chrome DevTools alongside Claude
+3. **Multi-Project**: One browser for all your projects
+4. **Manual Override**: You can interact directly when needed
+5. **Familiar Environment**: Your bookmarks, extensions (isolated profile)
+6. **No Process Management**: Chrome stays open between sessions
 
 ## Important Notes
 

@@ -131,37 +131,41 @@ class ApexProjectManager:
             print(f"❌ Error stopping browser: {e}")
             
     def browser_status(self):
-        """Check browser status"""
+        """Check browser status - now connects to user's Chrome on port 9222"""
         try:
-            with open(self.cdp_info_file, 'r') as f:
-                cdp_info = json.load(f)
+            # Check if user's Chrome is running with debugging on port 9222
+            browser_info = self.check_port(9222)
+            if browser_info:
+                # Create/update CDP info for consistency
+                cdp_info = {
+                    "cdp_port": 9222,
+                    "ws_endpoint": browser_info.get("webSocketDebuggerUrl", "ws://localhost:9222/devtools/browser"),
+                    "status": "running",
+                    "connection_type": "user_chrome",
+                    "last_checked": datetime.now().isoformat()
+                }
                 
-            if cdp_info.get('status') != 'running':
-                return False, cdp_info
-                
-            pid = cdp_info.get('pid')
-            if pid:
-                try:
-                    os.kill(pid, 0)  # Check if process exists
-                    if self.check_port(cdp_info.get('cdp_port')):
-                        return True, cdp_info
-                except ProcessLookupError:
-                    pass
+                # Save CDP info
+                with open(self.cdp_info_file, 'w') as f:
+                    json.dump(cdp_info, f, indent=2)
                     
-            return False, cdp_info
-        except FileNotFoundError:
+                return True, cdp_info
+            else:
+                return False, None
+        except Exception:
             return False, None
             
     def ensure_browser(self):
-        """Ensure browser is running"""
+        """Ensure browser is running - now connects to user's Chrome"""
         is_running, cdp_info = self.browser_status()
         
         if is_running:
-            print(f"✅ Browser already running on port {cdp_info['cdp_port']}")
+            print(f"✅ Connected to user's Chrome on port {cdp_info['cdp_port']}")
             return cdp_info
         else:
-            print("🔄 Starting browser...")
-            return self.start_browser()
+            print("❌ User's Chrome not found on port 9222")
+            print("Please launch Chrome with: /Applications/Google\\ Chrome.app/Contents/MacOS/Google\\ Chrome --remote-debugging-port=9222 --user-data-dir=~/dev-chrome")
+            return None
             
     # ===== SESSION HOOKS =====
     

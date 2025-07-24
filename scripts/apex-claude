@@ -1,15 +1,41 @@
 #!/bin/bash
-# apex-claude - Start Claude session with Apex Dashboard project
+# apex-claude - Start Claude session with Apex Dashboard project using Chrome dev profile
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
 
 echo "🚀 Starting Apex Claude Session..."
+echo "📍 Project: $PROJECT_ROOT"
 
-# Ensure browser is running
-python3 "$SCRIPT_DIR/project-manager.py" --browser-ensure
+# Check if Chrome dev profile is running on port 9222
+echo "🔍 Checking for Chrome dev profile on port 9222..."
+if curl -s http://localhost:9222/json/version > /dev/null 2>&1; then
+    echo "✅ Chrome dev profile is running!"
+    
+    # Navigate to localhost:5173
+    echo "🌐 Navigating to http://localhost:5173..."
+    python3 "$SCRIPT_DIR/project-manager.py" --navigate "http://localhost:5173"
+    
+    # Wait a moment for page to load
+    sleep 2
+    
+    # Take a screenshot
+    echo "📸 Taking screenshot to verify setup..."
+    python3 "$SCRIPT_DIR/project-manager.py" --screenshot
+    
+    echo "✅ Browser setup complete!"
+else
+    echo "❌ Chrome dev profile not found on port 9222"
+    echo ""
+    echo "Please launch Chrome dev profile first:"
+    echo "  $SCRIPT_DIR/launch-dev-chrome.sh"
+    echo ""
+    echo "Then run apex-claude again."
+    exit 1
+fi
 
 # Launch Claude with the project
+echo ""
 echo "🤖 Starting Claude Code..."
 cd "$PROJECT_ROOT"
 claude --dir "$PROJECT_ROOT" "$@"

@@ -8,28 +8,37 @@
 **Dock Enhancement Features** - Enlarging dock to 450-500px × 80-90px with timeline prominence
 
 ### Development Server
-localhost:5173 (CDP browser running on port 57290)
+localhost:5173 (CDP browser on port 9222 or managed port)
 
-## ✅ Browser Coordination - SOLVED!
+## ✅ Browser Coordination - ENHANCED!
 
 ### Solution Summary
-The multi-Claude browser coordination issue has been permanently resolved using Chrome DevTools Protocol (CDP).
+Browser coordination now supports TWO approaches: User's Chrome dev profile OR managed CDP browser.
 
-**Implementation:**
-- Single Chrome instance launched outside Claude/Playwright MCP
-- All Claude sessions connect via CDP WebSocket
-- True browser state sharing - no isolation
-- Zero conflicts between sessions
+**Option 1: User's Chrome Dev Profile (NEW - Recommended)**
+- Launch personal Chrome with debugging flags
+- Direct visual feedback in your browser
+- Works across multiple projects
+- Full browser DevTools access
+
+**Option 2: Managed CDP Browser (Original)**
+- Automated browser lifecycle management
+- Isolated development environment
+- Managed by project scripts
 
 **How to Use:**
 ```bash
-# Start any Claude session with:
+# Option 1: Launch your Chrome dev profile
+./scripts/launch-dev-chrome.sh
+
+# Option 2: Use managed browser
 ./scripts/apex-claud
 ```
 
 **Key Files:**
-- `scripts/cdp-browser-lite.py` - Browser manager (no dependencies)
-- `scripts/cdp-browser-client.py` - Browser interaction client
+- `scripts/launch-dev-chrome.sh` - Chrome dev profile launcher (NEW)
+- `scripts/project-manager.py` - Unified browser interaction (works with both)
+- `scripts/cdp-browser-lite.py` - Managed browser option
 - `scripts/apex-claud` - Session launcher with auto-browser support
 - `.claude/cdp-browser.json` - Browser connection info
 

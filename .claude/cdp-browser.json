@@ -1,7 +1,7 @@
 {
-  "cdp_port": 64000,
-  "ws_endpoint": "ws://localhost:64000/devtools/browser/a477e29e-8ff7-4eba-bcdd-213cb75ac1a6",
-  "started_at": "2025-07-24T17:44:09.447174",
-  "pid": 87008,
-  "status": "running"
+  "cdp_port": 9222,
+  "ws_endpoint": "ws://localhost:9222/devtools/browser/6583d4c8-a111-435f-87f6-65b6674ac1b7",
+  "status": "running",
+  "connection_type": "user_chrome",
+  "last_checked": "2025-07-24T19:20:08.421804"
 }
