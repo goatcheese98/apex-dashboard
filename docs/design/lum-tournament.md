@@ -34,3 +34,5 @@ Screens show a user-selected Top 5 at Game 4 for composition; default is all 20.
 ![Mobile dark standings](screens/320-dark-standings.png)
 
 Imported player labels use stable IDs because the supplied JSON schema does not link roster names to statistics IDs. Generated sample names retain an explicit generator-owned mapping. [Imported identity regression capture](screens/1440-dark-imported-identity.png).
+
+[Team-scoped shared player-ID regression capture](screens/1440-dark-shared-player-ids.png): distinct team/player points and labels remain stable through timeline and metric ranking changes.

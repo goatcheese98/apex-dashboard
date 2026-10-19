@@ -1,6 +1,6 @@
 # Scope and verification
 
-Only `goatcheese98/apex-dashboard` is changed. Branch: `codex/lum-dashboard-workspace`, based on current default `main` at `ee8a53665e32ef6bd564f7a3e51f05e84df81a47`, matching the restored source inventory. Original checkout was clean. One draft PR contains a separately verified foundation commit followed by the complete workspace and a focused imported-player identity correction. No merge, release, provider request, secret provisioning or deployment was performed.
+Only `goatcheese98/apex-dashboard` is changed. Branch: `codex/lum-dashboard-workspace`, based on current default `main` at `ee8a53665e32ef6bd564f7a3e51f05e84df81a47`, matching the restored source inventory. Original checkout was clean. One draft PR contains a separately verified foundation commit followed by the complete workspace and focused imported-player name/key identity corrections. No merge, release, provider request, secret provisioning or deployment was performed.
 
 Restored helper SHA-256 fingerprints (read only, not rerun):
 
@@ -26,7 +26,7 @@ Dependencies reused from the restored Apex setup copy via an ignored node_module
 | --- | --- | --- |
 | `npm run typecheck` | 0 | Strict Vue application plus strict browser-test/ESLint tool config |
 | `npm run lint` | 0 | Read-only flat config, no `--fix` |
-| `npm run test -- --run --maxWorkers=2` | 0 | 13 tests across 3 files, including original five |
+| `npm run test -- --run --maxWorkers=2` | 0 | 14 tests across 4 files, including original five |
 | `npm run build` | 0 | Static Vite output; development routes and optional sibling imports excluded |
 | `APEX_TEST_URL=http://127.0.0.1:5176 CHROMIUM_PATH=/usr/bin/chromium npm run test:browser` | 0 | Production preview, six viewport/theme combinations and reduced-motion/storage checks |
 | `git diff --check` | 0 | No whitespace errors |
@@ -55,3 +55,9 @@ The browser matrix exercises home-to-tournament navigation, default 20 teams, to
 Coordinator review of `b7258d92b3888d2c29f362198c08a0e6da6f30ff` identified positional name assignment after accumulation by stable ID. The two new regressions failed before repair (2 failed / 5 passed in the focused domain suite). A three-game/two-player fixture now verifies reversed ordering, a missing player, cumulative and individual modes and game filters. A store/composable regression verifies correct generated sample labels under reordered/missing stats and clears source-specific names on reimport of identical IDs. The browser matrix verifies imported IDs and exact values in both scatter and damage views, plus preserved generated sample names, at all six viewport/theme combinations. The JSON schema is unchanged; no positional identity contract is claimed.
 
 [Cloud capture: imported player ID with individual-game values](screens/1440-dark-imported-identity.png). Existing eight sample captures remain unchanged because the correction preserves their generated sample names and layout.
+
+## Team-scoped scatter keys
+
+Coordinator review of `8355341d4c96c1d686c41bfe9dacafe372b5bda0` found that SVG and player-list loops used a player-only Vue key even though IDs are team-scoped. Both loops now share `JSON.stringify([teamId, playerId])`, retaining a stable, collision-safe tuple key without changing the accepted schema. A new component regression failed before repair: a ranking change rendered five buttons for four players. It now verifies preservation of every SVG/list DOM node, exact labels/values, selected-team state, triangulation and no duplicate-key warnings through timeline, metric/ranking and cumulative/individual updates. Its fixture includes two teams sharing `p1` and the delimiter-collision pair `(a, b:c)` / `(a:b, c)`.
+
+The full cloud browser matrix repeats that import and the same updates in all six width/theme combinations, checking both overlapping `p1` labels/values, original button nodes, selected-team state, triangulation and duplicate-key console messages. [Cloud capture](screens/1440-dark-shared-player-ids.png). The earlier imported-name regressions remain green. No other chart calculation, schema or production behavior was rewritten.

@@ -22,6 +22,20 @@ const identityFixture = {
       playerStats: stats.map(p => ({ playerId: p.playerId, kills: p.n, damage: p.n * 100, damageTaken: p.n * 10 })) }],
   })),
 }
+const sharedTeams = [
+  { id: 'a', name: 'Alpha', players: ['Unlinked A', 'Unlinked B'], color: '#123456' },
+  { id: 'b', name: 'Beta', players: ['Unlinked C'], color: '#654321' },
+  { id: 'a:b', name: 'Gamma', players: ['Unlinked D'], color: '#456789' },
+]
+const sharedPlayerFixture = {
+  id: 'shared-ids', name: 'Shared player IDs', teams: sharedTeams, totalGames: 2,
+  games: [0, 1].map(index => ({ gameNumber: index + 1, teams: sharedTeams.map((team, teamIndex) => {
+    const values = index ? [[8, 1], [1], [0]][teamIndex] : [[1, 4], [2], [3]][teamIndex]
+    const playerStats = values.map((n, i) => ({ playerId: [['p1', 'b:c'], ['p1'], ['c']][teamIndex][i], kills: n, damage: n * 100, damageTaken: n * 10 }))
+    const kills = values.reduce((sum, n) => sum + n, 0)
+    return { teamId: team.id, placement: teamIndex + 1, points: (index ? [0, 20, 50] : [30, 20, 10])[teamIndex], kills, damage: kills * 100, playerStats }
+  }) })),
+}
 async function upload(page: Page, data: unknown) {
   await page.getByLabel('Import tournament JSON', { exact: true }).setInputFiles({ name: 'tournament.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(data)) })
 }
@@ -32,6 +46,7 @@ try {
       const context = await browser.newContext({ viewport: { width, height: 900 }, colorScheme: theme as 'light' | 'dark' })
       const page = await context.newPage()
       page.on('pageerror', error => errors.push(error.message))
+      page.on('console', message => { if (/duplicate.*key/i.test(message.text())) errors.push(message.text()) })
       await page.goto(`${process.env.APEX_TEST_URL ?? 'http://127.0.0.1:5174'}/`)
       assert.equal(await page.getByText(/System Online|^Live$/).count(), 0)
       await page.getByRole('link', { name: 'Explore EWC 2025 sample' }).click()
@@ -113,6 +128,41 @@ try {
       await expectText(page, 'Alpha / player-1 · 3 kills · 300 damage')
       assert.equal(await page.locator('.player-list button').count(), 1)
       if (width === 1440 && theme === 'dark') await page.screenshot({ path: `${output}/1440-dark-imported-identity.png`, fullPage: true })
+      await upload(page, sharedPlayerFixture)
+      await expectText(page, 'Tournaments / Shared player IDs')
+      await page.getByRole('slider').fill('1')
+      await page.getByLabel('Calculation').selectOption('true')
+      const beta = page.getByRole('button', { name: /^Beta \/ p1 ·/ })
+      const alpha = page.getByRole('button', { name: /^Alpha \/ p1 ·/ })
+      const betaNode = await beta.elementHandle(), alphaNode = await alpha.elementHandle()
+      await beta.click()
+      await page.mouse.move(0, 0)
+      for (const [game, metric, individual] of [[2, 'points', false], [2, 'damage', false], [1, 'kills', false], [2, 'points', true]] as const) {
+        await page.getByRole('slider').fill(String(game))
+        await page.getByLabel('Metric', { exact: true }).selectOption(metric)
+        await page.getByLabel('Calculation').selectOption(String(!individual))
+        const buttons = page.locator('.player-list button')
+        assert.equal(await buttons.count(), 4)
+        const expected: Record<string, number> = {
+          'Alpha / p1': individual ? 8 : game === 2 ? 9 : 1,
+          'Alpha / b:c': individual ? 1 : game === 2 ? 5 : 4,
+          'Beta / p1': individual ? 1 : game === 2 ? 3 : 2,
+          'Gamma / c': individual ? 0 : 3,
+        }
+        const labels = await buttons.allTextContents()
+        for (const label of labels) {
+          const identity = label.split(' · ')[0], kills = expected[identity]
+          assert.equal(label, `${identity} · ${kills} kills · ${(kills * 100).toLocaleString('en-US')} damage`)
+        }
+        assert.equal(await beta.evaluate((node, original) => node === original, betaNode), true)
+        assert.equal(await alpha.evaluate((node, original) => node === original, alphaNode), true)
+        assert.equal(await beta.getAttribute('aria-pressed'), 'true')
+        assert.equal(await page.locator('.player-list button[aria-pressed="true"]').count(), 1)
+        const circle = page.locator('svg g').nth(labels.findIndex(label => label.startsWith('Beta / p1'))).locator('circle')
+        assert.equal(await page.locator('polygon').getAttribute('points'), `${await circle.getAttribute('cx')},${await circle.getAttribute('cy')}`)
+      }
+      await betaNode?.dispose(); await alphaNode?.dispose()
+      if (width === 1440 && theme === 'dark') await page.screenshot({ path: `${output}/1440-dark-shared-player-ids.png`, fullPage: true })
       await upload(page, { ...fixture, games: [] })
       await expectText(page, 'No games available')
       await context.close()
