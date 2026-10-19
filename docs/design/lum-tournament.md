@@ -32,3 +32,5 @@ Screens show a user-selected Top 5 at Game 4 for composition; default is all 20.
 ![Desktop light standings](screens/1440-light-standings.png)
 
 ![Mobile dark standings](screens/320-dark-standings.png)
+
+Imported player labels use stable IDs because the supplied JSON schema does not link roster names to statistics IDs. Generated sample names retain an explicit generator-owned mapping. [Imported identity regression capture](screens/1440-dark-imported-identity.png).

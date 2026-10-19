@@ -14,6 +14,14 @@ const fixture = {
     { teamId: 'b', placement: 1, points: 15, kills: 3, damage: 300, playerStats: [{ playerId: 'bea', kills: 3, damage: 300, damageTaken: 90 }] },
   ] })),
 }
+const identityFixture = {
+  id: 'ewc-2025', name: 'Identity import', totalGames: 2,
+  teams: [{ id: 'team-1', name: 'Alpha', players: ['Ada', 'Bea'], color: '#123456' }],
+  games: [[{ playerId: 'player-2', n: 2 }, { playerId: 'player-1', n: 1 }], [{ playerId: 'player-1', n: 3 }]].map((stats, index) => ({
+    gameNumber: index + 1, teams: [{ teamId: 'team-1', placement: 1, points: 10, kills: 0, damage: 0,
+      playerStats: stats.map(p => ({ playerId: p.playerId, kills: p.n, damage: p.n * 100, damageTaken: p.n * 10 })) }],
+  })),
+}
 async function upload(page: Page, data: unknown) {
   await page.getByLabel('Import tournament JSON', { exact: true }).setInputFiles({ name: 'tournament.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(data)) })
 }
@@ -49,6 +57,7 @@ try {
       assert.equal(await page.getByRole('slider').inputValue(), '3')
       await page.getByRole('button', { name: 'Kills & damage', exact: true }).click()
       await page.getByLabel('Triangulate teammates').check()
+      assert.match(await page.locator('.player-list button').first().innerText(), /Team \d+ \/ Player \d+/)
       await page.locator('.player-list button').first().focus()
       assert.equal(await page.locator('polygon').count(), 1)
       assert.equal(await page.locator('.chart-region').evaluate(e => e.scrollTop), 0, 'Keyboard player selection must keep the plot visible')
@@ -74,7 +83,7 @@ try {
       await page.getByRole('button', { name: 'Damage analysis', exact: true }).click()
       await expectText(page, '200')
       await page.getByRole('button', { name: 'Kills & damage', exact: true }).click()
-      await expectText(page, 'Alpha / Ada · 2 kills · 200 damage')
+      await expectText(page, 'Alpha / ada · 2 kills · 200 damage')
       await page.getByText('Filter games & teams', { exact: true }).click()
       await page.getByLabel('Game 1', { exact: true }).check()
       await expectText(page, 'No matching games or teams at this position.')
@@ -86,6 +95,24 @@ try {
       await page.getByRole('alert').waitFor()
       await page.getByRole('combobox', { name: 'Choose tournament' }).selectOption('ewc-2025')
       await expectText(page, 'Tournaments / EWC 2025')
+      await upload(page, identityFixture)
+      await expectText(page, 'Tournaments / Identity import')
+      await page.getByRole('slider').fill('2')
+      await page.getByLabel('Calculation').selectOption('true')
+      await expectText(page, 'Alpha / player-1 · 4 kills · 400 damage')
+      await expectText(page, 'Alpha / player-2 · 2 kills · 200 damage')
+      await page.getByRole('button', { name: 'Damage analysis', exact: true }).click()
+      const breakdown = page.getByRole('list', { name: 'Player damage breakdown' })
+      assert.match(await breakdown.innerText(), /player-1\s+Given 400 \/ Taken 40/)
+      assert.match(await breakdown.innerText(), /player-2\s+Given 200 \/ Taken 20/)
+      assert.doesNotMatch(await breakdown.innerText(), /Ada|Bea/)
+      await page.getByLabel('Calculation').selectOption('false')
+      assert.match(await breakdown.innerText(), /player-1\s+Given 300 \/ Taken 30/)
+      assert.doesNotMatch(await breakdown.innerText(), /player-2/)
+      await page.getByRole('button', { name: 'Kills & damage', exact: true }).click()
+      await expectText(page, 'Alpha / player-1 · 3 kills · 300 damage')
+      assert.equal(await page.locator('.player-list button').count(), 1)
+      if (width === 1440 && theme === 'dark') await page.screenshot({ path: `${output}/1440-dark-imported-identity.png`, fullPage: true })
       await upload(page, { ...fixture, games: [] })
       await expectText(page, 'No games available')
       await context.close()

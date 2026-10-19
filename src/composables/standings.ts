@@ -8,7 +8,7 @@ export function useStandings() {
   const rows = computed(() => {
     const data = tournament.currentTournament
     if (!data) return []
-    let teams = summarize(data, dock.currentGameIndex, dock.cumulative, tournament.selectedGames)
+    let teams = summarize(data, dock.currentGameIndex, dock.cumulative, tournament.selectedGames, tournament.playerNames)
     teams.sort((a,b) => b[dock.metric]-a[dock.metric] || a.name.localeCompare(b.name))
     if (dock.selectedTeams.length) teams = teams.filter(t => dock.selectedTeams.includes(t.id))
     return dock.teamDisplayLimit ? teams.slice(0, dock.teamDisplayLimit) : teams

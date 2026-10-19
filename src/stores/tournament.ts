@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
-import { parseTournament } from '@/domain/tournament'
+import { parseTournament, type PlayerNamesByTeam } from '@/domain/tournament'
 
 export interface TeamData {
   id: string
@@ -41,6 +41,7 @@ export const useTournamentStore = defineStore('tournament', () => {
   const isLoading = ref(false)
   const error = ref<string | null>(null)
   const dataSource = ref('Sample data')
+  const playerNames = ref<PlayerNamesByTeam>(new Map())
   let requestVersion = 0
 
   // Getters
@@ -102,16 +103,21 @@ export const useTournamentStore = defineStore('tournament', () => {
     try {
       if (tournamentId !== 'ewc-2025') throw new Error('Unknown tournament. Choose the EWC sample or import JSON')
       // Preserve the existing generated dataset, explicitly labeled as sample data.
+      const sampleNames = new Map<string, Map<string, string>>()
       const mockData: TournamentData = {
         id: tournamentId,
         name: 'EWC 2025',
         totalGames: 10,
-        teams: Array.from({ length: 20 }, (_, i) => ({
-          id: `team-${i + 1}`,
-          name: `Team ${i + 1}`,
-          players: [`Player ${i * 3 + 1}`, `Player ${i * 3 + 2}`, `Player ${i * 3 + 3}`],
-          color: `hsl(${(i * 18) % 360}, 70%, 60%)`,
-        })),
+        teams: Array.from({ length: 20 }, (_, i) => {
+          const teamId = `team-${i + 1}`
+          // This generator owns both IDs and names; external roster order supplies no such contract.
+          const names = new Map(Array.from({ length: 3 }, (_, playerIndex) => {
+            const number = i * 3 + playerIndex + 1
+            return [`player-${number}`, `Player ${number}`] as const
+          }))
+          sampleNames.set(teamId, names)
+          return { id: teamId, name: `Team ${i + 1}`, players: [...names.values()], color: `hsl(${(i * 18) % 360}, 70%, 60%)` }
+        }),
         games: Array.from({ length: 10 }, (_, gameIndex) => ({
           gameNumber: gameIndex + 1,
           teams: Array.from({ length: 20 }, (_, teamIndex) => ({
@@ -131,6 +137,7 @@ export const useTournamentStore = defineStore('tournament', () => {
       }
 
       currentTournament.value = parseTournament(mockData)
+      playerNames.value = sampleNames
       dataSource.value = 'Sample data'
       selectedGames.value = [] // Show all games by default
     } catch (err) {
@@ -145,6 +152,7 @@ export const useTournamentStore = defineStore('tournament', () => {
     ++requestVersion
     currentTournament.value = parsed
     dataSource.value = 'Imported JSON'
+    playerNames.value = new Map()
     selectedGames.value = []
     error.value = null
     isLoading.value = false
@@ -171,6 +179,7 @@ export const useTournamentStore = defineStore('tournament', () => {
     // State
     currentTournament,
     dataSource,
+    playerNames,
     importTournament,
     selectedGames,
     isLoading,

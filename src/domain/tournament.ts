@@ -4,6 +4,7 @@ export interface PlayerSummary { id: string; name: string; kills: number; damage
 export interface TeamSummary {
   id: string; name: string; color: string; points: number; kills: number; damage: number; damageTaken: number; players: PlayerSummary[]
 }
+export type PlayerNamesByTeam = ReadonlyMap<string, ReadonlyMap<string, string>>
 export type Metric = 'points' | 'kills' | 'damage'
 
 // JSON import is the only external boundary in this slice. No provider is connected.
@@ -57,7 +58,8 @@ export function parseTournament(input: unknown): TournamentData {
   return { id: text(root.id), name: text(root.name), totalGames, teams, games }
 }
 
-export function summarize(tournament: TournamentData, game: number, cumulative: boolean, filters: number[]): TeamSummary[] {
+// Imported rosters do not link names to IDs. Only a trusted source may supply an explicit identity map.
+export function summarize(tournament: TournamentData, game: number, cumulative: boolean, filters: number[], playerNames?: PlayerNamesByTeam): TeamSummary[] {
   const current = Math.max(0, Math.min(tournament.totalGames, Math.floor(game)))
   return tournament.teams.map(team => {
     const result: TeamSummary = { id: team.id, name: team.name, color: team.color, points: 0, kills: 0, damage: 0, damageTaken: 0, players: [] }
@@ -66,10 +68,10 @@ export function summarize(tournament: TournamentData, game: number, cumulative: 
       const entry = g.teams.find(t => t.teamId === team.id)
       if (!entry) continue
       result.points += entry.points; result.kills += entry.kills; result.damage += entry.damage
-      entry.playerStats.forEach((p, index) => {
+      entry.playerStats.forEach(p => {
         let player = result.players.find(player => player.id === p.playerId)
         if (!player) {
-          player = { id: p.playerId, name: team.players[index] ?? p.playerId, kills: 0, damage: 0, damageTaken: 0 }
+          player = { id: p.playerId, name: playerNames?.get(team.id)?.get(p.playerId) ?? p.playerId, kills: 0, damage: 0, damageTaken: 0 }
           result.players.push(player)
         }
         player.kills += p.kills; player.damage += p.damage; player.damageTaken += p.damageTaken

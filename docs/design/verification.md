@@ -1,6 +1,6 @@
 # Scope and verification
 
-Only `goatcheese98/apex-dashboard` is changed. Branch: `codex/lum-dashboard-workspace`, based on current default `main` at `ee8a53665e32ef6bd564f7a3e51f05e84df81a47`, matching the restored source inventory. Original checkout was clean. One draft PR contains a separately verified foundation commit followed by the complete workspace. No merge, release, provider request, secret provisioning or deployment was performed.
+Only `goatcheese98/apex-dashboard` is changed. Branch: `codex/lum-dashboard-workspace`, based on current default `main` at `ee8a53665e32ef6bd564f7a3e51f05e84df81a47`, matching the restored source inventory. Original checkout was clean. One draft PR contains a separately verified foundation commit followed by the complete workspace and a focused imported-player identity correction. No merge, release, provider request, secret provisioning or deployment was performed.
 
 Restored helper SHA-256 fingerprints (read only, not rerun):
 
@@ -26,7 +26,7 @@ Dependencies reused from the restored Apex setup copy via an ignored node_module
 | --- | --- | --- |
 | `npm run typecheck` | 0 | Strict Vue application plus strict browser-test/ESLint tool config |
 | `npm run lint` | 0 | Read-only flat config, no `--fix` |
-| `npm run test -- --run --maxWorkers=2` | 0 | 11 tests across 3 files, including original five |
+| `npm run test -- --run --maxWorkers=2` | 0 | 13 tests across 3 files, including original five |
 | `npm run build` | 0 | Static Vite output; development routes and optional sibling imports excluded |
 | `APEX_TEST_URL=http://127.0.0.1:5176 CHROMIUM_PATH=/usr/bin/chromium npm run test:browser` | 0 | Production preview, six viewport/theme combinations and reduced-motion/storage checks |
 | `git diff --check` | 0 | No whitespace errors |
@@ -40,7 +40,7 @@ The browser matrix exercises home-to-tournament navigation, default 20 teams, to
 ## Limits and review
 
 - No API/AI provider is connected. Original generated sample is labeled; JSON import is an explicit alternate source. No fake accounts, live status, prize money, live metrics or AI controls remain on the production journey. Original Node-only MCP prototype is untouched and excluded from browser bundles.
-- JSON follows existing `TournamentData` (`id`, `name`, `totalGames`, `teams`, `games`). Runtime validation enforces finite nonnegative values, bounded arrays/numbers, unique IDs/game numbers, valid team references and safe color syntax; import is capped at 2 MB. `teams[].players` supplies display names in the corresponding playerStats order; original schema has no independent ID-to-name map. The implementation does not silently reconcile inconsistent supplied team/player totals.
+- JSON follows existing `TournamentData` (`id`, `name`, `totalGames`, `teams`, `games`). Runtime validation enforces finite nonnegative values, bounded arrays/numbers, unique IDs/game numbers, valid team references and safe color syntax; import is capped at 2 MB. The original schema has no ID-to-name association: imported player statistics are labeled by stable `playerId`, never by roster position. Only the internal sample generator supplies a separate explicit ID-to-name map; a successful import always clears it, even if tournament/team/player IDs match the sample. Roster names remain accepted as metadata, not inferred player identity. The implementation does not silently reconcile inconsistent supplied team/player totals.
 - This is not a full-repository migration. Strict typecheck covers all source, including retained experiments. Read-only lint excludes large development-only pages, the preexisting malformed `Icon.spec.vue` non-test artifact, generated declarations and personal shell/Python helpers; original Node MCP `any`/unused prototype declarations are explicitly exempted. New calculation, import, UI and browser code is typed.
 - Dock experiments, Library and Lab remain development routes. The undeclared optional sibling library now reports unavailability when absent; no sibling source was edited or copied. Production Vite output contains no Component Forge integration. Existing experiment layouts retain legacy theme rules, isolated from the product.
 - Reviewed calculations, external parsing, request lifecycle, route/source changes, playback cleanup, accessible controls, theme persistence and production bundle boundaries. No embedded credentials are consumed. Fonts carry licenses. No secret/dependency/build directories are committed.
@@ -49,3 +49,9 @@ The browser matrix exercises home-to-tournament navigation, default 20 teams, to
 - With browser storage denied, Vite's development client errors before application startup; the actual production build passes the same condition. This is a development-tool limitation.
 - Cloudflare Pages can consume `dist` after `npm ci` / `npm run build` (verified static output). The history-router preview handles direct tournament paths locally. Keep SPA fallback enabled when configuring hosting. No Cloudflare account, Wrangler command, Worker adapter or hosted route behavior was tested; no deployment is claimed or triggered by this task.
 - The supplied Paper PNG remains unavailable. No PR attachment app tool is exposed in this session; review links and repository screenshot links are supplied directly.
+
+## Imported player identity correction
+
+Coordinator review of `b7258d92b3888d2c29f362198c08a0e6da6f30ff` identified positional name assignment after accumulation by stable ID. The two new regressions failed before repair (2 failed / 5 passed in the focused domain suite). A three-game/two-player fixture now verifies reversed ordering, a missing player, cumulative and individual modes and game filters. A store/composable regression verifies correct generated sample labels under reordered/missing stats and clears source-specific names on reimport of identical IDs. The browser matrix verifies imported IDs and exact values in both scatter and damage views, plus preserved generated sample names, at all six viewport/theme combinations. The JSON schema is unchanged; no positional identity contract is claimed.
+
+[Cloud capture: imported player ID with individual-game values](screens/1440-dark-imported-identity.png). Existing eight sample captures remain unchanged because the correction preserves their generated sample names and layout.
