@@ -1,82 +1,22 @@
 <script setup lang="ts">
 import { computed } from 'vue'
-import { useTournamentStore } from '@/stores/tournament'
-import { useDockStore } from '@/stores/dock'
-
-defineOptions({
-  name: 'DamageAnalysis'
-})
-
-const tournamentStore = useTournamentStore()
-const dockStore = useDockStore()
-
-const currentGameProgress = computed(() => {
-  const totalGames = tournamentStore.currentTournament?.totalGames || 10
-  return Math.floor((dockStore.timelinePosition / 100) * totalGames)
-})
+import { useStandings } from '@/composables/standings'
+const { rows, dock } = useStandings()
+function playerTotal(team: { players: { damage: number }[] }) { return team.players.reduce((sum,p) => sum+p.damage, 0) }
+const max = computed(() => Math.max(1, ...rows.value.flatMap(t => [t.damage, t.damageTaken, t.players.reduce((sum,p) => sum+p.damage, 0)])))
 </script>
-
 <template>
-  <div class="w-full h-full p-8 flex flex-col">
-    <!-- Header -->
-    <div class="mb-8">
-      <h1 class="text-3xl font-bold text-apex-red mb-2">Damage Analysis Dashboard</h1>
-      <p class="text-apex-light/60">
-        {{ tournamentStore.currentTournament?.name }} - 
-        Cumulative damage tracking through Game {{ Math.max(1, currentGameProgress) }}
-      </p>
-    </div>
-    
-    <!-- Chart area -->
-    <div class="flex-1 bg-apex-dark/30 rounded-2xl border border-apex-red/10 p-6">
-      <div class="h-full flex items-center justify-center">
-        <!-- Placeholder visualization -->
-        <div class="text-center space-y-6 max-w-2xl">
-          <div class="text-8xl opacity-20">⚔️</div>
-          
-          <div class="space-y-4">
-            <h3 class="text-2xl font-semibold text-apex-red">Team & Player Damage Analysis</h3>
-            <p class="text-apex-light/70">
-              This visualization will show cumulative damage given and taken by each team,
-              with expandable breakdowns for individual player contributions within teams.
-            </p>
-          </div>
-          
-          <!-- Mock features preview -->
-          <div class="bg-apex-dark/50 rounded-lg p-4 space-y-4">
-            <h4 class="text-sm font-medium text-apex-light/80 mb-3">Features</h4>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
-              <div class="space-y-2">
-                <div class="flex items-center space-x-2 text-apex-red/80">
-                  <span>📈</span>
-                  <span>Team damage totals</span>
-                </div>
-                <div class="flex items-center space-x-2 text-apex-blue/80">
-                  <span>👥</span>
-                  <span>Player breakdowns</span>
-                </div>
-              </div>
-              
-              <div class="space-y-2">
-                <div class="flex items-center space-x-2 text-apex-purple/80">
-                  <span>🎯</span>
-                  <span>Damage given vs taken</span>
-                </div>
-                <div class="flex items-center space-x-2 text-apex-orange/80">
-                  <span>📊</span>
-                  <span>Cumulative progression</span>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <!-- Timeline sync indicator -->
-          <div class="text-sm text-apex-light/60 bg-apex-dark/30 rounded-lg p-3">
-            🔄 Synchronized with timeline controls and game filters
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <section aria-label="Damage analysis" class="damage-rows">
+    <p class="muted">Solid: damage given · Outlined: damage taken. Both scales start at zero.</p>
+    <article v-for="team in rows" :key="team.id" class="damage-team">
+      <h2>{{ team.name }}</h2>
+      <div class="damage-line"><span>Given</span><div class="bar-track" aria-hidden="true"><div class="race-bar" :style="{ width: `${team.damage / max * 100}%` }" /></div><span class="number">{{ team.damage.toLocaleString() }}</span></div>
+      <div class="damage-line"><span>Taken</span><div class="bar-track" aria-hidden="true"><div class="taken-bar" :style="{ width: `${team.damageTaken / max * 100}%` }" /></div><span class="number">{{ team.damageTaken.toLocaleString() }}</span></div>
+      <div v-if="dock.playerBreakdown" class="damage-line"><span>Players</span><div class="bar-track player-stack" aria-hidden="true" :style="{ width: `${playerTotal(team) / max * 100}%` }"><span v-for="(player, index) in team.players" :key="player.id" :style="{ flex: player.damage, background: index % 2 ? 'var(--mut)' : 'var(--fg)' }" /></div><span class="number">{{ playerTotal(team).toLocaleString() }}</span></div>
+      <p v-if="dock.playerBreakdown && playerTotal(team) !== team.damage" class="muted">Player sum differs from the supplied team total.</p>
+      <ul v-if="dock.playerBreakdown" class="player-list" aria-label="Player damage breakdown">
+        <li v-for="player in team.players" :key="player.id">{{ player.name }} <span class="number">Given {{ player.damage.toLocaleString() }} / Taken {{ player.damageTaken.toLocaleString() }}</span></li>
+      </ul>
+    </article>
+  </section>
 </template>

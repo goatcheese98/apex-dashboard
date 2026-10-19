@@ -2,7 +2,7 @@ import vue from 'eslint-plugin-vue'
 import { defineConfigWithVueTs, vueTsConfigs } from '@vue/eslint-config-typescript'
 
 export default defineConfigWithVueTs(
-  { ignores: ['node_modules/**', 'dist/**', 'work/**', 'src/views/**', 'src/pages/dock-iterations.vue', 'src/pages/tailwind-test.vue', 'scripts/**', 'env.d.ts', 'src/components/ui/Icon.spec.vue'] },
+  { ignores: ['node_modules/**', 'dist/**', 'work/**', 'src/views/**', 'src/pages/dock-iterations.vue', 'src/pages/tailwind-test.vue', 'env.d.ts', 'src/components/ui/Icon.spec.vue'] },
   vue.configs['flat/essential'],
   vueTsConfigs.recommended,
   { rules: { '@typescript-eslint/no-unused-vars': ['error', { argsIgnorePattern: '^_', varsIgnorePattern: '^_' }] } },

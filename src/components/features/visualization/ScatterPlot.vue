@@ -1,107 +1,27 @@
 <script setup lang="ts">
-import { computed } from 'vue'
-import { useTournamentStore } from '@/stores/tournament'
-import { useDockStore } from '@/stores/dock'
-
-defineOptions({
-  name: 'ScatterPlot'
-})
-
-const tournamentStore = useTournamentStore()
-const dockStore = useDockStore()
-
-const currentGameProgress = computed(() => {
-  const totalGames = tournamentStore.currentTournament?.totalGames || 10
-  return Math.floor((dockStore.timelinePosition / 100) * totalGames)
-})
+import { computed, ref } from 'vue'
+import { useStandings } from '@/composables/standings'
+const { rows, dock } = useStandings()
+const selected = ref<string | null>(null)
+const points = computed(() => rows.value.flatMap(t => t.players.map((p, index) => ({ ...p, teamId: t.id, teamName: t.name, color: t.color, index }))))
+const maxX = computed(() => Math.max(1, ...points.value.map(p => p.kills)))
+const maxY = computed(() => Math.max(1, ...points.value.map(p => p.damage)))
+function x(kills: number) { return 60 + kills / maxX.value * 670 }
+function y(damage: number) { return 330 - damage / maxY.value * 290 }
+const triangle = computed(() => points.value.filter(p => p.teamId === selected.value).map(p => `${x(p.kills)},${y(p.damage)}`).join(' '))
 </script>
-
 <template>
-  <div class="w-full h-full p-8 flex flex-col">
-    <!-- Header -->
-    <div class="mb-8">
-      <h1 class="text-3xl font-bold text-apex-purple mb-2">Performance Scatter Plot</h1>
-      <p class="text-apex-light/60">
-        {{ tournamentStore.currentTournament?.name }} - 
-        Kills vs Damage analysis through Game {{ Math.max(1, currentGameProgress) }}
-      </p>
-    </div>
-    
-    <!-- Chart area -->
-    <div class="flex-1 bg-apex-dark/30 rounded-2xl border border-apex-purple/10 p-6">
-      <div class="h-full flex items-center justify-center">
-        <!-- Placeholder visualization -->
-        <div class="text-center space-y-6 max-w-2xl">
-          <div class="text-8xl opacity-20">📈</div>
-          
-          <div class="space-y-4">
-            <h3 class="text-2xl font-semibold text-apex-purple">Kills vs Damage Scatter Plot</h3>
-            <p class="text-apex-light/70">
-              Interactive scatter plot showing the relationship between kills and damage for teams and players.
-              Points will animate and grow as the tournament progresses, showing cumulative performance changes.
-            </p>
-          </div>
-          
-          <!-- Mock axes preview -->
-          <div class="bg-apex-dark/50 rounded-lg p-6">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 text-sm">
-              <!-- Y-axis info -->
-              <div class="space-y-2">
-                <h4 class="font-medium text-apex-light/80 flex items-center space-x-2">
-                  <span>📊</span>
-                  <span>Y-Axis: Damage</span>
-                </h4>
-                <ul class="text-apex-light/60 space-y-1 text-xs">
-                  <li>• Cumulative damage dealt</li>
-                  <li>• Updates with timeline</li>
-                  <li>• Team or player level</li>
-                </ul>
-              </div>
-              
-              <!-- X-axis info -->
-              <div class="space-y-2">
-                <h4 class="font-medium text-apex-light/80 flex items-center space-x-2">
-                  <span>🎯</span>
-                  <span>X-Axis: Kills</span>
-                </h4>
-                <ul class="text-apex-light/60 space-y-1 text-xs">
-                  <li>• Cumulative kill count</li>
-                  <li>• Synchronized progression</li>
-                  <li>• Interactive data points</li>
-                </ul>
-              </div>
-            </div>
-            
-            <!-- Mock scatter points preview -->
-            <div class="mt-6 relative h-32 bg-apex-dark/30 rounded border border-apex-purple/20">
-              <div class="absolute inset-4">
-                <!-- Mock data points -->
-                <div 
-                  v-for="i in 12" 
-                  :key="i"
-                  class="absolute w-2 h-2 rounded-full opacity-60"
-                  :style="{
-                    backgroundColor: `hsl(${(i * 30) % 360}, 70%, 60%)`,
-                    left: `${Math.random() * 80 + 10}%`,
-                    top: `${Math.random() * 80 + 10}%`,
-                  }"
-                />
-              </div>
-            </div>
-          </div>
-          
-          <!-- Interactive features -->
-          <div class="text-sm text-apex-light/60 bg-apex-dark/30 rounded-lg p-3 space-y-2">
-            <p>🖱️ <strong>Interactive Features:</strong></p>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-2 text-xs">
-              <span>• Click points for details</span>
-              <span>• Hover for team/player info</span>
-              <span>• Zoom and pan support</span>
-              <span>• Performance trajectory trails</span>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+  <section aria-label="Kills and damage scatter plot">
+    <p class="muted">Player kills (horizontal) × damage given (vertical). Select a player below to inspect teammates.</p>
+    <svg viewBox="0 0 800 390" class="scatter" role="img" aria-label="Player kills versus damage; exact values in the player list below">
+      <path d="M60 30V330H750" fill="none" stroke="var(--mut)" />
+      <text x="40" y="350">0</text><text x="710" y="360">{{ maxX }} kills</text><text x="60" y="20">{{ maxY.toLocaleString() }} damage</text>
+      <polygon v-if="dock.triangulation && triangle" :points="triangle" fill="var(--panel2)" stroke="var(--fg)" stroke-dasharray="6 4" />
+      <g v-for="point in points" :key="point.id">
+        <circle :cx="x(point.kills)" :cy="y(point.damage)" r="6" :fill="point.color" stroke="var(--fg)" @mouseenter="selected = point.teamId" @click="selected = point.teamId" />
+        <text v-if="selected === point.teamId" :text-anchor="x(point.kills) > 500 ? 'end' : 'start'" :x="x(point.kills) + (x(point.kills) > 500 ? -9 : 9)" :y="y(point.damage) + (y(point.damage) < 70 ? 18 : -9)">{{ point.teamName }} / {{ point.index + 1 }}</text>
+      </g>
+    </svg>
+    <ul class="player-list"><li v-for="point in points" :key="point.id"><button :aria-pressed="selected === point.teamId" @focus="selected = point.teamId" @mouseenter="selected = point.teamId" @click="selected = point.teamId">{{ point.teamName }} / {{ point.name }} · {{ point.kills }} kills · {{ point.damage.toLocaleString() }} damage</button></li></ul>
+  </section>
 </template>

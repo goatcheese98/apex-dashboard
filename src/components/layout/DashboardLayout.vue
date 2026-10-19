@@ -1,43 +1,35 @@
 <script setup lang="ts">
-defineOptions({
-  name: 'DashboardLayout'
-})
-</script>
-
-<template>
-  <div class="min-h-screen bg-apex-dark">
-    <!-- Header -->
-    <header class="border-b border-apex-orange/10 bg-apex-dark/80 backdrop-blur-sm sticky top-0 z-50">
-      <div class="container mx-auto px-6 py-4">
-        <div class="flex items-center justify-between">
-          <div class="flex items-center space-x-4">
-            <h1 class="text-xl font-bold text-apex-orange">Apex Dashboard</h1>
-          </div>
-          
-          <nav class="hidden md:flex items-center space-x-6">
-            <RouterLink 
-              to="/" 
-              class="text-apex-light/80 hover:text-apex-orange transition-colors"
-            >
-              Home
-            </RouterLink>
-          </nav>
-        </div>
-      </div>
-    </header>
-
-    <!-- Main content -->
-    <main class="flex-1">
-      <slot />
-    </main>
-  </div>
-</template>
-
-<script lang="ts">
-import { RouterLink } from 'vue-router'
-export default {
-  components: {
-    RouterLink
-  }
+import { useRoute, useRouter } from 'vue-router'
+import { useTournamentStore } from '@/stores/tournament'
+const route = useRoute(), router = useRouter(), tournament = useTournamentStore()
+const isDevelopment = import.meta.env.DEV
+function choose(event: Event) {
+  const id = (event.target as HTMLSelectElement).value
+  if (id === 'ewc-2025' && tournament.dataSource === 'Imported JSON') void tournament.loadTournament(id)
+  if (id) router.push(`/tournament/${encodeURIComponent(id)}`)
 }
 </script>
+<template>
+  <div class="lum-workspace">
+    <a class="skip-link" href="#workspace">Skip to analysis</a>
+    <aside class="lum-sidebar">
+      <RouterLink class="brand" to="/">Apex / Analysis</RouterLink>
+      <label class="tournament-choice">Tournaments
+        <select aria-label="Choose tournament" :value="tournament.dataSource === 'Imported JSON' ? tournament.currentTournament?.id : route.params.tournamentId ?? ''" @change="choose">
+          <option value="" disabled>Choose tournament</option>
+          <option value="ewc-2025">EWC 2025 · Sample</option>
+          <option v-if="tournament.dataSource === 'Imported JSON'" :value="tournament.currentTournament?.id">{{ tournament.currentTournament?.name }} · Imported</option>
+        </select>
+      </label>
+      <RouterLink v-if="route.path === '/'" to="/tournament/ewc-2025">Open sample tournament →</RouterLink>
+      <nav v-if="isDevelopment" class="dev-links" aria-label="Development experiments">
+        <span>Development</span>
+        <RouterLink to="/dock-iterations">Dock experiments</RouterLink>
+        <RouterLink to="/library">Library</RouterLink>
+        <RouterLink to="/lab">Lab</RouterLink>
+      </nav>
+      <p class="source-note">{{ tournament.dataSource }}<br />{{ tournament.availableTeams.length || 20 }} teams · No live connection</p>
+    </aside>
+    <main id="workspace" tabindex="-1"><slot /></main>
+  </div>
+</template>

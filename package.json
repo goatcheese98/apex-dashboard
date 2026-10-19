@@ -17,7 +17,8 @@
     "mcp:start": "node .mcp/servers/apex-api-server.js",
     "mcp:test": "node -e \"import('./src/services/mcpClient.ts').then(m => m.mcpClient.getTournaments().then(console.log))\"",
     "mcp:inspect": "npx @modelcontextprotocol/inspector",
-    "mcp:servers": "echo 'Available MCP servers: filesystem, apex-api'"
+    "mcp:servers": "echo 'Available MCP servers: filesystem, apex-api'",
+    "test:browser": "node --experimental-strip-types scripts/tests/workspace.ts"
   },
   "keywords": [],
   "author": "",
