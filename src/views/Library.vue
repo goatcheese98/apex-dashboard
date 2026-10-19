@@ -732,7 +732,9 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { ThemeSelector, Icon } from 'component-forge'
+import { optionalForge } from '@/services/optionalForge'
+const ThemeSelector = optionalForge('ThemeSelector')
+const Icon = optionalForge('Icon')
 
 const activeTab = ref<'components' | 'templates' | 'presets' | 'themes'>('components')
 </script>

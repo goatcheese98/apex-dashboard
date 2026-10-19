@@ -941,7 +941,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch, type CSSProperties } from 'vue'
 
 // Reactive state
 const currentEffect = ref('glassmorphic')
@@ -1059,7 +1059,7 @@ const timelineStyles = computed(() => ({
   minWidth: `${Math.max(200, dockWidth.value * 0.4)}px`
 }))
 
-const floatingDockStyles = computed(() => ({
+const floatingDockStyles = computed<CSSProperties>(() => ({
   ...dockStyles.value,
   position: 'fixed',
   bottom: '32px',

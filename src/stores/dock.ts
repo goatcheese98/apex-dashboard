@@ -5,6 +5,10 @@ export type VisualizationType = 'race-chart' | 'damage-analysis' | 'scatter-plot
 
 export const useDockStore = defineStore('dock', () => {
   // State
+  const metric = ref<'points' | 'kills' | 'damage'>('points')
+  const cumulative = ref(true)
+  const triangulation = ref(false)
+  const playerBreakdown = ref(false)
   const isVisible = ref(false)
   const isExpanded = ref(false)
   const currentVisualization = ref<VisualizationType>('race-chart')
@@ -111,6 +115,7 @@ export const useDockStore = defineStore('dock', () => {
 
   return {
     // State
+    metric, cumulative, triangulation, playerBreakdown,
     isVisible,
     isExpanded,
     currentVisualization,

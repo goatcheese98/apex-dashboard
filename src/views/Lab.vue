@@ -186,7 +186,11 @@
 
 <script setup lang="ts">
 import { ref } from 'vue'
-import { ThemeSelector, ButtonTestingLab, FormInputTestingLab, CardTestingLab } from 'component-forge'
+import { optionalForge } from '@/services/optionalForge'
+const ThemeSelector = optionalForge('ThemeSelector')
+const ButtonTestingLab = optionalForge('ButtonTestingLab')
+const FormInputTestingLab = optionalForge('FormInputTestingLab')
+const CardTestingLab = optionalForge('CardTestingLab')
 
 const activeLab = ref<'buttons' | 'forms' | 'cards' | 'navigation' | 'data'>('buttons')
 </script>

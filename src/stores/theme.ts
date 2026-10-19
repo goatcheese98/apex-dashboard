@@ -140,7 +140,7 @@ export const useThemeStore = defineStore('theme', () => {
     root.classList.add(themeDefinition.name)
     
     // Force a repaint to ensure styles are applied
-    root.offsetHeight
+    void root.offsetHeight
   }
   
   const initializeTheme = () => {

@@ -1,5 +1,6 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
+import { parseTournament } from '@/domain/tournament'
 
 export interface TeamData {
   id: string
@@ -39,6 +40,8 @@ export const useTournamentStore = defineStore('tournament', () => {
   const selectedGames = ref<number[]>([])
   const isLoading = ref(false)
   const error = ref<string | null>(null)
+  const dataSource = ref('Sample data')
+  let requestVersion = 0
 
   // Getters
   const availableTeams = computed(() => currentTournament.value?.teams || [])
@@ -90,11 +93,15 @@ export const useTournamentStore = defineStore('tournament', () => {
 
   // Actions
   const loadTournament = async (tournamentId: string) => {
+    const version = ++requestVersion
     isLoading.value = true
     error.value = null
+    await Promise.resolve()
+    if (version !== requestVersion) return
 
     try {
-      // Mock data for now - will be replaced with API call
+      if (tournamentId !== 'ewc-2025') throw new Error('Unknown tournament. Choose the EWC sample or import JSON')
+      // Preserve the existing generated dataset, explicitly labeled as sample data.
       const mockData: TournamentData = {
         id: tournamentId,
         name: 'EWC 2025',
@@ -123,13 +130,24 @@ export const useTournamentStore = defineStore('tournament', () => {
         })),
       }
 
-      currentTournament.value = mockData
+      currentTournament.value = parseTournament(mockData)
+      dataSource.value = 'Sample data'
       selectedGames.value = [] // Show all games by default
     } catch (err) {
       error.value = err instanceof Error ? err.message : 'Failed to load tournament'
     } finally {
       isLoading.value = false
     }
+  }
+
+  function importTournament(input: unknown) {
+    const parsed = parseTournament(input)
+    ++requestVersion
+    currentTournament.value = parsed
+    dataSource.value = 'Imported JSON'
+    selectedGames.value = []
+    error.value = null
+    isLoading.value = false
   }
 
   const toggleGameFilter = (gameNumber: number) => {
@@ -152,6 +170,8 @@ export const useTournamentStore = defineStore('tournament', () => {
   return {
     // State
     currentTournament,
+    dataSource,
+    importTournament,
     selectedGames,
     isLoading,
     error,
