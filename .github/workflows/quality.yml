@@ -41,6 +41,7 @@ jobs:
           npm run test:browser
       - name: Cloudflare package dry-run (no upload)
         timeout-minutes: 1
+        shell: bash
         run: |
           mkdir -p work
           npm run cloudflare:dry-run | tee work/cloudflare-dry-run.log
