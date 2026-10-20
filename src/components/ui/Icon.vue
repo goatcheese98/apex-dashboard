@@ -42,6 +42,7 @@ const classes = computed(() => props.class || "w-4 h-4");
 </script>
 
 <style scoped>
+@reference "../../assets/main.css";
 .icon {
   @apply inline-flex items-center justify-center;
 }

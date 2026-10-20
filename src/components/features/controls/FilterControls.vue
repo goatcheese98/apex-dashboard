@@ -22,7 +22,7 @@ const teamDisplayOptions = [
 </script>
 
 <template>
-  <div class="space-y-4 pt-4 border-t border-apex-orange/10">
+  <div class="legacy-space-y-4 pt-4 border-t border-apex-orange/10">
     <!-- Game selection filters -->
     <div>
       <h3 class="text-sm font-medium text-apex-light mb-3">Game Selection</h3>
@@ -42,7 +42,7 @@ const teamDisplayOptions = [
         </button>
       </div>
       
-      <div class="flex items-center space-x-2">
+      <div class="flex items-center legacy-space-x-2">
         <button
           @click="tournamentStore.clearFilters()"
           class="text-xs text-apex-orange hover:text-apex-orange/80 transition-colors"
@@ -65,7 +65,7 @@ const teamDisplayOptions = [
     <div>
       <h3 class="text-sm font-medium text-apex-light mb-3">Team Display</h3>
       
-      <div class="flex items-center space-x-3">
+      <div class="flex items-center legacy-space-x-3">
         <button
           v-for="option in teamDisplayOptions"
           :key="option.value ?? 'all'"

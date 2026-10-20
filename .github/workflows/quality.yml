@@ -16,6 +16,8 @@ jobs:
           node-version: '24'
           cache: npm
       - run: npm ci --include=dev --no-audit --no-fund
+      - name: Audit full dependency graph
+        run: npm audit --audit-level=low
       - name: Audit runtime dependency graph
         run: npm audit --omit=dev --audit-level=low
       - name: Check local MCP dependency compatibility

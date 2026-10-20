@@ -17,7 +17,7 @@ defineOptions({
       </p>
       
       <!-- Status Badge -->
-      <div class="inline-flex items-center space-x-2 bg-green-500/20 border border-green-500/30 rounded-full px-6 py-3 text-base mb-6">
+      <div class="inline-flex items-center legacy-space-x-2 bg-green-500/20 border border-green-500/30 rounded-full px-6 py-3 text-base mb-6">
         <div class="w-3 h-3 bg-green-500 rounded-full animate-pulse" />
         <span class="text-green-400 font-medium">TailwindCSS v4 Active</span>
       </div>
@@ -26,7 +26,7 @@ defineOptions({
       <div class="mb-8">
         <router-link 
           to="/" 
-          class="inline-flex items-center space-x-2 bg-apex-orange hover:bg-orange-400 px-6 py-3 rounded-xl text-white font-semibold transform hover:scale-105 transition-all duration-200"
+          class="inline-flex items-center legacy-space-x-2 bg-apex-orange hover:bg-orange-400 px-6 py-3 rounded-xl text-white font-semibold transform hover:scale-105 transition-all duration-200"
         >
           <span>←</span>
           <span>Back to Dashboard</span>
@@ -35,7 +35,7 @@ defineOptions({
     </div>
       
     <!-- Feature Tests - All Centered with Consistent Max Width -->
-    <div class="max-w-5xl mx-auto px-4 space-y-12">
+    <div class="max-w-5xl mx-auto px-4 legacy-space-y-12">
         
       <!-- 1. Responsive Design Test -->
       <div class="bg-apex-dark/50 backdrop-blur-sm border border-apex-blue/30 rounded-2xl p-6">
@@ -72,7 +72,7 @@ defineOptions({
           </button>
           
           <!-- Gradient Transition -->
-          <div class="bg-gradient-to-r from-blue-500 to-purple-500 hover:from-purple-500 hover:to-pink-500 transition-all duration-700 p-4 rounded-xl text-center text-white font-semibold cursor-pointer transform hover:scale-105 hover:shadow-xl">
+          <div class="bg-linear-to-r/srgb from-blue-500 to-purple-500 hover:from-purple-500 hover:to-pink-500 transition-all duration-700 p-4 rounded-xl text-center text-white font-semibold cursor-pointer transform hover:scale-105 hover:shadow-xl">
             Gradient Shift
           </div>
           
@@ -85,19 +85,20 @@ defineOptions({
         <!-- Advanced Interactive Elements -->
         <div class="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-6">
           <!-- Rotating Card -->
+          <!-- Retain the legacy static demo; these v4 3D utilities were inert in the previous pipeline. -->
           <div class="group perspective-1000 h-32">
-            <div class="relative w-full h-full transition-transform duration-700 transform-style preserve-3d group-hover:rotate-y-180">
-              <div class="absolute inset-0 w-full h-full bg-gradient-to-r from-cyan-500 to-blue-500 rounded-xl flex items-center justify-center text-white font-bold backface-hidden">
+            <div class="relative w-full h-full transition-transform duration-700 transform-style preserve-3d">
+              <div class="absolute inset-0 w-full h-full bg-linear-to-r/srgb from-cyan-500 to-blue-500 rounded-xl flex items-center justify-center text-white font-bold">
                 Hover to Flip
               </div>
-              <div class="absolute inset-0 w-full h-full bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center text-white font-bold backface-hidden rotate-y-180">
+              <div class="absolute inset-0 w-full h-full bg-linear-to-r/srgb from-purple-500 to-pink-500 rounded-xl flex items-center justify-center text-white font-bold">
                 Flipped!
               </div>
             </div>
           </div>
           
           <!-- Morphing Button -->
-          <div class="bg-gradient-to-r from-green-600 to-blue-600 hover:from-yellow-500 hover:to-red-500 transition-all duration-500 rounded-xl p-4 cursor-pointer transform hover:rotate-3 hover:scale-105 hover:shadow-2xl">
+          <div class="bg-linear-to-r/srgb from-green-600 to-blue-600 hover:from-yellow-500 hover:to-red-500 transition-all duration-500 rounded-xl p-4 cursor-pointer transform hover:rotate-3 hover:scale-105 hover:shadow-2xl">
             <div class="text-white font-bold text-center">
               <div class="transition-all duration-500 group-hover:scale-110">
                 Morphing Colors
@@ -186,10 +187,10 @@ defineOptions({
       <!-- 5. Modern CSS Features Test -->
       <div class="bg-apex-dark/50 backdrop-blur-sm border border-apex-blue/30 rounded-2xl p-6">
         <h2 class="text-2xl font-bold text-apex-blue mb-4">🔮 Modern CSS Features</h2>
-        <div class="space-y-4">
+        <div class="legacy-space-y-4">
           
           <!-- Backdrop Blur -->
-          <div class="relative h-32 bg-gradient-to-r from-apex-orange via-apex-blue to-apex-purple rounded-lg overflow-hidden">
+          <div class="relative h-32 bg-linear-to-r/srgb from-apex-orange via-apex-blue to-apex-purple rounded-lg overflow-hidden">
             <div class="absolute inset-0 bg-apex-dark/30 backdrop-blur-md flex items-center justify-center">
               <p class="text-white font-bold text-lg">Backdrop Blur Effect</p>
             </div>
@@ -197,7 +198,7 @@ defineOptions({
           
           <!-- Advanced Shadows & Gradients -->
           <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="bg-gradient-to-br from-apex-orange/20 via-apex-red/10 to-apex-purple/20 p-6 rounded-xl shadow-2xl shadow-apex-orange/20">
+            <div class="bg-linear-to-br/srgb from-apex-orange/20 via-apex-red/10 to-apex-purple/20 p-6 rounded-xl shadow-2xl shadow-apex-orange/20">
               <p class="text-apex-light font-medium">Complex Gradient with Shadow</p>
             </div>
             <div class="bg-apex-dark border border-apex-blue/50 p-6 rounded-xl shadow-inner shadow-apex-blue/10">
@@ -207,13 +208,13 @@ defineOptions({
           
           <!-- Aspect Ratio & Object Fit -->
           <div class="grid grid-cols-3 gap-4">
-            <div class="aspect-square bg-gradient-to-br from-apex-blue to-apex-purple rounded-lg flex items-center justify-center">
+            <div class="aspect-square bg-linear-to-br/srgb from-apex-blue to-apex-purple rounded-lg flex items-center justify-center">
               <p class="text-white text-sm font-bold">1:1 Square</p>
             </div>
-            <div class="aspect-video bg-gradient-to-br from-apex-orange to-apex-red rounded-lg flex items-center justify-center">
+            <div class="aspect-video bg-linear-to-br/srgb from-apex-orange to-apex-red rounded-lg flex items-center justify-center">
               <p class="text-white text-sm font-bold">16:9 Video</p>
             </div>
-            <div class="aspect-[4/3] bg-gradient-to-br from-apex-purple to-apex-blue rounded-lg flex items-center justify-center">
+            <div class="aspect-[4/3] bg-linear-to-br/srgb from-apex-purple to-apex-blue rounded-lg flex items-center justify-center">
               <p class="text-white text-sm font-bold">4:3 Custom</p>
             </div>
           </div>
@@ -223,12 +224,12 @@ defineOptions({
       <!-- 6. Advanced Custom Features Test -->
       <div class="bg-apex-dark/50 backdrop-blur-sm border border-apex-orange/30 rounded-2xl p-8">
         <h2 class="text-3xl font-bold text-apex-gradient mb-6 text-center">✨ Advanced Custom Features</h2>
-        <div class="space-y-10">
+        <div class="legacy-space-y-10">
 
           <!-- Custom Gradients & Text Effects -->
           <div>
             <h3 class="text-xl text-apex-light mb-6 text-center">Custom Gradients & Text Effects</h3>
-            <div class="space-y-6">
+            <div class="legacy-space-y-6">
               <!-- Apex Gradient Background -->
               <div class="bg-apex-gradient p-8 rounded-xl text-center transform hover:scale-105 transition-transform duration-300">
                 <p class="text-white font-bold text-2xl">Apex Gradient Background</p>
@@ -270,7 +271,7 @@ defineOptions({
             <h3 class="text-lg text-apex-light mb-3">Advanced Layout Features</h3>
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-4">
               <!-- Masonry-like layout -->
-              <div class="space-y-4">
+              <div class="legacy-space-y-4">
                 <div class="bg-apex-blue/20 p-4 rounded-lg h-24">
                   <p class="text-apex-light text-sm">Variable Height Cards</p>
                 </div>
@@ -308,7 +309,7 @@ defineOptions({
     <div class="max-w-4xl mx-auto text-center mt-16 px-4">
       <router-link 
         to="/" 
-        class="inline-flex items-center space-x-2 bg-apex-blue hover:bg-cyan-400 px-8 py-4 rounded-xl text-white font-semibold transform hover:scale-105 transition-all duration-200"
+        class="inline-flex items-center legacy-space-x-2 bg-apex-blue hover:bg-cyan-400 px-8 py-4 rounded-xl text-white font-semibold transform hover:scale-105 transition-all duration-200"
       >
         <span>←</span>
         <span>Back to Apex Dashboard</span>

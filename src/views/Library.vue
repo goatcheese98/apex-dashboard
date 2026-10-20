@@ -58,9 +58,9 @@
         </div>
 
         <!-- Components Tab -->
-        <div v-if="activeTab === 'components'" class="space-y-12">
+        <div v-if="activeTab === 'components'" class="legacy-space-y-12">
           <!-- Buttons Section -->
-          <section class="space-y-6">
+          <section class="legacy-space-y-6">
             <div class="text-center">
               <h3 class="text-3xl font-bold mb-2">Buttons</h3>
               <p class="text-base-content/70">Various button styles and variations</p>
@@ -71,7 +71,7 @@
               <div class="card bg-base-200">
                 <div class="card-body">
                   <h4 class="card-title">Standard Buttons</h4>
-                  <div class="space-y-2">
+                  <div class="legacy-space-y-2">
                     <button class="btn btn-primary btn-sm w-full">Primary</button>
                     <button class="btn btn-secondary btn-sm w-full">Secondary</button>
                     <button class="btn btn-accent btn-sm w-full">Accent</button>
@@ -84,7 +84,7 @@
               <div class="card bg-base-200">
                 <div class="card-body">
                   <h4 class="card-title">Size Variations</h4>
-                  <div class="space-y-2">
+                  <div class="legacy-space-y-2">
                     <button class="btn btn-xs btn-primary w-full">Extra Small</button>
                     <button class="btn btn-sm btn-primary w-full">Small</button>
                     <button class="btn btn-primary w-full">Normal</button>
@@ -97,7 +97,7 @@
               <div class="card bg-base-200">
                 <div class="card-body">
                   <h4 class="card-title">Enhanced Buttons</h4>
-                  <div class="space-y-2">
+                  <div class="legacy-space-y-2">
                     <button class="btn btn-primary btn-apex-glow btn-sm w-full">Apex Glow</button>
                     <button class="btn btn-secondary hover:scale-105 transition-transform btn-sm w-full">Hover Scale</button>
                     <button class="btn btn-accent animate-pulse btn-sm w-full">Pulsing</button>
@@ -110,7 +110,7 @@
               <div class="card bg-base-200">
                 <div class="card-body">
                   <h4 class="card-title">Button States</h4>
-                  <div class="space-y-2">
+                  <div class="legacy-space-y-2">
                     <button class="btn btn-success btn-sm w-full">Success</button>
                     <button class="btn btn-warning btn-sm w-full">Warning</button>
                     <button class="btn btn-error btn-sm w-full">Error</button>
@@ -122,7 +122,7 @@
           </section>
 
           <!-- Form Controls Section -->
-          <section class="space-y-6">
+          <section class="legacy-space-y-6">
             <div class="text-center">
               <h3 class="text-3xl font-bold mb-2">Form Controls</h3>
               <p class="text-base-content/70">Input fields, selects, and form elements</p>
@@ -133,7 +133,7 @@
               <div class="card bg-base-200">
                 <div class="card-body">
                   <h4 class="card-title">Text Inputs</h4>
-                  <div class="space-y-3">
+                  <div class="legacy-space-y-3">
                     <input type="text" placeholder="Default input" class="input input-bordered w-full" />
                     <input type="text" placeholder="Primary input" class="input input-bordered input-primary w-full" />
                     <input type="email" placeholder="Email input" class="input input-bordered input-secondary w-full" />
@@ -146,7 +146,7 @@
               <div class="card bg-base-200">
                 <div class="card-body">
                   <h4 class="card-title">Select Dropdowns</h4>
-                  <div class="space-y-3">
+                  <div class="legacy-space-y-3">
                     <select class="select select-bordered w-full">
                       <option disabled selected>Default select</option>
                       <option>Option 1</option>
@@ -170,7 +170,7 @@
               <div class="card bg-base-200">
                 <div class="card-body">
                   <h4 class="card-title">Checkboxes & Radio</h4>
-                  <div class="space-y-3">
+                  <div class="legacy-space-y-3">
                     <div class="form-control">
                       <label class="cursor-pointer label justify-start gap-2">
                         <input type="checkbox" checked class="checkbox checkbox-primary" />
@@ -196,7 +196,7 @@
           </section>
 
           <!-- Cards Section -->
-          <section class="space-y-6">
+          <section class="legacy-space-y-6">
             <div class="text-center">
               <h3 class="text-3xl font-bold mb-2">Cards</h3>
               <p class="text-base-content/70">Different card layouts and styles</p>
@@ -227,7 +227,7 @@
 
               <!-- Image Card -->
               <div class="card bg-base-100 shadow-xl">
-                <figure class="bg-gradient-to-r from-primary to-secondary h-24"></figure>
+                <figure class="bg-linear-to-r from-primary to-secondary h-24"></figure>
                 <div class="card-body p-4">
                   <h4 class="card-title text-base">Image Card</h4>
                   <p class="text-sm text-base-content/70">Card with image header area.</p>
@@ -249,7 +249,7 @@
           </section>
 
           <!-- Navigation Components -->
-          <section class="space-y-6">
+          <section class="legacy-space-y-6">
             <div class="text-center">
               <h3 class="text-3xl font-bold mb-2">Navigation</h3>
               <p class="text-base-content/70">Navigation bars, breadcrumbs, and menus</p>
@@ -312,7 +312,7 @@
           </section>
 
           <!-- Data Display Section -->
-          <section class="space-y-6">
+          <section class="legacy-space-y-6">
             <div class="text-center">
               <h3 class="text-3xl font-bold mb-2">Data Display</h3>
               <p class="text-base-content/70">Tables, badges, and data visualization components</p>
@@ -323,7 +323,7 @@
               <div class="card bg-base-200">
                 <div class="card-body">
                   <h4 class="card-title">Badges & Indicators</h4>
-                  <div class="space-y-4">
+                  <div class="legacy-space-y-4">
                     <div class="flex flex-wrap gap-2">
                       <span class="badge badge-primary">Primary</span>
                       <span class="badge badge-secondary">Secondary</span>
@@ -344,7 +344,7 @@
               <div class="card bg-base-200">
                 <div class="card-body">
                   <h4 class="card-title">Progress & Loading</h4>
-                  <div class="space-y-4">
+                  <div class="legacy-space-y-4">
                     <progress class="progress progress-primary w-full" value="32" max="100"></progress>
                     <progress class="progress progress-secondary w-full" value="70" max="100"></progress>
                     <progress class="progress progress-accent w-full" value="45" max="100"></progress>
@@ -399,7 +399,7 @@
           </section>
 
           <!-- Modal & Overlays -->
-          <section class="space-y-6">
+          <section class="legacy-space-y-6">
             <div class="text-center">
               <h3 class="text-3xl font-bold mb-2">Modals & Overlays</h3>
               <p class="text-base-content/70">Dialog boxes, alerts, and overlay components</p>
@@ -410,7 +410,7 @@
               <div class="card bg-base-200">
                 <div class="card-body">
                   <h4 class="card-title">Alerts</h4>
-                  <div class="space-y-3">
+                  <div class="legacy-space-y-3">
                     <div class="alert alert-info">
                       <Icon name="sun" class="w-4 h-4" />
                       <span class="text-sm">Info alert message</span>
@@ -440,7 +440,7 @@
               <div class="card bg-base-200">
                 <div class="card-body">
                   <h4 class="card-title">Tooltips</h4>
-                  <div class="space-y-3">
+                  <div class="legacy-space-y-3">
                     <div class="tooltip tooltip-top" data-tip="Top tooltip">
                       <button class="btn btn-sm">Top</button>
                     </div>
@@ -458,7 +458,7 @@
         </div>
 
         <!-- Dashboard Templates Tab -->
-        <div v-else-if="activeTab === 'templates'" class="space-y-12">
+        <div v-else-if="activeTab === 'templates'" class="legacy-space-y-12">
           <div class="text-center mb-8">
             <h3 class="text-3xl font-bold mb-4">🏗️ Dashboard Templates</h3>
             <p class="text-base-content/70 max-w-3xl mx-auto">
@@ -468,7 +468,7 @@
           </div>
 
           <!-- KPI Dashboard -->
-          <section class="space-y-6">
+          <section class="legacy-space-y-6">
             <div class="text-center">
               <h3 class="text-2xl font-bold mb-2">KPI Dashboard Layout</h3>
               <p class="text-base-content/70">Analytics dashboard with key performance indicators</p>
@@ -532,7 +532,7 @@
                   <div class="card bg-base-200">
                     <div class="card-body">
                       <h5 class="card-title text-lg">Traffic Sources</h5>
-                      <div class="h-40 bg-gradient-to-r from-primary/20 to-secondary/20 rounded-lg flex items-center justify-center">
+                      <div class="h-40 bg-none rounded-lg flex items-center justify-center">
                         <div class="text-center">
                           <Icon name="sun" class="w-12 h-12 mx-auto mb-2" />
                           <p class="text-sm">Chart Placeholder</p>
@@ -544,7 +544,7 @@
                   <div class="card bg-base-200">
                     <div class="card-body">
                       <h5 class="card-title text-lg">User Activity</h5>
-                      <div class="h-40 bg-gradient-to-r from-accent/20 to-primary/20 rounded-lg flex items-center justify-center">
+                      <div class="h-40 bg-none rounded-lg flex items-center justify-center">
                         <div class="text-center">
                           <Icon name="gaming" class="w-12 h-12 mx-auto mb-2" />
                           <p class="text-sm">Chart Placeholder</p>
@@ -558,7 +558,7 @@
           </section>
 
           <!-- Template Features -->
-          <section class="space-y-6">
+          <section class="legacy-space-y-6">
             <div class="text-center">
               <h3 class="text-2xl font-bold mb-2">Template Features</h3>
               <p class="text-base-content/70">What makes these dashboard templates special</p>
@@ -598,7 +598,7 @@
         </div>
 
         <!-- Button Presets Tab -->
-        <div v-else-if="activeTab === 'presets'" class="space-y-8">
+        <div v-else-if="activeTab === 'presets'" class="legacy-space-y-8">
           <div class="text-center mb-8">
             <h3 class="text-3xl font-bold mb-4">Button Presets</h3>
             <p class="text-base-content/70">Pre-configured button styles ready to use</p>
@@ -653,7 +653,7 @@
         </div>
 
         <!-- Theme Showcase Tab -->
-        <div v-else-if="activeTab === 'themes'" class="space-y-8">
+        <div v-else-if="activeTab === 'themes'" class="legacy-space-y-8">
           <div class="text-center mb-8">
             <h3 class="text-3xl font-bold mb-4">Theme Showcase</h3>
             <p class="text-base-content/70">See how components look across different DaisyUI themes</p>
@@ -669,7 +669,7 @@
             <div class="card bg-base-200">
               <div class="card-body">
                 <h4 class="card-title">Button Showcase</h4>
-                <div class="space-y-2">
+                <div class="legacy-space-y-2">
                   <button class="btn btn-primary btn-sm w-full">Primary</button>
                   <button class="btn btn-secondary btn-sm w-full">Secondary</button>
                   <button class="btn btn-accent btn-sm w-full">Accent</button>
@@ -692,7 +692,7 @@
             <div class="card bg-base-200">
               <div class="card-body">
                 <h4 class="card-title">Progress Showcase</h4>
-                <div class="space-y-2">
+                <div class="legacy-space-y-2">
                   <progress class="progress progress-primary w-full" value="70" max="100"></progress>
                   <progress class="progress progress-secondary w-full" value="50" max="100"></progress>
                   <progress class="progress progress-accent w-full" value="30" max="100"></progress>
@@ -719,7 +719,7 @@
         </dialog>
 
         <!-- Footer -->
-        <div class="text-center mt-16 pt-8 border-t border-base-content/10">
+        <div class="text-center mt-16 pt-8 border-t border-gray-200">
           <p class="text-base-content/60">
             Want to test and customize these components? Visit the 
             <router-link to="/lab" class="link link-primary">Testing Laboratory</router-link>

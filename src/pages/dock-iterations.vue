@@ -1,9 +1,9 @@
 <template>
-  <div class="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white p-6">
+  <div class="min-h-screen bg-linear-to-br/srgb from-slate-900 via-purple-900 to-slate-900 text-white p-6">
     <div class="max-w-7xl mx-auto">
       <!-- Page Header -->
       <div class="mb-8 text-center">
-        <h1 class="text-5xl font-bold mb-4 bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+        <h1 class="text-5xl font-bold mb-4 bg-linear-to-r/srgb from-cyan-400 to-purple-400 bg-clip-text text-transparent">
           🚀 Dock Effects Laboratory
         </h1>
         <p class="text-gray-300 text-xl">
@@ -34,13 +34,13 @@
         <!-- Tab Content -->
         <div class="p-6">
           <!-- Basic Settings Tab -->
-          <div v-show="activeTab === 'basic'" class="space-y-6">
+          <div v-show="activeTab === 'basic'" class="legacy-space-y-6">
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
               <!-- Effect & Mode Column -->
-              <div class="space-y-6">
+              <div class="legacy-space-y-6">
                 <div>
                   <label class="block text-lg font-semibold mb-4 text-purple-300">🎭 Style & Mode</label>
-                  <div class="space-y-4">
+                  <div class="legacy-space-y-4">
                     <div>
                       <label class="block text-sm font-medium mb-2">Effect Style</label>
                       <select 
@@ -77,13 +77,13 @@
               </div>
 
               <!-- Size & Animation Column -->
-              <div class="space-y-6">
+              <div class="legacy-space-y-6">
                 <div>
                   <label class="block text-lg font-semibold mb-4 text-cyan-300">📐 Size & Motion</label>
-                  <div class="space-y-6">
+                  <div class="legacy-space-y-6">
                     <div>
                       <label class="block text-sm font-medium mb-3">Dock Dimensions</label>
-                      <div class="space-y-4">
+                      <div class="legacy-space-y-4">
                         <div>
                           <div class="flex justify-between items-center mb-2">
                             <span class="text-xs text-gray-400">Width</span>
@@ -102,7 +102,7 @@
                     </div>
                     <div>
                       <label class="block text-sm font-medium mb-3">Animation Settings</label>
-                      <div class="space-y-3">
+                      <div class="legacy-space-y-3">
                         <label class="flex items-center p-3 bg-gray-700/30 rounded-lg">
                           <input v-model="animationEnabled" type="checkbox" class="mr-3">
                           <span class="text-sm font-medium">Enable Animations</span>
@@ -121,10 +121,10 @@
               </div>
 
               <!-- Colors Column -->
-              <div class="space-y-6">
+              <div class="legacy-space-y-6">
                 <div>
                   <label class="block text-lg font-semibold mb-4 text-pink-300">🎨 Color Palette</label>
-                  <div class="space-y-4">
+                  <div class="legacy-space-y-4">
                     <div>
                       <label class="block text-sm font-medium mb-3">Primary Color</label>
                       <div class="flex items-center gap-3">
@@ -152,7 +152,7 @@
           </div>
 
           <!-- Effects Tab -->
-          <div v-show="activeTab === 'effects'" class="space-y-6">
+          <div v-show="activeTab === 'effects'" class="legacy-space-y-6">
             <div class="text-center mb-6">
               <h3 class="text-lg font-semibold text-purple-300">🎨 Visual Effect Controls</h3>
               <p class="text-gray-400 text-sm mt-2">Fine-tune the visual appearance and styling of your dock</p>
@@ -160,9 +160,9 @@
             
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
               <!-- Blur & Transparency -->
-              <div class="space-y-4">
+              <div class="legacy-space-y-4">
                 <label class="block text-sm font-semibold mb-3 text-blue-300">🌀 Blur & Transparency</label>
-                <div class="space-y-3">
+                <div class="legacy-space-y-3">
                   <div>
                     <label class="block text-xs font-medium mb-2">Blur Intensity</label>
                     <input v-model="blurIntensity" type="range" min="0" max="50" class="w-full">
@@ -177,9 +177,9 @@
               </div>
               
               <!-- Shape & Lighting -->
-              <div class="space-y-4">
+              <div class="legacy-space-y-4">
                 <label class="block text-sm font-semibold mb-3 text-green-300">✨ Shape & Lighting</label>
-                <div class="space-y-3">
+                <div class="legacy-space-y-3">
                   <div>
                     <label class="block text-xs font-medium mb-2">Border Radius</label>
                     <input v-model="borderRadius" type="range" min="0" max="50" class="w-full">
@@ -194,9 +194,9 @@
               </div>
               
               <!-- 3D Effects -->
-              <div class="space-y-4">
+              <div class="legacy-space-y-4">
                 <label class="block text-sm font-semibold mb-3 text-orange-300">🎭 3D Effects</label>
-                <div class="space-y-3">
+                <div class="legacy-space-y-3">
                   <div>
                     <label class="block text-xs font-medium mb-2">3D Depth</label>
                     <input v-model="depthStrength" type="range" min="0" max="50" class="w-full">
@@ -205,7 +205,7 @@
                   <div class="flex items-end h-12">
                     <button 
                       @click="randomizeEffect"
-                      class="w-full px-3 py-2 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 rounded-lg transition-all duration-300 text-sm"
+                      class="w-full px-3 py-2 bg-linear-to-r/srgb from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 rounded-lg transition-all duration-300 text-sm"
                     >
                       🎲 Randomize Effects
                     </button>
@@ -216,7 +216,7 @@
           </div>
 
           <!-- Components Tab -->
-          <div v-show="activeTab === 'components'" class="space-y-6">
+          <div v-show="activeTab === 'components'" class="legacy-space-y-6">
             <div class="text-center mb-6">
               <h3 class="text-lg font-semibold text-cyan-300">🔧 Component Customization</h3>
               <p class="text-gray-400 text-sm mt-2">Customize individual components, buttons, sliders, and layout elements</p>
@@ -244,9 +244,9 @@
 
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
               <!-- Button Controls -->
-              <div class="space-y-4">
+              <div class="legacy-space-y-4">
                 <label class="block text-sm font-semibold mb-3 text-purple-300">🔘 Button Controls</label>
-                <div class="space-y-3">
+                <div class="legacy-space-y-3">
                   <div>
                     <label class="block text-xs font-medium mb-2">Button Size</label>
                     <input v-model="buttonSize" type="range" min="24" max="64" class="w-full">
@@ -266,9 +266,9 @@
               </div>
 
               <!-- Layout Controls -->
-              <div class="space-y-4">
+              <div class="legacy-space-y-4">
                 <label class="block text-sm font-semibold mb-3 text-green-300">📐 Layout Controls</label>
-                <div class="space-y-3">
+                <div class="legacy-space-y-3">
                   <div>
                     <label class="block text-xs font-medium mb-2">Layout Compactness</label>
                     <input v-model="layoutCompactness" type="range" min="0" max="100" class="w-full">
@@ -326,7 +326,7 @@
             <div class="pt-4 border-t border-gray-700/50 flex justify-center">
               <button 
                 @click="resetComponentStyles"
-                class="px-6 py-3 bg-gradient-to-r from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 rounded-lg transition-all duration-300 text-sm font-medium"
+                class="px-6 py-3 bg-linear-to-r/srgb from-orange-600 to-orange-700 hover:from-orange-700 hover:to-orange-800 rounded-lg transition-all duration-300 text-sm font-medium"
               >
                 🔄 Reset All Components
               </button>
@@ -334,7 +334,7 @@
           </div>
 
           <!-- Presets Tab -->
-          <div v-show="activeTab === 'presets'" class="space-y-6">
+          <div v-show="activeTab === 'presets'" class="legacy-space-y-6">
             <div class="text-center mb-6">
               <h3 class="text-lg font-semibold text-pink-300">✨ Quick Presets & Actions</h3>
               <p class="text-gray-400 text-sm mt-2">Apply ready-made configurations or perform global actions</p>
@@ -349,7 +349,7 @@
                     v-for="preset in presets" 
                     :key="preset.name"
                     @click="applyPreset(preset)"
-                    class="px-4 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 rounded-lg transition-all duration-300 transform hover:scale-105 font-medium text-center"
+                    class="px-4 py-3 bg-linear-to-r/srgb from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 rounded-lg transition-all duration-300 transform hover:scale-105 font-medium text-center"
                   >
                     {{ preset.name }}
                   </button>
@@ -362,13 +362,13 @@
                 <div class="grid grid-cols-1 lg:grid-cols-3 gap-4">
                   <button 
                     @click="randomizeEffect"
-                    class="px-4 py-3 bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 rounded-lg transition-all duration-300 transform hover:scale-105 font-medium"
+                    class="px-4 py-3 bg-linear-to-r/srgb from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 rounded-lg transition-all duration-300 transform hover:scale-105 font-medium"
                   >
                     🎲 Randomize Everything
                   </button>
                   <button 
                     @click="resetToDefaults"
-                    class="px-4 py-3 bg-gradient-to-r from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 rounded-lg transition-all duration-300 font-medium"
+                    class="px-4 py-3 bg-linear-to-r/srgb from-gray-600 to-gray-700 hover:from-gray-700 hover:to-gray-800 rounded-lg transition-all duration-300 font-medium"
                   >
                     🔄 Reset to Defaults
                   </button>
@@ -377,8 +377,8 @@
                     :class="[
                       'px-4 py-3 rounded-lg transition-all duration-300 transform hover:scale-105 font-medium',
                       isFloatingMode 
-                        ? 'bg-gradient-to-r from-red-600 to-red-700 hover:from-red-700 hover:to-red-800' 
-                        : 'bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800'
+                        ? 'bg-linear-to-r/srgb from-red-600 to-red-700 hover:from-red-700 hover:to-red-800'
+                        : 'bg-linear-to-r/srgb from-green-600 to-green-700 hover:from-green-700 hover:to-green-800'
                     ]"
                   >
                     {{ isFloatingMode ? '🔒 Exit Floating Mode' : '🚀 Enable Floating Mode' }}
@@ -396,9 +396,9 @@
         
         <!-- Live Preview - Large Main Block (spans 8 columns on large screens) -->
         <div class="col-span-12 lg:col-span-8 row-span-2">
-          <div class="bento-card h-full min-h-[500px] lg:min-h-[600px] bg-gradient-to-br from-gray-800/40 via-gray-800/30 to-gray-900/40 backdrop-blur-xl rounded-3xl p-6 border border-gray-700/30 shadow-2xl hover:shadow-purple-500/10 transition-all duration-500 group">
+          <div class="bento-card h-full min-h-[500px] lg:min-h-[600px] bg-linear-to-br/srgb from-gray-800/40 via-gray-800/30 to-gray-900/40 backdrop-blur-xl rounded-3xl p-6 border border-gray-700/30 shadow-2xl hover:shadow-purple-500/10 transition-all duration-500 group">
             <div class="flex items-center justify-between mb-6">
-              <h3 class="text-2xl font-bold bg-gradient-to-r from-cyan-400 to-purple-400 bg-clip-text text-transparent">
+              <h3 class="text-2xl font-bold bg-linear-to-r/srgb from-cyan-400 to-purple-400 bg-clip-text text-transparent">
                 🎮 Live Preview
               </h3>
               <div class="flex items-center gap-2 text-xs text-gray-400">
@@ -409,7 +409,7 @@
             
             <!-- Preview Viewport -->
             <div 
-              class="relative bg-gradient-to-br from-indigo-900 via-purple-900 to-pink-900 rounded-2xl overflow-hidden border border-gray-600/50 shadow-inner"
+              class="relative bg-linear-to-br/srgb from-indigo-900 via-purple-900 to-pink-900 rounded-2xl overflow-hidden border border-gray-600/50 shadow-inner"
               style="height: calc(100% - 100px);"
             >
               <!-- Enhanced Background Pattern -->
@@ -423,7 +423,7 @@
               <div v-if="!isFloatingMode" class="absolute inset-0 flex items-center justify-center p-8">
                 <div class="text-center text-white max-w-lg">
                   <!-- Race Chart Content -->
-                  <div v-if="currentVisualization === 'race-chart'" class="space-y-4">
+                  <div v-if="currentVisualization === 'race-chart'" class="legacy-space-y-4">
                     <h3 class="text-2xl font-bold mb-4 text-cyan-300">🏁 Race Chart Visualization</h3>
                     <div class="grid grid-cols-4 gap-3 text-sm">
                       <div class="bg-black/30 rounded-lg p-3 backdrop-blur-sm">
@@ -451,10 +451,10 @@
                   </div>
 
                   <!-- Damage Analysis Content -->
-                  <div v-else-if="currentVisualization === 'damage-analysis'" class="space-y-4">
+                  <div v-else-if="currentVisualization === 'damage-analysis'" class="legacy-space-y-4">
                     <h3 class="text-2xl font-bold mb-4 text-red-300">⚔️ Damage Analysis</h3>
                     <div class="grid grid-cols-2 gap-4 text-sm">
-                      <div class="space-y-2">
+                      <div class="legacy-space-y-2">
                         <h4 class="text-lg font-semibold text-red-200">Damage Given</h4>
                         <div class="bg-black/30 rounded-lg p-3 backdrop-blur-sm">
                           <div class="flex justify-between items-center mb-1">
@@ -475,7 +475,7 @@
                           </div>
                         </div>
                       </div>
-                      <div class="space-y-2">
+                      <div class="legacy-space-y-2">
                         <h4 class="text-lg font-semibold text-blue-200">Damage Taken</h4>
                         <div class="bg-black/30 rounded-lg p-3 backdrop-blur-sm">
                           <div class="flex justify-between items-center mb-1">
@@ -501,7 +501,7 @@
                   </div>
 
                   <!-- Scatter Plot Content -->
-                  <div v-else-if="currentVisualization === 'scatter-plot'" class="space-y-4">
+                  <div v-else-if="currentVisualization === 'scatter-plot'" class="legacy-space-y-4">
                     <h3 class="text-2xl font-bold mb-4 text-green-300">📊 Kills vs Damage Scatter</h3>
                     <div class="relative bg-black/30 rounded-lg p-4 backdrop-blur-sm h-48">
                       <!-- Scatter Plot Simulation -->
@@ -661,7 +661,7 @@
               <!-- Effect Information -->
               <div class="absolute top-4 right-4 bg-black/50 backdrop-blur-sm rounded-xl p-3 border border-gray-600/30">
                 <h4 class="text-sm font-bold mb-1">{{ getEffectName(currentEffect) }}</h4>
-                <div class="text-xs text-gray-300 space-y-1">
+                <div class="text-xs text-gray-300 legacy-space-y-1">
                   <div>Mode: {{ getVisualizationName(currentVisualization) }}</div>
                   <div>Size: {{ dockWidth }}×{{ dockHeight }}</div>
                   <div>Animation: {{ animationEnabled ? 'ON' : 'OFF' }}</div>
@@ -674,9 +674,9 @@
 
         <!-- Effect Gallery - Medium Block (spans 4 columns) -->
         <div class="col-span-12 lg:col-span-4">
-          <div class="bento-card h-full min-h-[300px] bg-gradient-to-br from-purple-800/30 via-gray-800/30 to-pink-800/30 backdrop-blur-xl rounded-3xl p-6 border border-purple-700/20 shadow-2xl hover:shadow-purple-500/20 transition-all duration-500 group">
+          <div class="bento-card h-full min-h-[300px] bg-linear-to-br/srgb from-purple-800/30 via-gray-800/30 to-pink-800/30 backdrop-blur-xl rounded-3xl p-6 border border-purple-700/20 shadow-2xl hover:shadow-purple-500/20 transition-all duration-500 group">
             <div class="flex items-center gap-3 mb-6">
-              <div class="w-10 h-10 bg-gradient-to-r from-purple-500 to-pink-500 rounded-xl flex items-center justify-center text-lg">
+              <div class="w-10 h-10 bg-linear-to-r/srgb from-purple-500 to-pink-500 rounded-xl flex items-center justify-center text-lg">
                 🎭
               </div>
               <h3 class="text-xl font-bold text-purple-100">Effect Gallery</h3>
@@ -705,9 +705,9 @@
 
         <!-- Component Styles Gallery - Smaller Block (spans 6 columns on large screens) -->
         <div class="col-span-12 md:col-span-6 lg:col-span-6">
-          <div class="bento-card h-full min-h-[280px] bg-gradient-to-br from-blue-800/30 via-gray-800/30 to-cyan-800/30 backdrop-blur-xl rounded-3xl p-6 border border-blue-700/20 shadow-2xl hover:shadow-blue-500/20 transition-all duration-500 group">
+          <div class="bento-card h-full min-h-[280px] bg-linear-to-br/srgb from-blue-800/30 via-gray-800/30 to-cyan-800/30 backdrop-blur-xl rounded-3xl p-6 border border-blue-700/20 shadow-2xl hover:shadow-blue-500/20 transition-all duration-500 group">
             <div class="flex items-center gap-3 mb-6">
-              <div class="w-10 h-10 bg-gradient-to-r from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center text-lg">
+              <div class="w-10 h-10 bg-linear-to-r/srgb from-blue-500 to-cyan-500 rounded-xl flex items-center justify-center text-lg">
                 🎨
               </div>
               <h3 class="text-xl font-bold text-blue-100">Component Styles</h3>
@@ -737,14 +737,14 @@
 
         <!-- Slider Styles Gallery - Smaller Block (spans 6 columns on large screens) -->
         <div class="col-span-12 md:col-span-6 lg:col-span-6">
-          <div class="bento-card h-full min-h-[280px] bg-gradient-to-br from-orange-800/30 via-gray-800/30 to-red-800/30 backdrop-blur-xl rounded-3xl p-6 border border-orange-700/20 shadow-2xl hover:shadow-orange-500/20 transition-all duration-500 group">
+          <div class="bento-card h-full min-h-[280px] bg-linear-to-br/srgb from-orange-800/30 via-gray-800/30 to-red-800/30 backdrop-blur-xl rounded-3xl p-6 border border-orange-700/20 shadow-2xl hover:shadow-orange-500/20 transition-all duration-500 group">
             <div class="flex items-center gap-3 mb-6">
-              <div class="w-10 h-10 bg-gradient-to-r from-orange-500 to-red-500 rounded-xl flex items-center justify-center text-lg">
+              <div class="w-10 h-10 bg-linear-to-r/srgb from-orange-500 to-red-500 rounded-xl flex items-center justify-center text-lg">
                 🎛️
               </div>
               <h3 class="text-xl font-bold text-orange-100">Slider Styles</h3>
             </div>
-            <div class="space-y-3">
+            <div class="legacy-space-y-3">
               <div 
                 v-for="style in ['default', 'groove', 'pill', 'neon', 'glass']" 
                 :key="style"
@@ -768,10 +768,10 @@
 
         <!-- Performance Monitor - Compact Block (spans 12 columns, compact height) -->
         <div class="col-span-12">
-          <div class="bento-card bg-gradient-to-r from-green-800/30 via-gray-800/30 to-emerald-800/30 backdrop-blur-xl rounded-3xl p-6 border border-green-700/20 shadow-2xl hover:shadow-green-500/20 transition-all duration-500 group">
+          <div class="bento-card bg-linear-to-r/srgb from-green-800/30 via-gray-800/30 to-emerald-800/30 backdrop-blur-xl rounded-3xl p-6 border border-green-700/20 shadow-2xl hover:shadow-green-500/20 transition-all duration-500 group">
             <div class="flex items-center justify-between mb-6">
               <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-gradient-to-r from-green-500 to-emerald-500 rounded-xl flex items-center justify-center text-lg">
+                <div class="w-10 h-10 bg-linear-to-r/srgb from-green-500 to-emerald-500 rounded-xl flex items-center justify-center text-lg">
                   📊
                 </div>
                 <h3 class="text-xl font-bold text-green-100">Performance Monitor</h3>
@@ -788,7 +788,7 @@
                   <span class="text-xs text-green-400 font-mono">{{ gpuUsage }}%</span>
                 </div>
                 <div class="w-full h-3 bg-gray-700 rounded-full overflow-hidden">
-                  <div class="h-full bg-gradient-to-r from-green-500 to-emerald-400 rounded-full transition-all duration-1000" :style="{ width: `${gpuUsage}%` }"></div>
+                  <div class="h-full bg-linear-to-r/srgb from-green-500 to-emerald-400 rounded-full transition-all duration-1000" :style="{ width: `${gpuUsage}%` }"></div>
                 </div>
               </div>
               <div class="performance-metric bg-gray-900/50 rounded-xl p-4 backdrop-blur-sm border border-gray-600/30">
@@ -826,7 +826,7 @@
       <div class="mt-12 text-center">
         <router-link 
           to="/" 
-          class="inline-flex items-center px-6 py-3 bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105"
+          class="inline-flex items-center px-6 py-3 bg-linear-to-r/srgb from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105"
         >
           ← Back to Dashboard
         </router-link>
@@ -1286,6 +1286,7 @@ onUnmounted(() => {
 </script>
 
 <style scoped>
+@reference "../assets/main.css";
 /* Base Experimental Dock */
 .experimental-dock {
   @apply absolute bottom-8 left-1/2 transform -translate-x-1/2 flex items-center gap-4 px-6 py-4;
@@ -1373,7 +1374,7 @@ onUnmounted(() => {
 }
 
 .dock-toggle.active {
-  @apply bg-gradient-to-r;
+  @apply bg-linear-to-r/srgb;
   background: linear-gradient(135deg, var(--primary-color, #8b5cf6), var(--secondary-color, #06b6d4));
 }
 

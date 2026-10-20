@@ -143,7 +143,7 @@
       </div>
 
       <!-- Lab Features -->
-      <div class="mt-16 pt-8 border-t border-base-content/10">
+      <div class="mt-16 pt-8 border-t border-gray-200">
         <div class="text-center mb-8">
           <h3 class="text-2xl font-bold mb-4">Lab Features</h3>
           <p class="text-base-content/70">What makes our testing laboratory special</p>
