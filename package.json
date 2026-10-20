@@ -18,7 +18,8 @@
     "mcp:test": "node -e \"import('./src/services/mcpClient.ts').then(m => m.mcpClient.getTournaments().then(console.log))\"",
     "mcp:inspect": "npx @modelcontextprotocol/inspector",
     "mcp:servers": "echo 'Available MCP servers: filesystem, apex-api'",
-    "test:browser": "node --experimental-strip-types scripts/tests/workspace.ts"
+    "test:browser": "node --experimental-strip-types scripts/tests/workspace.ts",
+    "test:dependencies": "node --experimental-strip-types scripts/tests/dependencies.ts"
   },
   "keywords": [],
   "author": "",
@@ -33,9 +34,8 @@
   "devDependencies": {
     "@modelcontextprotocol/sdk": "1.31.0",
     "@modelcontextprotocol/server-filesystem": "^2025.7.1",
-    "@modelcontextprotocol/server-memory": "^2025.4.25",
-    "@modelcontextprotocol/server-sequential-thinking": "^2025.7.1",
-    "@tailwindcss/typography": "^0.5.16",
+    "@modelcontextprotocol/server-memory": "1.0.0",
+    "@modelcontextprotocol/server-sequential-thinking": "1.0.0",
     "@types/node": "^24.1.0",
     "@vitejs/plugin-vue": "^6.0.0",
     "@vitest/ui": "4.1.11",
@@ -46,7 +46,7 @@
     "autoprefixer": "^10.4.21",
     "daisyui": "^5.0.46",
     "eslint": "^9.31.0",
-    "eslint-plugin-vue": "^10.3.0",
+    "eslint-plugin-vue": "10.6.0",
     "jsdom": "^26.1.0",
     "playwright": "1.55.1",
     "postcss": "8.5.31",

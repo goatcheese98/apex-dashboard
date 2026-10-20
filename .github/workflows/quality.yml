@@ -18,6 +18,8 @@ jobs:
       - run: npm ci --include=dev --no-audit --no-fund
       - name: Audit runtime dependency graph
         run: npm audit --omit=dev --audit-level=low
+      - name: Check local MCP dependency compatibility
+        run: npm run test:dependencies
       - run: npm run typecheck
       - run: npm run lint
       - run: npm run test -- --run --maxWorkers=2
