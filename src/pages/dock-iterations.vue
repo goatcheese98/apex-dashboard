@@ -1289,7 +1289,8 @@ onUnmounted(() => {
 @reference "../assets/main.css";
 /* Base Experimental Dock */
 .experimental-dock {
-  @apply absolute bottom-8 left-1/2 transform -translate-x-1/2 flex items-center gap-4 px-6 py-4;
+  @apply absolute bottom-8 left-1/2 flex items-center gap-4 px-6 py-4;
+  transform: translateX(-50%);
   backdrop-filter: blur(var(--blur-intensity, 20px));
   border: 1px solid rgba(255, 255, 255, 0.2);
   transition: all 0.3s ease;
@@ -1345,7 +1346,8 @@ onUnmounted(() => {
 }
 
 .timeline-thumb {
-  @apply absolute top-1/2 transform -translate-y-1/2 -translate-x-1/2 w-5 h-5 bg-white rounded-full shadow-lg cursor-grab;
+  @apply absolute top-1/2 w-5 h-5 bg-white rounded-full shadow-lg cursor-grab;
+  transform: translate(-50%, -50%);
   transition: transform 0.1s ease;
 }
 

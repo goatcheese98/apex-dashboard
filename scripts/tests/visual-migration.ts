@@ -30,6 +30,21 @@ try {
       const file = `${width}-${theme}-${name}.png`
       await page.screenshot({ path: `${output}/${file}`, fullPage: true, animations: 'disabled' })
       records.push({ file, route, width, theme, metrics: await page.evaluate(() => ({ width: document.documentElement.scrollWidth, height: document.documentElement.scrollHeight, headings: [...document.querySelectorAll('h1,h2')].map(e => ({ text: e.textContent, font: getComputedStyle(e).font, color: getComputedStyle(e).color, rect: e.getBoundingClientRect().toJSON() })) })) })
+      if (name === 'dock') {
+        // Force the CSS state so the defect cannot move the thumb out from under the pointer.
+        const session = await context.newCDPSession(page)
+        await session.send('DOM.enable'); await session.send('CSS.enable')
+        const { root } = await session.send('DOM.getDocument')
+        const { nodeId } = await session.send('DOM.querySelector', { nodeId: root.nodeId, selector: '.timeline-thumb' })
+        const thumb = page.locator('.timeline-thumb').first()
+        const measure = () => thumb.evaluate(e => { const r = e.getBoundingClientRect(); return { x: r.x + r.width / 2, y: r.y + r.height / 2, width: r.width } })
+        const before = await measure()
+        await session.send('CSS.forcePseudoState', { nodeId, forcedPseudoClasses: ['hover'] })
+        const after = await measure()
+        assert(Math.abs(after.x - before.x) < .01 && Math.abs(after.y - before.y) < .01, 'Hover must preserve the timeline thumb center')
+        assert(Math.abs(after.width / before.width - 1.2) < .01, 'Hover must retain the existing 1.2 scale')
+        await session.detach()
+      }
       await context.close()
       console.log(`CAPTURE ${file}`)
     }
