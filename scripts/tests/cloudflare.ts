@@ -92,6 +92,7 @@ try {
     await page.getByRole('slider').fill('2')
     await page.evaluate(() => document.fonts.ready)
     assert(await page.evaluate(() => document.fonts.check('14px Geist') && document.fonts.check('14px "Geist Mono"')))
+    await page.waitForFunction(() => (document.querySelector('.race-bar')?.getBoundingClientRect().width ?? 0) > 0, undefined, { timeout: 10000 })
     assert((await page.locator('.race-bar').first().boundingBox())!.width > 0)
     assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true)
     const fixture = { id: 'runtime', name: 'Workerd import', totalGames: 1,
