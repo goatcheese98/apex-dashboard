@@ -36,3 +36,5 @@ Screens show a user-selected Top 5 at Game 4 for composition; default is all 20.
 Imported player labels use stable IDs because the supplied JSON schema does not link roster names to statistics IDs. Generated sample names retain an explicit generator-owned mapping. [Imported identity regression capture](screens/1440-dark-imported-identity.png).
 
 [Team-scoped shared player-ID regression capture](screens/1440-dark-shared-player-ids.png): distinct team/player points and labels remain stable through timeline and metric ranking changes.
+
+Import hardening adds bounded, field-specific rejection guidance while retaining the inspected prior frame. [Desktop](screens/1440-dark-import-budget-error.png) · [320px](screens/320-light-import-budget-error.png). The palette, shell, fonts and candidate approval status are unchanged.

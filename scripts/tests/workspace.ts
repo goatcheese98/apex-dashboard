@@ -186,6 +186,7 @@ try {
       assert.match(await page.getByRole('alert').innerText(), /Showing stale imported json: Shared player IDs/)
       assert.equal(await page.locator('.player-list button').count(), 4)
       await expectText(page, 'Beta / p1 · 1 kills · 100 damage')
+      assert.equal(await beta.getAttribute('aria-pressed'), 'true', 'Rejected imports must retain the inspected team selection')
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true)
       if ((width === 320 && theme === 'light') || (width === 1440 && theme === 'dark')) await page.screenshot({ path: `${output}/${width}-${theme}-import-budget-error.png`, fullPage: true })
       await upload(page, { ...fixture, games: [] })
