@@ -1,5 +1,7 @@
 # Dependency audit disposition
 
+Historical checkpoint: the [development follow-up](development-dependencies.md) supersedes the 19-finding remaining-debt inventory below (now 8 explicitly documented findings).
+
 Snapshot: 2026-10-19 America/Vancouver. Full audit is **not clean**. Counts below are npm affected-package entries, including advisory propagation through dependency chains; they are not counts of independently exploitable browser flaws.
 
 | Audit | Critical | High | Moderate | Low | Total | Exit |
