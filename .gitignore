@@ -92,3 +92,6 @@ test-results/
 playwright-report/
 # Cloud scratch and browser artifacts
 work/
+
+# Wrangler local cache/state
+.wrangler/

@@ -3,7 +3,7 @@ import tseslint from 'typescript-eslint'
 import vueParser from 'vue-eslint-parser'
 
 export default tseslint.config(
-  { ignores: ['node_modules/**', 'dist/**', 'work/**', 'src/views/**', 'src/pages/dock-iterations.vue', 'src/pages/tailwind-test.vue', 'env.d.ts', 'src/components/ui/Icon.spec.vue'] },
+  { ignores: ['node_modules/**', 'dist/**', 'work/**', '.wrangler/**', 'src/views/**', 'src/pages/dock-iterations.vue', 'src/pages/tailwind-test.vue', 'env.d.ts', 'src/components/ui/Icon.spec.vue'] },
   ...tseslint.configs.recommended,
   ...vue.configs['flat/essential'],
   {

@@ -1,8 +1,9 @@
 <script setup lang="ts">
+import { defineAsyncComponent } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useTournamentStore } from '@/stores/tournament'
 const route = useRoute(), router = useRouter(), tournament = useTournamentStore()
-const isDevelopment = import.meta.env.DEV
+const DevelopmentNavigation = import.meta.env.DEV ? defineAsyncComponent(() => import('./DevelopmentNavigation.vue')) : undefined
 function choose(event: Event) {
   const id = (event.target as HTMLSelectElement).value
   if (id === 'ewc-2025' && tournament.dataSource === 'Imported JSON') void tournament.loadTournament(id)
@@ -22,12 +23,7 @@ function choose(event: Event) {
         </select>
       </label>
       <RouterLink v-if="route.path === '/'" to="/tournament/ewc-2025">Open sample tournament →</RouterLink>
-      <nav v-if="isDevelopment" class="dev-links" aria-label="Development experiments">
-        <span>Development</span>
-        <RouterLink to="/dock-iterations">Dock experiments</RouterLink>
-        <RouterLink to="/library">Library</RouterLink>
-        <RouterLink to="/lab">Lab</RouterLink>
-      </nav>
+      <DevelopmentNavigation v-if="DevelopmentNavigation" />
       <p class="source-note">{{ tournament.dataSource }}<br />{{ tournament.availableTeams.length || 20 }} teams · No live connection</p>
     </aside>
     <main id="workspace" tabindex="-1"><slot /></main>

@@ -7,6 +7,7 @@ import { resolve } from 'path'
 
 // https://vitejs.dev/config/
 export default defineConfig({
+  base: '/', // This reversible hosting option is mounted at the origin root.
   plugins: [vue(), tailwindcss()],
   resolve: {
     alias: {

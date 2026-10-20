@@ -21,7 +21,7 @@ try {
   }
   assert(results.find(r => r.filePath.endsWith('BadFixture.vue'))!.messages.some(m => m.ruleId === 'vue/require-v-for-key'))
   assert.deepEqual(results.find(r => r.filePath.endsWith('GoodFixture.vue'))!.messages, [])
-  for (const path of ['src/views/Library.vue', 'src/pages/dock-iterations.vue', 'src/pages/tailwind-test.vue', 'src/components/ui/Icon.spec.vue', 'env.d.ts', 'work/ignored.ts', 'dist/ignored.js']) {
+  for (const path of ['src/views/Library.vue', 'src/pages/dock-iterations.vue', 'src/pages/tailwind-test.vue', 'src/components/ui/Icon.spec.vue', 'env.d.ts', 'work/ignored.ts', 'dist/ignored.js', '.wrangler/generated.js']) {
     assert(await eslint.isPathIgnored(path), `Existing exclusion changed: ${path}`)
   }
   for (const path of ['src/components/features/visualization/ScatterPlot.vue', 'src/domain/tournament.ts', 'scripts/tests/workspace.ts', 'vite.config.ts']) {

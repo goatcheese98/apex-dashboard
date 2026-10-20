@@ -21,7 +21,10 @@
     "test:browser": "node --experimental-strip-types scripts/tests/workspace.ts",
     "test:dependencies": "node --experimental-strip-types scripts/tests/dependencies.ts",
     "test:lint-discovery": "node --experimental-strip-types scripts/tests/lint-discovery.ts",
-    "test:visual": "node --experimental-strip-types scripts/tests/visual-migration.ts"
+    "test:visual": "node --experimental-strip-types scripts/tests/visual-migration.ts",
+    "cloudflare:local": "node --experimental-strip-types scripts/cloudflare.ts local",
+    "cloudflare:dry-run": "node --experimental-strip-types scripts/cloudflare.ts dry-run",
+    "test:cloudflare": "node --experimental-strip-types scripts/tests/cloudflare.ts"
   },
   "keywords": [],
   "author": "",
@@ -58,7 +61,8 @@
     "vite": "7.3.7",
     "vitest": "4.1.11",
     "vue-eslint-parser": "10.2.0",
-    "vue-tsc": "^3.0.3"
+    "vue-tsc": "^3.0.3",
+    "wrangler": "4.151.2"
   },
   "overrides": {
     "editorconfig": {
