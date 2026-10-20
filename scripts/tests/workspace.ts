@@ -36,6 +36,14 @@ const sharedPlayerFixture = {
     return { teamId: team.id, placement: teamIndex + 1, points: (index ? [0, 20, 50] : [30, 20, 10])[teamIndex], kills, damage: kills * 100, playerStats }
   }) })),
 }
+const expansionFixture = {
+  id: 'expansion', name: 'Expansion fixture', totalGames: 3,
+  teams: [{ id: 't', name: 'Team', color: '#123456', players: [] }],
+  games: Array.from({ length: 3 }, (_, game) => ({ gameNumber: game + 1, teams: [{
+    teamId: 't', placement: 1, points: 1, kills: 0, damage: 0,
+    playerStats: Array.from({ length: 700 }, (_, player) => ({ playerId: `p${game * 700 + player}`, kills: 0, damage: 0, damageTaken: 0 })),
+  }] })),
+}
 async function upload(page: Page, data: unknown) {
   await page.getByLabel('Import tournament JSON', { exact: true }).setInputFiles({ name: 'tournament.json', mimeType: 'application/json', buffer: Buffer.from(JSON.stringify(data)) })
 }
@@ -163,6 +171,23 @@ try {
       }
       await betaNode?.dispose(); await alphaNode?.dispose()
       if (width === 1440 && theme === 'dark') await page.screenshot({ path: `${output}/1440-dark-shared-player-ids.png`, fullPage: true })
+      await page.getByLabel('Import tournament JSON', { exact: true }).setInputFiles({ name: 'invalid.json', mimeType: 'application/json', buffer: Buffer.from('{"private-data":') })
+      await page.getByRole('alert').waitFor()
+      assert.match(await page.getByRole('alert').innerText(), /File: Invalid JSON; fix the syntax/)
+      assert.doesNotMatch(await page.getByRole('alert').innerText(), /private-data/)
+      const invalidField = structuredClone(identityFixture)
+      invalidField.games[1].teams[0].playerStats[0].damage = -1
+      await upload(page, invalidField)
+      assert.match(await page.getByRole('alert').innerText(), /games\[1\]\.teams\[0\]\.playerStats\[0\]\.damage: expected a finite number/)
+      await page.getByLabel('Import tournament JSON', { exact: true }).setInputFiles({ name: 'oversized.json', mimeType: 'application/json', buffer: Buffer.alloc(2_000_001, ' ') })
+      assert.match(await page.getByRole('alert').innerText(), /File: JSON must be at most 2 MB; split/)
+      await upload(page, expansionFixture)
+      assert.match(await page.getByRole('alert').innerText(), /at most 2,000 distinct team\/player pairs.*split/)
+      assert.match(await page.getByRole('alert').innerText(), /Showing stale imported json: Shared player IDs/)
+      assert.equal(await page.locator('.player-list button').count(), 4)
+      await expectText(page, 'Beta / p1 · 1 kills · 100 damage')
+      assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true)
+      if ((width === 320 && theme === 'light') || (width === 1440 && theme === 'dark')) await page.screenshot({ path: `${output}/${width}-${theme}-import-budget-error.png`, fullPage: true })
       await upload(page, { ...fixture, games: [] })
       await expectText(page, 'No games available')
       await context.close()

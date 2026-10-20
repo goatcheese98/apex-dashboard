@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed, onBeforeUnmount, watch } from 'vue'
+import { decodeTournamentJSON, IMPORT_LIMITS } from '@/domain/importJSON'
 import { useStandings } from '@/composables/standings'
 import ThemeSelector from '@/components/ui/ThemeSelector.vue'
 import TimelineControls from '@/components/features/controls/TimelineControls.vue'
@@ -28,14 +29,14 @@ function readFile(file: File) {
   reader = undefined
   tournament.isLoading = false
   retryFile = file
-  if (file.size > 2_000_000) { tournament.error = 'Tournament JSON must be under 2 MB'; return }
+  if (file.size > IMPORT_LIMITS.bytes) { tournament.error = 'File: JSON must be at most 2 MB; split the tournament into smaller files'; return }
   tournament.isLoading = true
   tournament.error = null
   const currentReader = new FileReader()
   reader = currentReader
   currentReader.onload = () => {
     if (reader !== currentReader) return
-    try { tournament.importTournament(JSON.parse(String(currentReader.result)) as unknown); retryFile = undefined }
+    try { tournament.importTournament(decodeTournamentJSON(String(currentReader.result))); retryFile = undefined }
     catch (error) { tournament.error = error instanceof Error ? error.message : 'Invalid tournament response' }
     finally { tournament.isLoading = false }
   }
