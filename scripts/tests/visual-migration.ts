@@ -1,3 +1,4 @@
+import assert from 'node:assert/strict'
 import { chromium } from 'playwright'
 import { mkdir, writeFile } from 'node:fs/promises'
 
@@ -5,6 +6,7 @@ const output = process.env.APEX_VISUAL_DIR ?? 'work/visual-after'
 await mkdir(output, { recursive: true })
 const browser = await chromium.launch({ executablePath: process.env.CHROMIUM_PATH, headless: true, args: ['--no-sandbox'] })
 const records: unknown[] = []
+const errors: string[] = []
 try {
   for (const width of [320, 768, 1440]) for (const theme of ['light', 'dark']) {
     for (const [name, route] of Object.entries({ home: '/', tournament: '/tournament/ewc-2025', missing: '/not-a-route', library: '/library', lab: '/lab', dock: '/dock-iterations', utilities: '/tailwind-test', 'library-templates': '/library', 'library-presets': '/library', 'library-themes': '/library' })) {
@@ -15,6 +17,7 @@ try {
         Math.random = () => { seed = (seed * 16807) % 2147483647; return seed / 2147483647 }
       }, { theme })
       const page = await context.newPage()
+      page.on('pageerror', error => errors.push(error.message))
       await page.clock.install({ time: new Date('2026-10-20T12:00:00Z') })
       await page.clock.pauseAt(new Date('2026-10-20T12:01:00Z'))
       await page.goto(`${process.env.APEX_TEST_URL ?? 'http://127.0.0.1:5177'}${route}`)
@@ -33,3 +36,4 @@ try {
   }
 } finally { await browser.close() }
 await writeFile(`${output}/metrics.json`, JSON.stringify(records, null, 2))
+assert.deepEqual(errors, [], 'Development routes must have no uncaught browser errors')

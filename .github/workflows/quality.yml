@@ -39,3 +39,37 @@ jobs:
             sleep 1
           done
           npm run test:browser
+      - name: Check out reviewed visual baseline
+        uses: actions/checkout@v4
+        with:
+          ref: f052b3b22bb45e1722c5d6cf834bd0d82678a92e
+          path: work/visual-baseline-app
+          persist-credentials: false
+      - name: Install reviewed baseline for visual comparison
+        run: npm ci --prefix work/visual-baseline-app --include=dev --no-audit --no-fund
+      - name: Compare existing development surfaces in cloud
+        shell: bash
+        run: |
+          npm --prefix work/visual-baseline-app run dev -- --host 127.0.0.1 --port 5178 > /tmp/apex-baseline.log 2>&1 &
+          baseline_pid=$!
+          npm run dev -- --host 127.0.0.1 --port 5177 > /tmp/apex-development.log 2>&1 &
+          development_pid=$!
+          trap 'kill "$baseline_pid" "$development_pid"' EXIT
+          for attempt in {1..30}; do
+            if curl --fail --silent http://127.0.0.1:5177/ > /dev/null && curl --fail --silent http://127.0.0.1:5178/ > /dev/null; then break; fi
+            sleep 1
+          done
+          APEX_TEST_URL=http://127.0.0.1:5178 APEX_VISUAL_DIR=work/visual-before npm run test:visual
+          APEX_TEST_URL=http://127.0.0.1:5177 APEX_VISUAL_DIR=work/visual-after npm run test:visual
+          node --experimental-strip-types scripts/tests/compare-visuals.ts
+      - name: Retain cloud browser and visual evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: apex-browser-and-visual-evidence
+          retention-days: 14
+          path: |
+            work/browser/
+            work/visual-before/
+            work/visual-after/
+            work/visual-comparison.json
