@@ -1,8 +1,10 @@
+/// <reference types="node" />
 /**
  * MCP Client Integration for Apex Dashboard
  * Provides a client interface to communicate with MCP servers
  */
 
+import { cwd } from 'node:process';
 import { Client } from '@modelcontextprotocol/sdk/client/index.js';
 import { StdioClientTransport } from '@modelcontextprotocol/sdk/client/stdio.js';
 import { z } from 'zod';
@@ -73,13 +75,13 @@ class McpClientService {
           command: 'npx',
           args: ['@modelcontextprotocol/server-filesystem'],
           env: {
-            ALLOWED_DIRECTORIES: process.cwd()
+            ALLOWED_DIRECTORIES: cwd()
           }
         },
         'apex-api': {
           name: 'apex-api',
           command: 'node',
-          args: [`${process.cwd()}/.mcp/servers/apex-api-server.js`],
+          args: [`${cwd()}/.mcp/servers/apex-api-server.js`],
           env: {
             APEX_API_BASE: 'https://apexlegendsstatus.com/'
           }
