@@ -22,6 +22,7 @@ jobs:
         run: npm run test:dependencies
       - run: npm run typecheck
       - run: npm run lint
+      - run: npm run test:lint-discovery
       - run: npm run test -- --run --maxWorkers=2
       - run: npm run build
       - run: npx playwright install --with-deps chromium
