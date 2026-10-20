@@ -1,5 +1,7 @@
 # Development dependency follow-up
 
+Historical checkpoint: the [reviewed toolchain migration](toolchain-migration.md) implements the supported migrations below and closes all eight remaining npm findings.
+
 2026-10-20, cloud Node 24.19.0 / npm 11.9.0. Continues the 4f9f41e checkpoint on the same draft branch. The full graph is **not clean**: 19 affected-package entries (15 high, 4 moderate) become **8 (6 high, 2 moderate)**. The declared runtime graph remains **0**. These are propagated package entries, not 19 distinct advisories. [Previous full report](audit-after.json), [new full report](audit-development-follow-up.json), [new runtime report](audit-runtime-follow-up.json).
 
 ## Repairs and compatibility evidence

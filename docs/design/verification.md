@@ -8,7 +8,7 @@ Restored helper SHA-256 fingerprints (read only, not rerun):
 - `/workspace/onboarding/checks.py`: `ff6ae54e68f418381db1df0c030612f8dfd72a6de2d687b7e47e1f874b6e9970`
 - `/workspace/onboarding/copy.py`: `d3e148e9f141c959c38b554150453642447de5a8afc5adfc08969d4faca3054b`
 
-The initial pass reused restored dependencies; the import/security follow-up now uses a frozen isolated Apex runtime under ignored `work/security-runtime` through the ignored node_modules symlink. Scratch, caches and intermediate logs remain ignored under `work/`; other repositories and restored setup copies are unchanged. Node 24.19.0 / npm 11.9.0; Vite 7.3.7 / Vue 3.5.44 / TypeScript 5.8.3 / Vitest 4.1.11. Targeted security changes and residual findings are detailed in [dependency disposition](../security/dependency-disposition.md). Browser: cloud `/usr/bin/chromium`; no personal Chrome profile, local Paper or desktop automation.
+The initial pass reused restored dependencies; the import/security follow-up now uses a frozen isolated Apex runtime under ignored `work/security-runtime` through the ignored node_modules symlink. Scratch, caches and intermediate logs remain ignored under `work/`; other repositories and restored setup copies are unchanged. Node 24.19.0 / npm 11.9.0; Vite 7.3.7 / Vue 3.5.44 / TypeScript 5.8.3 / Vitest 4.1.11. Current clean full/runtime audits and color/lint/Tailwind migration evidence are detailed in [toolchain migration](../security/toolchain-migration.md). Browser: cloud `/usr/bin/chromium`; no personal Chrome profile, local Paper or desktop automation.
 
 ## Baseline failures reproduced
 
@@ -26,7 +26,7 @@ The initial pass reused restored dependencies; the import/security follow-up now
 | --- | --- | --- |
 | `npm run typecheck` | 0 | Strict Vue application plus strict browser-test/ESLint tool config |
 | `npm run lint` | 0 | Read-only flat config, no `--fix` |
-| `npm run test -- --run --maxWorkers=2` | 0 | 23 tests across 6 files, including original five |
+| `npm run test -- --run --maxWorkers=2` | 0 | 46 tests across 6 files, including original five |
 | `npm run build` | 0 | Static Vite output; development routes and optional sibling imports excluded |
 | `APEX_TEST_URL=http://127.0.0.1:5176 CHROMIUM_PATH=/usr/bin/chromium npm run test:browser` | 0 | Production preview, six viewport/theme combinations and reduced-motion/storage checks |
 | `git diff --check` | 0 | No whitespace errors |
@@ -69,3 +69,7 @@ The full cloud browser matrix repeats that import and the same updates in all si
 The existing strict/lint/unit/build/browser checks stay enabled. CI explicitly installs development tooling, adds a runtime dependency audit gate, and strictly checks Vite configuration. Malformed JSON, nested invalid fields, a real oversized file and a sub-2-MB cross-game expansion fixture are exercised alongside all existing chart/math/selection tests. The failed-import browser assertion initially reproduced a reset to pregame; current data/chart controls now remain mounted during a replacement read, with skeletons on cold loads.
 
 [Desktop rejection state](screens/1440-dark-import-budget-error.png) · [320px rejection state](screens/320-light-import-budget-error.png). No design approval or original Paper canvas PNG is claimed.
+
+## Reviewed toolchain and color follow-up
+
+The [toolchain migration](../security/toolchain-migration.md) supersedes the historical dependency counts above: full/runtime audits now both report zero. The existing import and selection safeguards remain covered by 46 tests, six production browser cases and 60 baseline/migration screen pairs. [Visual overview](screens/migration-overview.png), [pixel/hash report](migration-visual-comparison.json), [invalid color frame retention](screens/1440-dark-invalid-color.png). All dimensions and heading/font metrics match; all production-route captures are pixel-identical. CI retains full screenshots as a workflow artifact.

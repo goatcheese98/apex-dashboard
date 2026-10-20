@@ -1,0 +1,967 @@
+{
+  "baseline": "f052b3b22bb45e1722c5d6cf834bd0d82678a92e",
+  "engine": "Cloud system Chromium; fixed clock and seeded samples; reduced motion; animations/transitions disabled",
+  "threshold": "Every changed pixel is counted; also report maximum channel difference >8/255. No visual approval threshold.",
+  "comparisons": [
+    {
+      "file": "1440-dark-dock.png",
+      "beforeSize": [
+        1440,
+        2849
+      ],
+      "afterSize": [
+        1440,
+        2849
+      ],
+      "changedPixels": 79,
+      "changedOver8": 0,
+      "percentOver8": 0.0,
+      "beforeSHA256": "11df31e8e73ba2157aa0ba47b9ff14cbc8b63462ebad6c9586a502b6b03a58b9",
+      "afterSHA256": "e42a95f67a09738c4d266b8e09aeaf5d098520ce41acb6bfe6dd6030952bd4f6"
+    },
+    {
+      "file": "1440-dark-home.png",
+      "beforeSize": [
+        1440,
+        900
+      ],
+      "afterSize": [
+        1440,
+        900
+      ],
+      "changedPixels": 0,
+      "changedOver8": 0,
+      "percentOver8": 0.0,
+      "beforeSHA256": "ca82fe53391886e797a56c94708dc472412c8d9d0a4741e685027fb105dfe05f",
+      "afterSHA256": "ca82fe53391886e797a56c94708dc472412c8d9d0a4741e685027fb105dfe05f"
+    },
+    {
+      "file": "1440-dark-lab.png",
+      "beforeSize": [
+        1440,
+        900
+      ],
+      "afterSize": [
+        1440,
+        900
+      ],
+      "changedPixels": 0,
+      "changedOver8": 0,
+      "percentOver8": 0.0,
+      "beforeSHA256": "55d51356e15ca7edebc07e8f07326dfb7b1f5c5c2965c5b4f237cdae188313cc",
+      "afterSHA256": "55d51356e15ca7edebc07e8f07326dfb7b1f5c5c2965c5b4f237cdae188313cc"
+    },
+    {
+      "file": "1440-dark-library-presets.png",
+      "beforeSize": [
+        1440,
+        943
+      ],
+      "afterSize": [
+        1440,
+        943
+      ],
+      "changedPixels": 0,
+      "changedOver8": 0,
+      "percentOver8": 0.0,
+      "beforeSHA256": "f57495fa08f7e7908cf915cd688c96abc5bacf84c715d5d9e095bef40b2d4ea4",
+      "afterSHA256": "f57495fa08f7e7908cf915cd688c96abc5bacf84c715d5d9e095bef40b2d4ea4"
+    },
+    {
+      "file": "1440-dark-library-templates.png",
+      "beforeSize": [
+        1440,
+        1522
+      ],
+      "afterSize": [
+        1440,
+        1522
+      ],
+      "changedPixels": 0,
+      "changedOver8": 0,
+      "percentOver8": 0.0,
+      "beforeSHA256": "287fd1c5965c62b3668ba31d56145a06d2349162219271ceaa5ed62960c21f71",
+      "afterSHA256": "287fd1c5965c62b3668ba31d56145a06d2349162219271ceaa5ed62960c21f71"
+    },
+    {
+      "file": "1440-dark-library-themes.png",
+      "beforeSize": [
+        1440,
+        900
+      ],
+      "afterSize": [
+        1440,
+        900
+      ],
+      "changedPixels": 0,
+      "changedOver8": 0,
+      "percentOver8": 0.0,
+      "beforeSHA256": "8bd5e452b146be100f69f24e7a968eaced9dad07e41b64f77373542b23f67158",
+      "afterSHA256": "8bd5e452b146be100f69f24e7a968eaced9dad07e41b64f77373542b23f67158"
+    },
+    {
+      "file": "1440-dark-library.png",
+      "beforeSize": [
+        1440,
+        3239
+      ],
+      "afterSize": [
+        1440,
+        3239
+      ],
+      "changedPixels": 459,
+      "changedOver8": 360,
+      "percentOver8": 0.00772,
+      "beforeSHA256": "650fd547d77ef46d5b18ec4c105374dd59c92edef8e77f8ecce33011e885e4f6",
+      "afterSHA256": "d60758daff4bc8d580f959dabe8cea007e739caae7c4adcbc779a9f04bc42f46"
+    },
+    {
+      "file": "1440-dark-missing.png",
+      "beforeSize": [
+        1440,
+        900
+      ],
+      "afterSize": [
+        1440,
+        900
+      ],
+      "changedPixels": 0,
+      "changedOver8": 0,
+      "percentOver8": 0.0,
+      "beforeSHA256": "d7ef077904522d3ef030789522ba2fd9144d06d2e967e8e582b847d9e1dec421",
+      "afterSHA256": "d7ef077904522d3ef030789522ba2fd9144d06d2e967e8e582b847d9e1dec421"
+    },
+    {
+      "file": "1440-dark-tournament.png",
+      "beforeSize": [
+        1440,
+        1506
+      ],
+      "afterSize": [
+        1440,
+        1506
+      ],
+      "changedPixels": 0,
+      "changedOver8": 0,
+      "percentOver8": 0.0,
+      "beforeSHA256": "8d2ec55e38210b2a204101cba78a39d3cbc009ad4078f5f9f3e0ffd117551836",
+      "afterSHA256": "8d2ec55e38210b2a204101cba78a39d3cbc009ad4078f5f9f3e0ffd117551836"
+    },
+    {
+      "file": "1440-dark-utilities.png",
+      "beforeSize": [
+        1440,
+        3899
+      ],
+      "afterSize": [
+        1440,
+        3899
+      ],
+      "changedPixels": 41427,
+      "changedOver8": 5,
+      "percentOver8": 9e-05,
+      "beforeSHA256": "39ba08dcf9415694c4ced3f2963510a31d283077b4c89be95c584933443d5f0f",
+      "afterSHA256": "136b4558d8746edb7c98f080b3f90f73a2335bc61787c403c9556820d8699ad7"
+    },
+    {
+      "file": "1440-light-dock.png",
+      "beforeSize": [
+        1440,
+        2849
+      ],
+      "afterSize": [
+        1440,
+        2849
+      ],
+      "changedPixels": 79,
+      "changedOver8": 0,
+      "percentOver8": 0.0,
+      "beforeSHA256": "648fca491c3cfcf3c2a98ca23e28d449383f4bf8e7954c95f0552117fdc997e9",
+      "afterSHA256": "538b2971c12be602ec305e815951a6c0c5a4d88a0b343a5e13d3aef613c3b157"
+    },
+    {
+      "file": "1440-light-home.png",
+      "beforeSize": [
+        1440,
+        900
+      ],
+      "afterSize": [
+        1440,
+        900
+      ],
+      "changedPixels": 0,
+      "changedOver8": 0,
+      "percentOver8": 0.0,
+      "beforeSHA256": "7944ac319608bb4070bd9ab0228ff7c6869538330e5d28f9096d3dc87b3f09d7",
+      "afterSHA256": "7944ac319608bb4070bd9ab0228ff7c6869538330e5d28f9096d3dc87b3f09d7"
+    },
+    {
+      "file": "1440-light-lab.png",
+      "beforeSize": [
+        1440,
+        900
+      ],
+      "afterSize": [
+        1440,
+        900
+      ],
+      "changedPixels": 0,
+      "changedOver8": 0,
+      "percentOver8": 0.0,
+      "beforeSHA256": "355864a78b71900c106405badf881d02249c16629f85c5c0bc100a4efe71e275",
+      "afterSHA256": "355864a78b71900c106405badf881d02249c16629f85c5c0bc100a4efe71e275"
+    },
+    {
+      "file": "1440-light-library-presets.png",
+      "beforeSize": [
+        1440,
+        943
+      ],
+      "afterSize": [
+        1440,
+        943
+      ],
+      "changedPixels": 0,
+      "changedOver8": 0,
+      "percentOver8": 0.0,
+      "beforeSHA256": "7bf6d6e9c9d2f82c3ae690a503d825cb8f42aefdebaf9f438ddaf0789c431538",
+      "afterSHA256": "7bf6d6e9c9d2f82c3ae690a503d825cb8f42aefdebaf9f438ddaf0789c431538"
+    },
+    {
+      "file": "1440-light-library-templates.png",
+      "beforeSize": [
+        1440,
+        1522
+      ],
+      "afterSize": [
+        1440,
+        1522
+      ],
+      "changedPixels": 0,
+      "changedOver8": 0,
+      "percentOver8": 0.0,
+      "beforeSHA256": "da6029eb9cba302ef080b04634c460484aafd0ccadc5b86c3cabfcc8cda38beb",
+      "afterSHA256": "da6029eb9cba302ef080b04634c460484aafd0ccadc5b86c3cabfcc8cda38beb"
+    },
+    {
+      "file": "1440-light-library-themes.png",
+      "beforeSize": [
+        1440,
+        900
+      ],
+      "afterSize": [
+        1440,
+        900
+      ],
+      "changedPixels": 0,
+      "changedOver8": 0,
+      "percentOver8": 0.0,
+      "beforeSHA256": "918f5f84de2ebed9471211d501ae1215b508db29682803d49ad88c8265012abd",
+      "afterSHA256": "918f5f84de2ebed9471211d501ae1215b508db29682803d49ad88c8265012abd"
+    },
+    {
+      "file": "1440-light-library.png",
+      "beforeSize": [
+        1440,
+        3239
+      ],
+      "afterSize": [
+        1440,
+        3239
+      ],
+      "changedPixels": 425,
+      "changedOver8": 317,
+      "percentOver8": 0.0068,
+      "beforeSHA256": "d44a87110b0c399313920f77d71768cb84050edcdd5e9409c46e74a40d0d1871",
+      "afterSHA256": "ca23112a2ce0ef4e3df8bd75d0367d7638584ec611aacbe6e23a25425949a45a"
+    },
+    {
+      "file": "1440-light-missing.png",
+      "beforeSize": [
+        1440,
+        900
+      ],
+      "afterSize": [
+        1440,
+        900
+      ],
+      "changedPixels": 0,
+      "changedOver8": 0,
+      "percentOver8": 0.0,
+      "beforeSHA256": "73f8756b70b15b41930ed1845e2d5e58b854f3634fc08ff19635b5d4b113c9b9",
+      "afterSHA256": "73f8756b70b15b41930ed1845e2d5e58b854f3634fc08ff19635b5d4b113c9b9"
+    },
+    {
+      "file": "1440-light-tournament.png",
+      "beforeSize": [
+        1440,
+        1506
+      ],
+      "afterSize": [
+        1440,
+        1506
+      ],
+      "changedPixels": 0,
+      "changedOver8": 0,
+      "percentOver8": 0.0,
+      "beforeSHA256": "297c7492ad487c1b52db2919bdba91ec88ca48c082a4cb403cde485986ca8b34",
+      "afterSHA256": "297c7492ad487c1b52db2919bdba91ec88ca48c082a4cb403cde485986ca8b34"
+    },
+    {
+      "file": "1440-light-utilities.png",
+      "beforeSize": [
+        1440,
+        3899
+      ],
+      "afterSize": [
+        1440,
+        3899
+      ],
+      "changedPixels": 41489,
+      "changedOver8": 6,
+      "percentOver8": 0.00011,
+      "beforeSHA256": "61a419148e54adbaf74b582c6f1b6204a115745590ac51d90af4ea1037737eee",
+      "afterSHA256": "59958a93aba16523049203b2b7bf84f339bca0210b0f76f0a0104e0e7624c16c"
+    },
+    {
+      "file": "320-dark-dock.png",
+      "beforeSize": [
+        320,
+        4173
+      ],
+      "afterSize": [
+        320,
+        4173
+      ],
+      "changedPixels": 29,
+      "changedOver8": 0,
+      "percentOver8": 0.0,
+      "beforeSHA256": "72c609b9cd930cff0484d61d4051c2a78558bcffc1a7e7d267408318af67764e",
+      "afterSHA256": "8cbef4b32d5560b21f8486c1b3fcf4ddd5fc04fb737a73a1029d8c498ab00645"
+    },
+    {
+      "file": "320-dark-home.png",
+      "beforeSize": [
+        320,
+        900
+      ],
+      "afterSize": [
+        320,
+        900
+      ],
+      "changedPixels": 0,
+      "changedOver8": 0,
+      "percentOver8": 0.0,
+      "beforeSHA256": "df62b3077908eeafe39c995a06fdefdfea0da9af4e80ffeafb1ee5dfe1280249",
+      "afterSHA256": "df62b3077908eeafe39c995a06fdefdfea0da9af4e80ffeafb1ee5dfe1280249"
+    },
+    {
+      "file": "320-dark-lab.png",
+      "beforeSize": [
+        364,
+        1673
+      ],
+      "afterSize": [
+        364,
+        1673
+      ],
+      "changedPixels": 0,
+      "changedOver8": 0,
+      "percentOver8": 0.0,
+      "beforeSHA256": "d01ac530166f733f384f8f0760c740bfcc38f213c7215cb8c29c3bd9ec8dec39",
+      "afterSHA256": "d01ac530166f733f384f8f0760c740bfcc38f213c7215cb8c29c3bd9ec8dec39"
+    },
+    {
+      "file": "320-dark-library-presets.png",
+      "beforeSize": [
+        439,
+        2066
+      ],
+      "afterSize": [
+        439,
+        2066
+      ],
+      "changedPixels": 0,
+      "changedOver8": 0,
+      "percentOver8": 0.0,
+      "beforeSHA256": "2eac415d22c4f478e3c4c716713791afdee0fadbafd815c320f7650c5b86b51e",
+      "afterSHA256": "2eac415d22c4f478e3c4c716713791afdee0fadbafd815c320f7650c5b86b51e"
+    },
+    {
+      "file": "320-dark-library-templates.png",
+      "beforeSize": [
+        439,
+        3403
+      ],
+      "afterSize": [
+        439,
+        3403
+      ],
+      "changedPixels": 0,
+      "changedOver8": 0,
+      "percentOver8": 0.0,
+      "beforeSHA256": "4e7ff67bc194ac78eb58a5b131ed40d4a0cc6692d11796d569d01abad1730309",
+      "afterSHA256": "4e7ff67bc194ac78eb58a5b131ed40d4a0cc6692d11796d569d01abad1730309"
+    },
+    {
+      "file": "320-dark-library-themes.png",
+      "beforeSize": [
+        439,
+        1767
+      ],
+      "afterSize": [
+        439,
+        1767
+      ],
+      "changedPixels": 0,
+      "changedOver8": 0,
+      "percentOver8": 0.0,
+      "beforeSHA256": "a2a0d16c024b68325d10a65a8275de91f5da5d29afba08ff277524b1accf10ee",
+      "afterSHA256": "a2a0d16c024b68325d10a65a8275de91f5da5d29afba08ff277524b1accf10ee"
+    },
+    {
+      "file": "320-dark-library.png",
+      "beforeSize": [
+        439,
+        6110
+      ],
+      "afterSize": [
+        439,
+        6110
+      ],
+      "changedPixels": 366,
+      "changedOver8": 270,
+      "percentOver8": 0.01007,
+      "beforeSHA256": "e6cc64d8943f1841ebcdcd8ac35f89c98f2cf020a31f15b68c2c0f50719847d1",
+      "afterSHA256": "a3cb5f8b500e94794178ce2b86104be281d2a3fb19f10b46d2ac307a1745c976"
+    },
+    {
+      "file": "320-dark-missing.png",
+      "beforeSize": [
+        320,
+        900
+      ],
+      "afterSize": [
+        320,
+        900
+      ],
+      "changedPixels": 0,
+      "changedOver8": 0,
+      "percentOver8": 0.0,
+      "beforeSHA256": "bff76974da1cb6874aacd033c4e2863c781eb7e15bfad9241c2a7be986421608",
+      "afterSHA256": "bff76974da1cb6874aacd033c4e2863c781eb7e15bfad9241c2a7be986421608"
+    },
+    {
+      "file": "320-dark-tournament.png",
+      "beforeSize": [
+        320,
+        1880
+      ],
+      "afterSize": [
+        320,
+        1880
+      ],
+      "changedPixels": 0,
+      "changedOver8": 0,
+      "percentOver8": 0.0,
+      "beforeSHA256": "3fa5cf1c349579485a67e164b981bb0aa76824009bc238262662a78f3ff9e921",
+      "afterSHA256": "3fa5cf1c349579485a67e164b981bb0aa76824009bc238262662a78f3ff9e921"
+    },
+    {
+      "file": "320-dark-utilities.png",
+      "beforeSize": [
+        320,
+        5893
+      ],
+      "afterSize": [
+        320,
+        5893
+      ],
+      "changedPixels": 13014,
+      "changedOver8": 0,
+      "percentOver8": 0.0,
+      "beforeSHA256": "d7b195fd3ba57b8d483053075af92992b2ea78573ff4357ab12a068c94e4e953",
+      "afterSHA256": "7826522d7edb0d97c89bb4251259f52fc6a7dd0778df14b3bc7b6958b41212e0"
+    },
+    {
+      "file": "320-light-dock.png",
+      "beforeSize": [
+        320,
+        4173
+      ],
+      "afterSize": [
+        320,
+        4173
+      ],
+      "changedPixels": 29,
+      "changedOver8": 0,
+      "percentOver8": 0.0,
+      "beforeSHA256": "fec84f9fa23a81596d99004a8cc71504fead435af0fd5ce2aac621b0d8f24fe2",
+      "afterSHA256": "d6c5f5bd4b961673d3195fa901c5a7b791c5e06a2eea3eb858224485d1f1f4b6"
+    },
+    {
+      "file": "320-light-home.png",
+      "beforeSize": [
+        320,
+        900
+      ],
+      "afterSize": [
+        320,
+        900
+      ],
+      "changedPixels": 0,
+      "changedOver8": 0,
+      "percentOver8": 0.0,
+      "beforeSHA256": "cfbb07b9e176223823516d6f43aee49dd9358415c157dd2ad67d6cfc599b69c8",
+      "afterSHA256": "cfbb07b9e176223823516d6f43aee49dd9358415c157dd2ad67d6cfc599b69c8"
+    },
+    {
+      "file": "320-light-lab.png",
+      "beforeSize": [
+        364,
+        1673
+      ],
+      "afterSize": [
+        364,
+        1673
+      ],
+      "changedPixels": 0,
+      "changedOver8": 0,
+      "percentOver8": 0.0,
+      "beforeSHA256": "043531edc1197b731fbe6dd02f508590d26e5fa51a90c1b2a109604469d597af",
+      "afterSHA256": "043531edc1197b731fbe6dd02f508590d26e5fa51a90c1b2a109604469d597af"
+    },
+    {
+      "file": "320-light-library-presets.png",
+      "beforeSize": [
+        439,
+        2066
+      ],
+      "afterSize": [
+        439,
+        2066
+      ],
+      "changedPixels": 0,
+      "changedOver8": 0,
+      "percentOver8": 0.0,
+      "beforeSHA256": "3457ac67bb0c7df880e21a7aae2b760e85270f9ed70c373f7f95ee8eca4c2837",
+      "afterSHA256": "3457ac67bb0c7df880e21a7aae2b760e85270f9ed70c373f7f95ee8eca4c2837"
+    },
+    {
+      "file": "320-light-library-templates.png",
+      "beforeSize": [
+        439,
+        3403
+      ],
+      "afterSize": [
+        439,
+        3403
+      ],
+      "changedPixels": 0,
+      "changedOver8": 0,
+      "percentOver8": 0.0,
+      "beforeSHA256": "999192d6a399096ae6f0eed98eb07f46cb218fd3d3290eeec938d9a42703e9e9",
+      "afterSHA256": "999192d6a399096ae6f0eed98eb07f46cb218fd3d3290eeec938d9a42703e9e9"
+    },
+    {
+      "file": "320-light-library-themes.png",
+      "beforeSize": [
+        439,
+        1767
+      ],
+      "afterSize": [
+        439,
+        1767
+      ],
+      "changedPixels": 0,
+      "changedOver8": 0,
+      "percentOver8": 0.0,
+      "beforeSHA256": "b9e946afe87de589e0530e5241c14ab4bd8e918d5d9176dd58600d3da4586731",
+      "afterSHA256": "b9e946afe87de589e0530e5241c14ab4bd8e918d5d9176dd58600d3da4586731"
+    },
+    {
+      "file": "320-light-library.png",
+      "beforeSize": [
+        439,
+        6110
+      ],
+      "afterSize": [
+        439,
+        6110
+      ],
+      "changedPixels": 388,
+      "changedOver8": 270,
+      "percentOver8": 0.01007,
+      "beforeSHA256": "04548d6c41e9e86f0d34fa65e847c168f302dd1da54b7e4635c784db10a0787e",
+      "afterSHA256": "1b10bae08bfe47f087d5bcbce83ffd7d8f5c050e340ca61666be717fe6e07376"
+    },
+    {
+      "file": "320-light-missing.png",
+      "beforeSize": [
+        320,
+        900
+      ],
+      "afterSize": [
+        320,
+        900
+      ],
+      "changedPixels": 0,
+      "changedOver8": 0,
+      "percentOver8": 0.0,
+      "beforeSHA256": "d77c8c1c5a047b46422be9abdfbbd894a0ede1a3be45867c897f4b0db102cc20",
+      "afterSHA256": "d77c8c1c5a047b46422be9abdfbbd894a0ede1a3be45867c897f4b0db102cc20"
+    },
+    {
+      "file": "320-light-tournament.png",
+      "beforeSize": [
+        320,
+        1880
+      ],
+      "afterSize": [
+        320,
+        1880
+      ],
+      "changedPixels": 0,
+      "changedOver8": 0,
+      "percentOver8": 0.0,
+      "beforeSHA256": "db6c5798ce29ce606c882ce9a3989011383e2b5ab9c0e0fb2fca735f7a446ae7",
+      "afterSHA256": "db6c5798ce29ce606c882ce9a3989011383e2b5ab9c0e0fb2fca735f7a446ae7"
+    },
+    {
+      "file": "320-light-utilities.png",
+      "beforeSize": [
+        320,
+        5893
+      ],
+      "afterSize": [
+        320,
+        5893
+      ],
+      "changedPixels": 13056,
+      "changedOver8": 0,
+      "percentOver8": 0.0,
+      "beforeSHA256": "8f78cbc99ec6503b9a715fe0f9a4310b8fa7cced077029d8814f4ed9fe00266f",
+      "afterSHA256": "8a21a5d2f1eb043c9682485e5bd108e8db8ee83f7e41ca022685ccbcd00f1624"
+    },
+    {
+      "file": "768-dark-dock.png",
+      "beforeSize": [
+        768,
+        3583
+      ],
+      "afterSize": [
+        768,
+        3583
+      ],
+      "changedPixels": 69,
+      "changedOver8": 0,
+      "percentOver8": 0.0,
+      "beforeSHA256": "8ab988dafb84dfea95cce82de9f9d8de02044015e4ee090be1f92d43a67db8c0",
+      "afterSHA256": "4b0384dcb6dc88f2266e580900151e5a5a13cc1c1eae1d68c0ccc2ce2c08725b"
+    },
+    {
+      "file": "768-dark-home.png",
+      "beforeSize": [
+        768,
+        900
+      ],
+      "afterSize": [
+        768,
+        900
+      ],
+      "changedPixels": 0,
+      "changedOver8": 0,
+      "percentOver8": 0.0,
+      "beforeSHA256": "10addb18573bad91280c560640c96e9e907749bd0e9159a95224d7db7309ea6e",
+      "afterSHA256": "10addb18573bad91280c560640c96e9e907749bd0e9159a95224d7db7309ea6e"
+    },
+    {
+      "file": "768-dark-lab.png",
+      "beforeSize": [
+        768,
+        900
+      ],
+      "afterSize": [
+        768,
+        900
+      ],
+      "changedPixels": 0,
+      "changedOver8": 0,
+      "percentOver8": 0.0,
+      "beforeSHA256": "df440442f7cb98c6664605f2b964793f9fcb31b2e94cc9d774f6b227b22ef211",
+      "afterSHA256": "df440442f7cb98c6664605f2b964793f9fcb31b2e94cc9d774f6b227b22ef211"
+    },
+    {
+      "file": "768-dark-library-presets.png",
+      "beforeSize": [
+        768,
+        1152
+      ],
+      "afterSize": [
+        768,
+        1152
+      ],
+      "changedPixels": 0,
+      "changedOver8": 0,
+      "percentOver8": 0.0,
+      "beforeSHA256": "ed65e3c3d57b30edca014e4b30bb7ed566d1148a6a428bf3824b34b6e674bf27",
+      "afterSHA256": "ed65e3c3d57b30edca014e4b30bb7ed566d1148a6a428bf3824b34b6e674bf27"
+    },
+    {
+      "file": "768-dark-library-templates.png",
+      "beforeSize": [
+        768,
+        1971
+      ],
+      "afterSize": [
+        768,
+        1971
+      ],
+      "changedPixels": 0,
+      "changedOver8": 0,
+      "percentOver8": 0.0,
+      "beforeSHA256": "ad0db63544ba20d57fa66dc8f9929ac0390b7fa332510797fd11386cbec04c7b",
+      "afterSHA256": "ad0db63544ba20d57fa66dc8f9929ac0390b7fa332510797fd11386cbec04c7b"
+    },
+    {
+      "file": "768-dark-library-themes.png",
+      "beforeSize": [
+        768,
+        1074
+      ],
+      "afterSize": [
+        768,
+        1074
+      ],
+      "changedPixels": 0,
+      "changedOver8": 0,
+      "percentOver8": 0.0,
+      "beforeSHA256": "a7a41ebfe87ed555bdbbc82ca91054e2e164cbbeb2dd9d14e496f9fa9d01d32a",
+      "afterSHA256": "a7a41ebfe87ed555bdbbc82ca91054e2e164cbbeb2dd9d14e496f9fa9d01d32a"
+    },
+    {
+      "file": "768-dark-library.png",
+      "beforeSize": [
+        768,
+        4049
+      ],
+      "afterSize": [
+        768,
+        4049
+      ],
+      "changedPixels": 384,
+      "changedOver8": 289,
+      "percentOver8": 0.00929,
+      "beforeSHA256": "01d2eb3999edf8daab6cab039c7282d4e20304fcbc4a7e3143e952176e280027",
+      "afterSHA256": "d86791c8d6af351fc398ca683787d072f0762c0d91cbf9f4b8bb158b1ba513ee"
+    },
+    {
+      "file": "768-dark-missing.png",
+      "beforeSize": [
+        768,
+        900
+      ],
+      "afterSize": [
+        768,
+        900
+      ],
+      "changedPixels": 0,
+      "changedOver8": 0,
+      "percentOver8": 0.0,
+      "beforeSHA256": "007902d3dc37260eccc9e1f6423d9867038e1d3c3400b6a2836ec449a0e26e05",
+      "afterSHA256": "007902d3dc37260eccc9e1f6423d9867038e1d3c3400b6a2836ec449a0e26e05"
+    },
+    {
+      "file": "768-dark-tournament.png",
+      "beforeSize": [
+        768,
+        1636
+      ],
+      "afterSize": [
+        768,
+        1636
+      ],
+      "changedPixels": 0,
+      "changedOver8": 0,
+      "percentOver8": 0.0,
+      "beforeSHA256": "e41fc3bae76df7f0d01d619265b902b82773467018743b6998ec846a4dcc4978",
+      "afterSHA256": "e41fc3bae76df7f0d01d619265b902b82773467018743b6998ec846a4dcc4978"
+    },
+    {
+      "file": "768-dark-utilities.png",
+      "beforeSize": [
+        768,
+        3970
+      ],
+      "afterSize": [
+        768,
+        3970
+      ],
+      "changedPixels": 32958,
+      "changedOver8": 0,
+      "percentOver8": 0.0,
+      "beforeSHA256": "f8cd8921fb94f4c0675d88a27df4a791a99167d8c82a4a5079845e0530758a19",
+      "afterSHA256": "8273c5d4df7bf36d4ffa0ff0381d4f1099c1f826dd3a7e5738dc418550782ac1"
+    },
+    {
+      "file": "768-light-dock.png",
+      "beforeSize": [
+        768,
+        3583
+      ],
+      "afterSize": [
+        768,
+        3583
+      ],
+      "changedPixels": 69,
+      "changedOver8": 0,
+      "percentOver8": 0.0,
+      "beforeSHA256": "c1f0b6261e61eb860119fc9a41bcc35e386397fda42bb880c4638a4b18fe5e8a",
+      "afterSHA256": "67c2d2578d426ed1a1bdaf2971611ebfdc13c9eb73d79ff1a2b3745e89d43610"
+    },
+    {
+      "file": "768-light-home.png",
+      "beforeSize": [
+        768,
+        900
+      ],
+      "afterSize": [
+        768,
+        900
+      ],
+      "changedPixels": 0,
+      "changedOver8": 0,
+      "percentOver8": 0.0,
+      "beforeSHA256": "ac0565a31a00993a7cd5b090d883db8e1c6ed77e8155df7c90ed629fb6a5e2a6",
+      "afterSHA256": "ac0565a31a00993a7cd5b090d883db8e1c6ed77e8155df7c90ed629fb6a5e2a6"
+    },
+    {
+      "file": "768-light-lab.png",
+      "beforeSize": [
+        768,
+        900
+      ],
+      "afterSize": [
+        768,
+        900
+      ],
+      "changedPixels": 0,
+      "changedOver8": 0,
+      "percentOver8": 0.0,
+      "beforeSHA256": "1b082848fc70fd71ceaa924e9ba28eb637f4120dcbbdccdd0a584fca9c56f0df",
+      "afterSHA256": "1b082848fc70fd71ceaa924e9ba28eb637f4120dcbbdccdd0a584fca9c56f0df"
+    },
+    {
+      "file": "768-light-library-presets.png",
+      "beforeSize": [
+        768,
+        1152
+      ],
+      "afterSize": [
+        768,
+        1152
+      ],
+      "changedPixels": 0,
+      "changedOver8": 0,
+      "percentOver8": 0.0,
+      "beforeSHA256": "ee121cbe7fbb4c754ba0a52255de23bdb29320ce2f5225139fe61f2de8d1dadd",
+      "afterSHA256": "ee121cbe7fbb4c754ba0a52255de23bdb29320ce2f5225139fe61f2de8d1dadd"
+    },
+    {
+      "file": "768-light-library-templates.png",
+      "beforeSize": [
+        768,
+        1971
+      ],
+      "afterSize": [
+        768,
+        1971
+      ],
+      "changedPixels": 0,
+      "changedOver8": 0,
+      "percentOver8": 0.0,
+      "beforeSHA256": "65409ce702d44753b9e818be301adf4e60423fd41b071c6f2ac569e53c9bb862",
+      "afterSHA256": "65409ce702d44753b9e818be301adf4e60423fd41b071c6f2ac569e53c9bb862"
+    },
+    {
+      "file": "768-light-library-themes.png",
+      "beforeSize": [
+        768,
+        1074
+      ],
+      "afterSize": [
+        768,
+        1074
+      ],
+      "changedPixels": 0,
+      "changedOver8": 0,
+      "percentOver8": 0.0,
+      "beforeSHA256": "6215371a89b3991adab6e753d9965b3236cb09feaf0e2ef78403097753c81f33",
+      "afterSHA256": "6215371a89b3991adab6e753d9965b3236cb09feaf0e2ef78403097753c81f33"
+    },
+    {
+      "file": "768-light-library.png",
+      "beforeSize": [
+        768,
+        4049
+      ],
+      "afterSize": [
+        768,
+        4049
+      ],
+      "changedPixels": 359,
+      "changedOver8": 244,
+      "percentOver8": 0.00785,
+      "beforeSHA256": "301740737790479b6d621565c9ff4907ae9c1bd4f7c0de69ae17160ad99f32c5",
+      "afterSHA256": "341f1ef9d9436a89437c8caaf70a2787296629833d65c7d2ccb4482a7745070b"
+    },
+    {
+      "file": "768-light-missing.png",
+      "beforeSize": [
+        768,
+        900
+      ],
+      "afterSize": [
+        768,
+        900
+      ],
+      "changedPixels": 0,
+      "changedOver8": 0,
+      "percentOver8": 0.0,
+      "beforeSHA256": "1da84e310ad67d3a4202415108056d85e5f3bc0beadaa3d8a8503d860b09150b",
+      "afterSHA256": "1da84e310ad67d3a4202415108056d85e5f3bc0beadaa3d8a8503d860b09150b"
+    },
+    {
+      "file": "768-light-tournament.png",
+      "beforeSize": [
+        768,
+        1636
+      ],
+      "afterSize": [
+        768,
+        1636
+      ],
+      "changedPixels": 0,
+      "changedOver8": 0,
+      "percentOver8": 0.0,
+      "beforeSHA256": "ac3736491a620dce84b1bb491e5d90021648b20d282df2cfb35c63f221820f47",
+      "afterSHA256": "ac3736491a620dce84b1bb491e5d90021648b20d282df2cfb35c63f221820f47"
+    },
+    {
+      "file": "768-light-utilities.png",
+      "beforeSize": [
+        768,
+        3970
+      ],
+      "afterSize": [
+        768,
+        3970
+      ],
+      "changedPixels": 33012,
+      "changedOver8": 0,
+      "percentOver8": 0.0,
+      "beforeSHA256": "c457a65d99952fc8d81c5aa24ab41ccb037a46acb2d430ce1bbfab22225061c6",
+      "afterSHA256": "153fbf1fd7e1b9a604b9f1134951b8daa0c98c04d799c055912cd042385e8a59"
+    }
+  ]
+}
