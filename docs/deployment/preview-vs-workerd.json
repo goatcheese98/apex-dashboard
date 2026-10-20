@@ -1,0 +1,110 @@
+[
+  {
+    "runtime": "Vite preview control",
+    "path": "/",
+    "status": 200,
+    "contentType": "text/html",
+    "cacheControl": "no-cache",
+    "hasCSP": false,
+    "indexHTML": true
+  },
+  {
+    "runtime": "Vite preview control",
+    "path": "/tournament/ewc-2025",
+    "status": 200,
+    "contentType": "text/html",
+    "cacheControl": "no-cache",
+    "hasCSP": false,
+    "indexHTML": true
+  },
+  {
+    "runtime": "Vite preview control",
+    "path": "/not-a-route",
+    "status": 200,
+    "contentType": "text/html",
+    "cacheControl": "no-cache",
+    "hasCSP": false,
+    "indexHTML": true
+  },
+  {
+    "runtime": "Vite preview control",
+    "path": "/assets/missing-DEADBEEF.js",
+    "status": 200,
+    "contentType": "text/html",
+    "cacheControl": "no-cache",
+    "hasCSP": false,
+    "indexHTML": true
+  },
+  {
+    "runtime": "Vite preview control",
+    "path": "/assets/missing-DEADBEEF.css",
+    "status": 200,
+    "contentType": "text/html",
+    "cacheControl": "no-cache",
+    "hasCSP": false,
+    "indexHTML": true
+  },
+  {
+    "runtime": "Vite preview control",
+    "path": "/assets/missing-DEADBEEF.woff2",
+    "status": 200,
+    "contentType": "text/html",
+    "cacheControl": "no-cache",
+    "hasCSP": false,
+    "indexHTML": true
+  },
+  {
+    "runtime": "Wrangler/workerd target",
+    "path": "/",
+    "status": 200,
+    "contentType": "text/html; charset=utf-8",
+    "cacheControl": "no-cache",
+    "hasCSP": true,
+    "indexHTML": true
+  },
+  {
+    "runtime": "Wrangler/workerd target",
+    "path": "/tournament/ewc-2025",
+    "status": 200,
+    "contentType": "text/html; charset=utf-8",
+    "cacheControl": "no-cache",
+    "hasCSP": true,
+    "indexHTML": true
+  },
+  {
+    "runtime": "Wrangler/workerd target",
+    "path": "/not-a-route",
+    "status": 404,
+    "contentType": "text/html; charset=utf-8",
+    "cacheControl": "no-store",
+    "hasCSP": true,
+    "indexHTML": true
+  },
+  {
+    "runtime": "Wrangler/workerd target",
+    "path": "/assets/missing-DEADBEEF.js",
+    "status": 404,
+    "contentType": "text/plain; charset=utf-8",
+    "cacheControl": "no-store",
+    "hasCSP": true,
+    "indexHTML": false
+  },
+  {
+    "runtime": "Wrangler/workerd target",
+    "path": "/assets/missing-DEADBEEF.css",
+    "status": 404,
+    "contentType": "text/plain; charset=utf-8",
+    "cacheControl": "no-store",
+    "hasCSP": true,
+    "indexHTML": false
+  },
+  {
+    "runtime": "Wrangler/workerd target",
+    "path": "/assets/missing-DEADBEEF.woff2",
+    "status": 404,
+    "contentType": "text/plain; charset=utf-8",
+    "cacheControl": "no-store",
+    "hasCSP": true,
+    "indexHTML": false
+  }
+]

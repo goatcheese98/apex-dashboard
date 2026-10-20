@@ -58,7 +58,7 @@ onUnmounted(() => {
     :class="dockClasses" 
     :style="dockStyle"
   >
-    <div class="p-4 space-y-4">
+    <div class="p-4 legacy-space-y-4">
       <!-- Main controls row -->
       <div class="flex items-center justify-between">
         <!-- Visualization switcher -->

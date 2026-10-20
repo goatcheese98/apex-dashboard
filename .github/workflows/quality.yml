@@ -1,0 +1,97 @@
+name: Workspace quality
+on:
+  pull_request:
+  push:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci --include=dev --no-audit --no-fund
+      - name: Audit full dependency graph
+        run: npm audit --audit-level=low
+      - name: Audit runtime dependency graph
+        run: npm audit --omit=dev --audit-level=low
+      - name: Check local MCP dependency compatibility
+        run: npm run test:dependencies
+      - run: npm run typecheck
+      - run: npm run lint
+      - run: npm run test:lint-discovery
+      - run: npm run test -- --run --maxWorkers=2
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - name: Cloud browser verification
+        shell: bash
+        run: |
+          npm run preview -- --host 127.0.0.1 --port 5174 > /tmp/apex-preview.log 2>&1 &
+          preview_pid=$!
+          trap 'kill "$preview_pid"' EXIT
+          for attempt in {1..30}; do
+            if curl --fail --silent http://127.0.0.1:5174/ > /dev/null; then break; fi
+            sleep 1
+          done
+          npm run test:browser
+      - name: Cloudflare package dry-run (no upload)
+        timeout-minutes: 1
+        shell: bash
+        run: |
+          mkdir -p work
+          npm run cloudflare:dry-run | tee work/cloudflare-dry-run.log
+      - name: Offline workerd runtime and browser verification
+        timeout-minutes: 5
+        shell: bash
+        run: |
+          node --experimental-strip-types scripts/cloudflare.ts local > work/cloudflare-local.log 2>&1 &
+          runtime_pid=$!
+          trap 'kill "$runtime_pid"' EXIT
+          for attempt in {1..30}; do
+            if curl --fail --silent http://127.0.0.1:8787/ > /dev/null; then break; fi
+            sleep 1
+          done
+          npm run test:cloudflare | tee work/cloudflare-checks.log
+          APEX_TEST_URL=http://127.0.0.1:8787 APEX_SCREENSHOT_DIR=work/cloudflare-browser npm run test:browser | tee work/cloudflare-browser.log
+      - name: Check out reviewed visual baseline
+        uses: actions/checkout@v4
+        with:
+          ref: f052b3b22bb45e1722c5d6cf834bd0d82678a92e
+          path: work/visual-baseline-app
+          persist-credentials: false
+      - name: Install reviewed baseline for visual comparison
+        run: npm ci --prefix work/visual-baseline-app --include=dev --no-audit --no-fund
+      - name: Compare existing development surfaces in cloud
+        shell: bash
+        run: |
+          npm --prefix work/visual-baseline-app run dev -- --host 127.0.0.1 --port 5178 > /tmp/apex-baseline.log 2>&1 &
+          baseline_pid=$!
+          npm run dev -- --host 127.0.0.1 --port 5177 > /tmp/apex-development.log 2>&1 &
+          development_pid=$!
+          trap 'kill "$baseline_pid" "$development_pid"' EXIT
+          for attempt in {1..30}; do
+            if curl --fail --silent http://127.0.0.1:5177/ > /dev/null && curl --fail --silent http://127.0.0.1:5178/ > /dev/null; then break; fi
+            sleep 1
+          done
+          APEX_TEST_URL=http://127.0.0.1:5178 APEX_VISUAL_DIR=work/visual-before npm run test:visual
+          APEX_TEST_URL=http://127.0.0.1:5177 APEX_VISUAL_DIR=work/visual-after npm run test:visual
+          node --experimental-strip-types scripts/tests/compare-visuals.ts
+      - name: Retain cloud browser and visual evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: apex-browser-and-visual-evidence
+          retention-days: 14
+          path: |
+            work/cloudflare-evidence/
+            work/cloudflare-browser/
+            work/cloudflare-*.log
+            work/browser/
+            work/visual-before/
+            work/visual-after/
+            work/visual-comparison.json

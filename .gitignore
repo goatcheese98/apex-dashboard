@@ -1,4 +1,5 @@
 # Dependencies
+node_modules
 node_modules/
 *.pnp
 .pnp.js
@@ -89,3 +90,8 @@ temp-vue/
 # Test results
 test-results/
 playwright-report/
+# Cloud scratch and browser artifacts
+work/
+
+# Wrangler local cache/state
+.wrangler/
