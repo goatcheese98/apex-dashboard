@@ -73,3 +73,7 @@ The existing strict/lint/unit/build/browser checks stay enabled. CI explicitly i
 ## Reviewed toolchain and color follow-up
 
 The [toolchain migration](../security/toolchain-migration.md) supersedes the historical dependency counts above: full/runtime audits now both report zero. The existing import and selection safeguards remain covered by 46 tests, six production browser cases and 60 baseline/migration screen pairs. [Visual overview](screens/migration-overview.png), [pixel/hash report](migration-visual-comparison.json), [invalid color frame retention](screens/1440-dark-invalid-color.png). All dimensions and heading/font metrics match; all production-route captures are pixel-identical. CI retains full screenshots as a workflow artifact.
+
+## Offline Cloudflare target rehearsal
+
+The [Cloudflare option/runbook](../deployment/cloudflare.md) adds explicit routing, status/cache and CSP/security-header verification on actual built dist under local Wrangler/workerd. Existing checks remain enabled; the six production browser cases also run against workerd, alongside two focused runtime cases. No account/domain or deployment is selected. [HTTP control/failure evidence](../deployment/preview-vs-workerd.json) contrasts Vite preview with the actual local target.
