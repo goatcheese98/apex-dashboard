@@ -24,10 +24,12 @@ describe('tournament import lifecycle', () => {
     await flushPromises()
     const store = useTournamentStore()
     const prior = store.currentTournament
+    const priorChart = wrapper.get('.race-rows').element
     const input = wrapper.get('input[type="file"]')
     Object.defineProperty(input.element, 'files', { value: [new File(['{}'], 'data.json')], configurable: true })
     await input.trigger('change')
-    expect(wrapper.get('[role="status"]').text()).toBe('Loading tournament')
+    expect(wrapper.get('[role="status"]').text()).toContain('Loading tournament')
+    expect(wrapper.get('.race-rows').element).toBe(priorChart)
     await input.trigger('change')
     expect(DeferredReader.readers[0].aborted).toBe(true)
     DeferredReader.readers[0].finish('{"name":"superseded"}')

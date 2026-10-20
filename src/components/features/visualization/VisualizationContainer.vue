@@ -61,8 +61,8 @@ onBeforeUnmount(() => { reader?.abort(); reader = undefined; tournament.isLoadin
     <button v-for="view in views" :key="view.id" :aria-pressed="dock.currentVisualization === view.id" @click="dock.currentVisualization = view.id">{{ view.label }}</button>
   </nav>
   <div v-if="tournament.error" role="alert" class="error-state"><p>Could not load tournament: {{ tournament.error }}.</p><p v-if="tournament.currentTournament">Showing stale {{ tournament.dataSource.toLowerCase() }}: {{ title }}.</p><button @click="retry">Retry</button></div>
-  <div v-if="tournament.isLoading" class="loading-state" role="status"><p>Loading tournament</p><div v-for="n in 5" :key="n" class="skeleton-row" /></div>
-  <template v-else-if="tournament.currentTournament?.games.length">
+  <div v-if="tournament.isLoading" :class="{ 'loading-state': !tournament.currentTournament }" role="status"><p>Loading tournament</p><p v-if="tournament.currentTournament" class="muted">Showing previous data while loading.</p><template v-else><div v-for="n in 5" :key="n" class="skeleton-row" /></template></div>
+  <template v-if="tournament.currentTournament?.games.length">
     <div class="metric-controls">
       <p class="muted">Game {{ dock.currentGameIndex }} of {{ tournament.currentTournament.totalGames }} / {{ dock.cumulative ? 'Cumulative' : 'Individual' }} {{ dock.metric }}</p>
       <div class="control-group">

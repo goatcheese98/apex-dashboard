@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
+import { createPinia, setActivePinia } from 'pinia'
 import { parseTournament, summarize } from './tournament'
-import type { TournamentData } from '@/stores/tournament'
+import { useTournamentStore, type TournamentData } from '@/stores/tournament'
 
 function expanded(players: number, games: number, distinct = true): TournamentData {
   return { id: 'bounded', name: 'Boundary fixture', totalGames: games,
@@ -44,5 +45,22 @@ describe('untrusted tournament budgets and diagnostics', () => {
     } })
     expect(summarize(data, 1, true, []).every(t => t.points === 1)).toBe(true)
     expect(reads).toBeLessThanOrEqual(200)
+  })
+})
+
+
+describe('unrestricted imported team identifiers', () => {
+  it('keeps prototype-looking IDs as ordinary own dictionary entries in the existing cumulative getter', () => {
+    setActivePinia(createPinia())
+    const store = useTournamentStore()
+    const data = expanded(0, 1)
+    data.teams = ['__proto__', 'constructor', 'toString'].map(id => ({ id, name: id, players: [], color: '#123456' }))
+    data.games[0].teams = data.teams.map((team, i) => ({ teamId: team.id, placement: 1, points: i + 1, kills: i + 2, damage: i + 3, playerStats: [] }))
+    store.importTournament(data)
+    for (const [i, team] of data.teams.entries()) {
+      expect(Object.prototype.hasOwnProperty.call(store.cumulativeData, team.id)).toBe(true)
+      expect(store.cumulativeData[team.id][0]).toMatchObject({ totalPoints: i + 1, totalKills: i + 2, totalDamage: i + 3 })
+    }
+    expect(Object.keys(store.cumulativeData)).toHaveLength(3)
   })
 })

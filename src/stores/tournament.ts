@@ -66,7 +66,7 @@ export const useTournamentStore = defineStore('tournament', () => {
       totalKills: number
       totalDamage: number
       placement: number
-    }>> = {}
+    }>> = Object.create(null)
 
     filteredGames.value.forEach(game => {
       game.teams.forEach(teamData => {
