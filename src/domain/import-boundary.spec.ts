@@ -64,3 +64,17 @@ describe('unrestricted imported team identifiers', () => {
     expect(Object.keys(store.cumulativeData)).toHaveLength(3)
   })
 })
+
+describe('supported imported team colors', () => {
+  it.each(['#12345', '#1234567', 'hsl(,,,,)', 'hsl()', 'hsl(120, 50%,)', 'hsl(120 50% 50%, .5)', 'hsl(120, 50%, 50% / .5)', 'hsl(120 50% 50%) trailing', 'hsl(var(--h) 50% 50%)', 'red', 'url(https://private.invalid)', 'hsl(120\u00a050% 50%)'])('rejects malformed or unsupported color %s with bounded field guidance', color => {
+    const data = expanded(1, 1)
+    data.teams[0].color = color
+    expect(() => parseTournament(data)).toThrow(/^teams\[0\]\.color: expected/)
+    try { parseTournament(data) } catch (error) { expect((error as Error).message).not.toContain(color) }
+  })
+  it.each(['#abc', '#aBcD', '#123456', '#12345678', 'hsl(120, 50%, 50%)', 'HSL(120,50%,50%,.5)', 'hsl(120 50% 50%)', 'hsl(-.5turn 50% 50% / 25%)', 'hsl(1.2e2deg 50 50 / .5)', 'hsl(400grad, -10%, 120%)', 'hsl(3.14rad 100% 50%)'])('preserves supported color %s without substitution', color => {
+    const data = expanded(1, 1)
+    data.teams[0].color = color
+    expect(parseTournament(data).teams[0].color).toBe(color)
+  })
+})

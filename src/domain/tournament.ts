@@ -1,4 +1,5 @@
 import type { TournamentData } from '@/stores/tournament'
+import { isTeamColor } from './teamColor'
 import { IMPORT_LIMITS, TournamentImportError } from './importJSON'
 
 export interface PlayerSummary { id: string; name: string; kills: number; damage: number; damageTaken: number }
@@ -45,7 +46,7 @@ export function parseTournament(input: unknown): TournamentData {
   const id = text(root.id, 'id'), name = text(root.name, 'name')
   const teams = list(root.teams, 'teams').map((value, i) => {
     const path = `teams[${i}]`, t = object(value, path), color = text(t.color, `${path}.color`)
-    if (!/^(#[\da-f]{3,8}|hsl\([\d.,%\s]+\))$/i.test(color)) fail(`${path}.color`, 'expected a hex or hsl team color')
+    if (!isTeamColor(color)) fail(`${path}.color`, 'expected a 3, 4, 6 or 8-digit hex or numeric hsl team color')
     const players = list(t.players, `${path}.players`).map((p, j) => text(p, `${path}.players[${j}]`))
     return { id: text(t.id, `${path}.id`), name: text(t.name, `${path}.name`), color, players }
   })

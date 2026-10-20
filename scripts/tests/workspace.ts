@@ -171,6 +171,18 @@ try {
       }
       await betaNode?.dispose(); await alphaNode?.dispose()
       if (width === 1440 && theme === 'dark') await page.screenshot({ path: `${output}/1440-dark-shared-player-ids.png`, fullPage: true })
+      for (const [index, color] of ['#12345', '#1234567', 'hsl(,,,,)'].entries()) {
+        const badColor = structuredClone(sharedPlayerFixture)
+        badColor.teams[index].color = color
+        await upload(page, badColor)
+        const alert = page.getByRole('alert').filter({ hasText: `teams[${index}].color:` })
+        await alert.waitFor()
+        assert.match(await alert.innerText(), /expected a 3, 4, 6 or 8-digit hex or numeric hsl team color/)
+        assert.equal((await alert.innerText()).includes(color), false)
+        await expectText(page, 'Beta / p1 · 1 kills · 100 damage')
+        assert.equal(await beta.getAttribute('aria-pressed'), 'true', 'Invalid colors must retain selection and prior values')
+      }
+      if (width === 1440 && theme === 'dark') await page.screenshot({ path: `${output}/1440-dark-invalid-color.png`, fullPage: true })
       await page.getByLabel('Import tournament JSON', { exact: true }).setInputFiles({ name: 'invalid.json', mimeType: 'application/json', buffer: Buffer.from('{"private-data":') })
       await page.getByRole('alert').waitFor()
       assert.match(await page.getByRole('alert').innerText(), /File: Invalid JSON; fix the syntax/)
@@ -189,6 +201,20 @@ try {
       assert.equal(await beta.getAttribute('aria-pressed'), 'true', 'Rejected imports must retain the inspected team selection')
       assert.equal(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), true)
       if ((width === 320 && theme === 'light') || (width === 1440 && theme === 'dark')) await page.screenshot({ path: `${output}/${width}-${theme}-import-budget-error.png`, fullPage: true })
+      if (width === 1440 && theme === 'dark') {
+        for (const [index, color] of ['#abc', '#abcd', '#123456', '#12345678', 'hsl(120, 50%, 50%)', 'hsl(120,50%,50%,.5)', 'hsl(-.5turn 50% 50% / 25%)', 'hsl(1.2e2deg 50 50 / .5)'].entries()) {
+          const validColor = structuredClone(fixture)
+          validColor.name = `Valid color ${index}`
+          validColor.teams[0].color = color
+          assert.equal(await page.evaluate(value => CSS.supports('color', value), color), true)
+          await upload(page, validColor)
+          await expectText(page, `Tournaments / Valid color ${index}`)
+          assert.equal(await page.getByRole('alert').count(), 0)
+          await page.getByRole('button', { name: 'Standings', exact: true }).click()
+          await page.getByRole('slider').fill('1')
+          assert.notEqual(await page.locator('.team-label').filter({ hasText: 'Alpha' }).locator('i').evaluate(e => (e as HTMLElement).style.background), '')
+        }
+      }
       await upload(page, { ...fixture, games: [] })
       await expectText(page, 'No games available')
       await context.close()
